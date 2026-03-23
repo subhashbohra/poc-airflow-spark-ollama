@@ -12,7 +12,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: standard-rwo   # GKE default storage class
+  storageClassName: dynamic-rwo   # GKE storage class for this cluster
   resources:
     requests:
       storage: 30Gi

@@ -1,20 +1,6 @@
 ---
-# PostgreSQL deployment for dag_metrics table (separate from Airflow's internal PG)
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-metrics-pvc
-  namespace: monitoring
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: standard-rwo
-  resources:
-    requests:
-      storage: 10Gi
-
----
+# PostgreSQL deployment for dag_metrics table
+# Uses emptyDir to avoid PVC node affinity issues in GKE PoC
 apiVersion: v1
 kind: Secret
 metadata:
@@ -76,5 +62,4 @@ spec:
             periodSeconds: 30
       volumes:
         - name: postgres-data
-          persistentVolumeClaim:
-            claimName: postgres-metrics-pvc
+          emptyDir: {}

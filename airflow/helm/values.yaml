@@ -2,8 +2,8 @@
 # Airflow Helm configuration — mirrors GDC enterprise pattern
 # KubernetesExecutor: ephemeral pods per task, same as enterprise GDC
 
-defaultAirflowTag: "2.9.2"
-airflowVersion: "2.9.2"
+defaultAirflowTag: "2.11.0"
+airflowVersion: "2.11.0"
 
 # KubernetesExecutor — matches GDC: pods per task, no Celery overhead
 executor: KubernetesExecutor
@@ -27,7 +27,6 @@ webserver:
       cpu: "1"
   service:
     type: ClusterIP
-    port: 8080
   tolerations:
     - key: "pool"
       operator: "Equal"
@@ -86,6 +85,8 @@ triggerer:
 # Built-in PostgreSQL (Airflow metadata DB)
 postgresql:
   enabled: true
+  image:
+    tag: "15"
   auth:
     postgresPassword: "airflow_poc_password"
     username: "airflow"
