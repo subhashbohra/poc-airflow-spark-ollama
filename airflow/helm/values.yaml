@@ -105,22 +105,17 @@ postgresql:
 redis:
   enabled: false
 
-# DAGs — use persistent volume for simplicity (no git-sync needed for PoC)
+# DAGs — emptyDir for PoC (avoids PVC node affinity issues on GKE)
 dags:
   persistence:
-    enabled: true
-    size: 5Gi
-    storageClassName: standard-rwo
-    accessMode: ReadWriteMany
+    enabled: false
   gitSync:
     enabled: false
 
-# Logs
+# Logs — emptyDir for PoC
 logs:
   persistence:
-    enabled: true
-    size: 10Gi
-    storageClassName: standard-rwo
+    enabled: false
 
 # Extra pip packages for workers
 _pip_extra_requirements: >-
