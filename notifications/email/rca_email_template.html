@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DAG Failure — AI RCA Report</title>
+  <style>
+    body {{ margin:0; padding:0; background:#f4f4f4; font-family: Arial, sans-serif; }}
+    .wrapper {{ max-width:700px; margin:30px auto; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.15); }}
+    .header {{ background:#cc0000; color:#ffffff; padding:28px 32px; }}
+    .header h1 {{ margin:0; font-size:22px; font-weight:bold; }}
+    .header p  {{ margin:6px 0 0; font-size:14px; opacity:0.85; }}
+    .body {{ padding:28px 32px; }}
+    .meta-grid {{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px; }}
+    .meta-box {{ background:#f9f9f9; border:1px solid #e0e0e0; border-radius:6px; padding:12px 16px; }}
+    .meta-box .label {{ font-size:11px; color:#888; text-transform:uppercase; letter-spacing:.5px; }}
+    .meta-box .value {{ font-size:14px; color:#222; font-weight:600; margin-top:4px; word-break:break-word; }}
+    .section-title {{ font-size:16px; font-weight:bold; color:#333; border-bottom:2px solid #e0e0e0; padding-bottom:8px; margin:24px 0 14px; }}
+    .rca-root-cause {{ background:#fdecea; border-left:4px solid #cc0000; padding:14px 18px; border-radius:0 6px 6px 0; font-size:14px; color:#333; margin-bottom:16px; }}
+    .fix-box {{ background:#fff8e1; border-left:4px solid #ffc107; padding:14px 18px; border-radius:0 6px 6px 0; font-size:14px; color:#333; margin-bottom:16px; }}
+    .prevention-box {{ background:#e8f5e9; border-left:4px solid #4caf50; padding:14px 18px; border-radius:0 6px 6px 0; font-size:14px; color:#333; margin-bottom:16px; }}
+    .severity-badge {{ display:inline-block; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:bold; text-transform:uppercase; letter-spacing:.5px; }}
+    .severity-critical {{ background:#cc0000; color:#fff; }}
+    .severity-high     {{ background:#e53935; color:#fff; }}
+    .severity-medium   {{ background:#fb8c00; color:#fff; }}
+    .severity-low      {{ background:#43a047; color:#fff; }}
+    .confidence-bar-wrap {{ background:#e0e0e0; border-radius:6px; height:10px; margin-top:6px; }}
+    .confidence-bar {{ background:#1565c0; border-radius:6px; height:10px; }}
+    .stat-row {{ display:flex; gap:20px; flex-wrap:wrap; margin-bottom:18px; }}
+    .stat {{ background:#f0f4ff; border-radius:6px; padding:10px 16px; flex:1; min-width:120px; }}
+    .stat .s-label {{ font-size:11px; color:#666; text-transform:uppercase; }}
+    .stat .s-value {{ font-size:18px; font-weight:bold; color:#1565c0; margin-top:2px; }}
+    .cta {{ text-align:center; margin:28px 0 10px; }}
+    .cta a {{ background:#1565c0; color:#ffffff; padding:12px 28px; border-radius:6px; text-decoration:none; font-size:14px; font-weight:bold; }}
+    .footer {{ background:#f4f4f4; padding:16px 32px; font-size:11px; color:#888; border-top:1px solid #e0e0e0; }}
+    .error-box {{ background:#f9f9f9; border:1px solid #e0e0e0; border-radius:6px; padding:12px 16px; font-size:12px; font-family:monospace; color:#555; word-break:break-all; margin-bottom:16px; }}
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🚨 DAG Failure — AI Root Cause Analysis Ready</h1>
+    <p>Ollama gemma2:2b analyzed this failure in {response_time}s &nbsp;|&nbsp; {generated_at}</p>
+  </div>
+
+  <div class="body">
+
+    <!-- Meta Grid -->
+    <div class="meta-grid">
+      <div class="meta-box">
+        <div class="label">DAG</div>
+        <div class="value">{dag_id}</div>
+      </div>
+      <div class="meta-box">
+        <div class="label">Failed Task</div>
+        <div class="value">{task_id}</div>
+      </div>
+      <div class="meta-box">
+        <div class="label">Execution Date</div>
+        <div class="value">{execution_date}</div>
+      </div>
+      <div class="meta-box">
+        <div class="label">Severity</div>
+        <div class="value">
+          <span class="severity-badge severity-{severity_lower}">{severity}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="section-title">Error</div>
+    <div class="error-box">{error_message}</div>
+
+    <!-- AI RCA -->
+    <div class="section-title">🤖 AI Root Cause Analysis</div>
+
+    <div class="rca-root-cause">
+      <strong>Root Cause:</strong> {root_cause}<br/>
+      <small style="color:#888">Category: {rca_category}</small>
+    </div>
+
+    <!-- Confidence -->
+    <div style="margin-bottom:18px;">
+      <span style="font-size:13px;color:#555;">AI Confidence: <strong>{confidence_pct}%</strong></span>
+      <div class="confidence-bar-wrap">
+        <div class="confidence-bar" style="width:{confidence_pct}%;"></div>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stat-row">
+      <div class="stat">
+        <div class="s-label">Fix Time</div>
+        <div class="s-value">{estimated_fix_time_minutes}m</div>
+      </div>
+      <div class="stat">
+        <div class="s-label">Retry?</div>
+        <div class="s-value">{retry_recommended}</div>
+      </div>
+      <div class="stat">
+        <div class="s-label">Model</div>
+        <div class="s-value" style="font-size:13px;">{model_used}</div>
+      </div>
+    </div>
+
+    <!-- Immediate Fix -->
+    <div class="section-title">🔧 Immediate Fix</div>
+    <div class="fix-box">{immediate_fix}</div>
+
+    <!-- Prevention -->
+    <div class="section-title">🛡️ Prevention</div>
+    <div class="prevention-box">{prevention}</div>
+
+    <!-- Affected Downstream -->
+    <div class="section-title">⚠️ Affected Downstream</div>
+    <p style="font-size:14px;color:#444;margin:0 0 20px;">{affected_downstream}</p>
+
+    <!-- CTA -->
+    <div class="cta">
+      <a href="{airflow_url}/dags/{dag_id}/grid">View in Airflow UI →</a>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Generated by <strong>Ollama {model_used}</strong> running inside GKE cluster (no external API calls) &nbsp;|&nbsp;
+    Response time: {response_time}s &nbsp;|&nbsp; {generated_at}<br/>
+    <em>This is an automated AI analysis. Always verify before applying fixes in production.</em>
+  </div>
+
+</div>
+</body>
+</html>

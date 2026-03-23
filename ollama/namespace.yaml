@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: llm-serving
+  labels:
+    name: llm-serving
+    team: data-engineering
+    poc: "true"

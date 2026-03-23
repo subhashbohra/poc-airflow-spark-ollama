@@ -1,0 +1,80 @@
+---
+# PostgreSQL deployment for dag_metrics table (separate from Airflow's internal PG)
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-metrics-pvc
+  namespace: monitoring
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard-rwo
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-metrics-secret
+  namespace: monitoring
+type: Opaque
+stringData:
+  POSTGRES_DB: metrics
+  POSTGRES_USER: metrics_user
+  POSTGRES_PASSWORD: metrics_poc_password_2024
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-metrics
+  namespace: monitoring
+  labels:
+    app: postgres-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-metrics
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres-metrics
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: postgres-metrics-secret
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "metrics_user", "-d", "metrics"]
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "metrics_user", "-d", "metrics"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-metrics-pvc

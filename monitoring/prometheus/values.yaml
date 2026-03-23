@@ -1,0 +1,64 @@
+# monitoring/prometheus/values.yaml — Prometheus Helm values for PoC
+
+prometheus:
+  prometheusSpec:
+    retention: 7d
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "250m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: standard-rwo
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+    # Scrape Airflow metrics
+    additionalScrapeConfigs:
+      - job_name: "airflow"
+        static_configs:
+          - targets: ["airflow-statsd.airflow.svc:9102"]
+      - job_name: "spark-operator"
+        static_configs:
+          - targets: ["spark-operator.spark-operator.svc:10254"]
+
+grafana:
+  enabled: true
+  adminPassword: "poc-grafana-admin"
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "250m"
+  persistence:
+    enabled: true
+    size: 5Gi
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: "poc-dashboards"
+          orgId: 1
+          folder: "PoC"
+          type: file
+          disableDeletion: false
+          options:
+            path: /var/lib/grafana/dashboards/poc
+  dashboardsConfigMaps:
+    poc: "grafana-pipeline-health-dashboard"
+
+alertmanager:
+  enabled: false   # Using Airflow notifications instead
+
+nodeExporter:
+  enabled: true
+
+kubeStateMetrics:
+  enabled: true

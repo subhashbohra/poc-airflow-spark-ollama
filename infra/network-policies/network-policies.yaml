@@ -1,0 +1,86 @@
+# network-policies.yaml — Restrict traffic so only airflow namespace can reach llm-serving
+---
+# Default deny all ingress to llm-serving
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: llm-serving
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+---
+# Allow only airflow namespace to reach Ollama on port 11434
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-airflow-to-ollama
+  namespace: llm-serving
+spec:
+  podSelector:
+    matchLabels:
+      app: ollama
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: airflow
+      ports:
+        - protocol: TCP
+          port: 11434
+---
+# Allow monitoring namespace to scrape Ollama metrics
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-monitoring-to-ollama
+  namespace: llm-serving
+spec:
+  podSelector:
+    matchLabels:
+      app: ollama
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: monitoring
+      ports:
+        - protocol: TCP
+          port: 11434
+---
+# Airflow can reach spark-jobs namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-airflow-to-spark-jobs
+  namespace: spark-jobs
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: airflow
+---
+# Airflow can reach monitoring namespace (PostgreSQL)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-airflow-to-monitoring
+  namespace: monitoring
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: airflow

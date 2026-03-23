@@ -1,0 +1,41 @@
+# spark/operator/values.yaml — Spark Operator Helm values
+replicaCount: 1
+
+image:
+  repository: ghcr.io/kubeflow/spark-operator
+  tag: latest
+  pullPolicy: IfNotPresent
+
+webhook:
+  enable: true
+  port: 8080
+
+sparkJobNamespace: spark-jobs
+
+serviceAccounts:
+  spark:
+    name: spark
+    annotations: {}
+  sparkoperator:
+    name: spark-operator
+    annotations: {}
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+metrics:
+  enable: true
+  port: 10254
+  endpoint: /metrics
+
+batchScheduler:
+  enable: false

@@ -1,0 +1,76 @@
+---
+# deployment.yaml — Ollama Deployment (CPU mode, no GPU required)
+# Model: gemma2:2b — CPU-friendly, ~1.6GB, good RCA quality
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+  namespace: llm-serving
+  labels:
+    app: ollama
+    component: llm-inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  strategy:
+    type: Recreate   # PVC is RWO — only one pod at a time
+  template:
+    metadata:
+      labels:
+        app: ollama
+        component: llm-inference
+    spec:
+      # Schedule on ollama-pool (spot instance)
+      tolerations:
+        - key: "pool"
+          operator: "Equal"
+          value: "ollama"
+          effect: "NoSchedule"
+      nodeSelector:
+        pool: ollama
+      containers:
+        - name: ollama
+          image: ollama/ollama:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 11434
+              protocol: TCP
+          env:
+            - name: OLLAMA_HOST
+              value: "0.0.0.0"
+            - name: OLLAMA_MODELS
+              value: "/models"
+          volumeMounts:
+            - name: ollama-models
+              mountPath: /models
+          resources:
+            requests:
+              cpu: "1000m"
+              memory: "3Gi"
+            limits:
+              cpu: "3500m"
+              memory: "6Gi"
+          readinessProbe:
+            httpGet:
+              path: /api/tags
+              port: 11434
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: /api/tags
+              port: 11434
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 5
+      volumes:
+        - name: ollama-models
+          persistentVolumeClaim:
+            claimName: ollama-model-pvc

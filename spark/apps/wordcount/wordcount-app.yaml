@@ -1,0 +1,53 @@
+# spark/apps/wordcount/wordcount-app.yaml
+# Ephemeral SparkApplication — restartPolicy Never, matches GDC pattern
+# Note: Replace TIMESTAMP with DAG run_id when triggering via Airflow
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: wordcount-manual
+  namespace: spark-jobs
+spec:
+  type: Java
+  mode: cluster
+  image: "apache/spark:3.5.0"
+  imagePullPolicy: Always
+  mainClass: org.apache.spark.examples.JavaWordCount
+  mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar"
+  arguments:
+    - "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar"
+  sparkVersion: "3.5.0"
+  restartPolicy:
+    type: Never   # Ephemeral — never restart, matches GDC pattern
+  driver:
+    cores: 1
+    coreLimit: "1200m"
+    memory: "512m"
+    serviceAccount: spark
+    labels:
+      version: "3.5.0"
+    tolerations:
+      - key: "pool"
+        operator: "Equal"
+        value: "spark"
+        effect: "NoSchedule"
+    nodeSelector:
+      pool: spark
+  executor:
+    cores: 1
+    instances: 1
+    memory: "512m"
+    labels:
+      version: "3.5.0"
+    tolerations:
+      - key: "pool"
+        operator: "Equal"
+        value: "spark"
+        effect: "NoSchedule"
+    nodeSelector:
+      pool: spark
+  monitoring:
+    exposeDriverMetrics: true
+    exposeExecutorMetrics: true
+    prometheus:
+      jmxExporterJar: "/prometheus/jmx_prometheus_javaagent-0.11.0.jar"
+      port: 8090

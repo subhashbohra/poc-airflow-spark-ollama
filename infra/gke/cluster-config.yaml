@@ -1,0 +1,71 @@
+# cluster-config.yaml — Node pool specifications for the PoC GKE cluster
+# Reference document — actual creation is done via create-cluster.sh
+
+cluster:
+  name: poc-cluster
+  project: ollama-491104
+  region: us-central1
+  zone: us-central1-a
+  k8s_version: latest
+
+node_pools:
+  system:
+    name: default-pool
+    machine_type: e2-standard-2
+    min_nodes: 1
+    max_nodes: 2
+    spot: false
+    disk_size_gb: 50
+    purpose: "System components, kube-system"
+
+  airflow:
+    name: airflow-pool
+    machine_type: e2-standard-4
+    min_nodes: 1
+    max_nodes: 2
+    spot: true
+    disk_size_gb: 50
+    labels:
+      pool: airflow
+    taints:
+      - key: pool
+        value: airflow
+        effect: NoSchedule
+    purpose: "Airflow webserver, scheduler, workers"
+
+  spark:
+    name: spark-pool
+    machine_type: e2-standard-4
+    min_nodes: 0
+    max_nodes: 3
+    spot: true
+    disk_size_gb: 50
+    labels:
+      pool: spark
+    taints:
+      - key: pool
+        value: spark
+        effect: NoSchedule
+    purpose: "Ephemeral Spark driver + executor pods"
+
+  ollama:
+    name: ollama-pool
+    machine_type: e2-standard-4
+    min_nodes: 1
+    max_nodes: 1
+    spot: true
+    disk_size_gb: 50
+    labels:
+      pool: ollama
+    taints:
+      - key: pool
+        value: ollama
+        effect: NoSchedule
+    purpose: "Ollama LLM inference (CPU only)"
+
+estimated_cost_per_hour:
+  system: "$0.07"
+  airflow: "$0.05 (spot)"
+  spark: "$0.05-0.10 (spot, autoscale)"
+  ollama: "$0.05 (spot)"
+  total: "~$0.22/hr"

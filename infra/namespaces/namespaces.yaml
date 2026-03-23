@@ -1,0 +1,45 @@
+# namespaces.yaml — All namespaces with labels for network policy matching
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: airflow
+  labels:
+    name: airflow
+    team: data-engineering
+    env: poc
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: spark-operator
+  labels:
+    name: spark-operator
+    team: data-engineering
+    env: poc
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: spark-jobs
+  labels:
+    name: spark-jobs
+    team: data-engineering
+    env: poc
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: llm-serving
+  labels:
+    name: llm-serving
+    team: data-engineering
+    env: poc
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    name: monitoring
+    team: data-engineering
+    env: poc

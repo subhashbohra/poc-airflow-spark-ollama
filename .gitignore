@@ -1,0 +1,41 @@
+# Secrets — never commit
+*.env
+.env*
+*secret*
+*password*
+smtp_password*
+service-account*.json
+credentials*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Helm
+charts/
+*.tgz
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+logs/

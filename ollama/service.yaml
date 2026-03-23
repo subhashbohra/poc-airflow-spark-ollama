@@ -1,0 +1,20 @@
+---
+# service.yaml — Ollama ClusterIP service (internal only — mirrors GDC air-gap pattern)
+# Only accessible from within the cluster — no external traffic
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-service
+  namespace: llm-serving
+  labels:
+    app: ollama
+spec:
+  type: ClusterIP   # Internal only — no LoadBalancer, no NodePort
+  selector:
+    app: ollama
+  ports:
+    - name: http
+      protocol: TCP
+      port: 11434
+      targetPort: 11434

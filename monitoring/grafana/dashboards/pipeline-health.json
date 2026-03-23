@@ -1,0 +1,267 @@
+{
+  "__inputs": [],
+  "__requires": [
+    {"type": "grafana", "id": "grafana", "name": "Grafana", "version": "9.0.0"},
+    {"type": "datasource", "id": "prometheus", "name": "Prometheus", "version": "1.0.0"}
+  ],
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+      "id": 100,
+      "title": "Pipeline Health Overview",
+      "type": "row"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 0.8},
+              {"color": "red", "value": 0.9}
+            ]
+          },
+          "unit": "percentunit"
+        }
+      },
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 1},
+      "id": 1,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "orientation": "auto", "textMode": "auto", "colorMode": "background"},
+      "title": "DAG Success Rate (24h)",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus"},
+          "expr": "sum(airflow_dag_run_success) / (sum(airflow_dag_run_success) + sum(airflow_dag_run_failed) + 0.001)",
+          "legendFormat": "Success Rate"
+        }
+      ]
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "red", "value": 1}
+            ]
+          },
+          "unit": "short"
+        }
+      },
+      "gridPos": {"h": 4, "w": 6, "x": 6, "y": 1},
+      "id": 2,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "title": "Active DAG Failures",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus"},
+          "expr": "sum(airflow_dag_run_failed) or vector(0)",
+          "legendFormat": "Failures"
+        }
+      ]
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "s"
+        }
+      },
+      "gridPos": {"h": 4, "w": 6, "x": 12, "y": 1},
+      "id": 3,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "value"},
+      "title": "Avg Task Duration",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus"},
+          "expr": "avg(airflow_task_duration) or vector(0)",
+          "legendFormat": "Avg Duration"
+        }
+      ]
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "red", "value": 1}
+            ]
+          },
+          "unit": "short"
+        }
+      },
+      "gridPos": {"h": 4, "w": 6, "x": 18, "y": 1},
+      "id": 4,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "title": "Running Spark Jobs",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus"},
+          "expr": "count(kube_pod_info{namespace='spark-jobs'}) or vector(0)",
+          "legendFormat": "Spark Pods"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 5},
+      "id": 101,
+      "title": "DAG Execution Timeline",
+      "type": "row"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "s",
+          "custom": {"lineWidth": 2, "fillOpacity": 10}
+        }
+      },
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 6},
+      "id": 5,
+      "options": {"tooltip": {"mode": "multi"}, "legend": {"displayMode": "list", "placement": "bottom"}},
+      "title": "DAG Run Duration Over Time",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus"},
+          "expr": "airflow_dag_run_duration",
+          "legendFormat": "{{dag_id}}"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 14},
+      "id": 102,
+      "title": "Resource Utilization",
+      "type": "row"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "custom": {"lineWidth": 2}
+        }
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 15},
+      "id": 6,
+      "title": "Node CPU Utilization",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus"},
+          "expr": "1 - avg by (node) (rate(node_cpu_seconds_total{mode='idle'}[5m]))",
+          "legendFormat": "{{node}}"
+        }
+      ]
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "bytes",
+          "custom": {"lineWidth": 2}
+        }
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 15},
+      "id": 7,
+      "title": "Node Memory Usage",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus"},
+          "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
+          "legendFormat": "Memory Used"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 23},
+      "id": 103,
+      "title": "Ollama LLM Health",
+      "type": "row"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "bytes",
+          "custom": {"lineWidth": 2}
+        }
+      },
+      "gridPos": {"h": 6, "w": 12, "x": 0, "y": 24},
+      "id": 8,
+      "title": "Ollama Pod Memory (llm-serving)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus"},
+          "expr": "container_memory_working_set_bytes{namespace='llm-serving', container='ollama'}",
+          "legendFormat": "Ollama Memory"
+        }
+      ]
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "percentunit",
+          "custom": {"lineWidth": 2}
+        }
+      },
+      "gridPos": {"h": 6, "w": 12, "x": 12, "y": 24},
+      "id": 9,
+      "title": "Ollama Pod CPU (llm-serving)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus"},
+          "expr": "rate(container_cpu_usage_seconds_total{namespace='llm-serving', container='ollama'}[5m])",
+          "legendFormat": "Ollama CPU"
+        }
+      ]
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 38,
+  "tags": ["airflow", "spark", "ollama", "poc"],
+  "templating": {"list": []},
+  "time": {"from": "now-3h", "to": "now"},
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Pipeline Health — Airflow + Spark + Ollama PoC",
+  "uid": "poc-pipeline-health",
+  "version": 1
+}

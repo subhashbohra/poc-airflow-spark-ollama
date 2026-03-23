@@ -1,0 +1,18 @@
+---
+# pvc.yaml — 30GB PVC for Ollama model storage
+# Models persist across pod restarts (gemma2:2b ~1.6GB)
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ollama-model-pvc
+  namespace: llm-serving
+  labels:
+    app: ollama
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard-rwo   # GKE default storage class
+  resources:
+    requests:
+      storage: 30Gi

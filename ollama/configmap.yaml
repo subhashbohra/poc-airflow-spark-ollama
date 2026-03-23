@@ -1,0 +1,18 @@
+---
+# configmap.yaml — Ollama configuration for RCA PoC
+# Temperature 0.1 = deterministic JSON output
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ollama-config
+  namespace: llm-serving
+data:
+  DEFAULT_MODEL: "gemma2:2b"
+  RCA_MODEL: "gemma2:2b"
+  ANOMALY_MODEL: "gemma2:2b"
+  OLLAMA_BASE_URL: "http://ollama-service.llm-serving.svc.cluster.local:11434"
+  MAX_TOKENS: "512"
+  TEMPERATURE: "0.1"
+  TIMEOUT_SECONDS: "120"
+  OLLAMA_HOST: "0.0.0.0"
