@@ -1,431 +1,520 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="1400" height="1050" viewBox="0 0 1400 1050" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+<svg width="1640" height="1420" viewBox="0 0 1640 1420"
+     xmlns="http://www.w3.org/2000/svg"
+     font-family="'Segoe UI', Arial, sans-serif">
 
-  <!-- ============================================================
-       BACKGROUND
-  ============================================================ -->
-  <rect width="1400" height="1050" fill="#E8EDF2" rx="0"/>
-
-  <!-- Title bar -->
-  <rect x="0" y="0" width="1400" height="52" fill="#1E293B" rx="0"/>
-  <text x="700" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#FFFFFF">
-    Airflow + Spark + Ollama RCA — PoC Architecture
-  </text>
-  <text x="700" y="47" text-anchor="middle" font-size="11" fill="#94A3B8">
-    GKE Cluster (poc-cluster) — us-central1-a  ·  All LLM inference stays inside cluster  ·  ~$0.22/hr (spot instances)
-  </text>
-
-  <!-- ============================================================
-       ROW 1 — MODEL ACQUISITION LAYER
-  ============================================================ -->
-  <!-- Row 1 background band -->
-  <rect x="20" y="62" width="1360" height="110" fill="#FFF7ED" rx="8" stroke="#FB923C" stroke-width="1.5" stroke-dasharray="6,3"/>
-  <text x="36" y="80" font-size="11" font-weight="bold" fill="#EA580C">MODEL ACQUISITION LAYER (one-time setup)</text>
-
-  <!-- HuggingFace box -->
-  <rect x="60" y="88" width="200" height="70" fill="#FF6B35" rx="8" filter="url(#shadow)"/>
-  <text x="160" y="111" text-anchor="middle" font-size="13" font-weight="bold" fill="#FFFFFF">HuggingFace</text>
-  <text x="160" y="127" text-anchor="middle" font-size="11" fill="#FFE0D0">Model Registry</text>
-  <text x="160" y="143" text-anchor="middle" font-size="10" fill="#FFCCB3">gemma2:2b (1.6 GB)</text>
-
-  <!-- Arrow HuggingFace → Ollama Storage -->
+  <!-- ================================================================ -->
+  <!-- DEFS: arrow markers + drop-shadow filter                          -->
+  <!-- ================================================================ -->
   <defs>
-    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6B7280"/>
+    <!-- Arrow markers by color -->
+    <marker id="m-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#EA580C"/>
     </marker>
-    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#7C3AED"/>
+    <marker id="m-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#7C3AED"/>
     </marker>
-    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#0EA5E9"/>
+    <marker id="m-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#0369A1"/>
     </marker>
-    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#F59E0B"/>
+    <marker id="m-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#DC2626"/>
     </marker>
-    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    <marker id="m-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#D97706"/>
     </marker>
-    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+    <marker id="m-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#16A34A"/>
     </marker>
-    <filter id="shadow" x="-5%" y="-5%" width="115%" height="130%">
-      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#00000030"/>
-    </filter>
-    <filter id="shadow-light" x="-5%" y="-5%" width="115%" height="125%">
-      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#00000020"/>
+    <marker id="m-teal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#0F766E"/>
+    </marker>
+    <marker id="m-crimson" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#BE123C"/>
+    </marker>
+    <marker id="m-darkblue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#1D4ED8"/>
+    </marker>
+    <marker id="m-gold" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#CA8A04"/>
+    </marker>
+
+    <!-- Drop shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="115%" height="120%">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#00000022"/>
     </filter>
   </defs>
 
-  <!-- Arrow 1: HuggingFace → Ollama Storage (dashed) -->
-  <line x1="260" y1="123" x2="410" y2="123" stroke="#6B7280" stroke-width="2" stroke-dasharray="8,4" marker-end="url(#arrow-gray)"/>
-  <rect x="270" y="106" width="130" height="18" fill="#FFF7ED" rx="3"/>
-  <text x="335" y="119" text-anchor="middle" font-size="9.5" fill="#374151">ollama pull gemma2:2b</text>
+  <!-- ================================================================ -->
+  <!-- BACKGROUND                                                         -->
+  <!-- ================================================================ -->
+  <rect width="1640" height="1420" fill="#F1F5F9"/>
 
-  <!-- Ollama Model Storage box -->
-  <rect x="410" y="88" width="200" height="70" fill="#7C3AED" rx="8" filter="url(#shadow)"/>
-  <text x="510" y="111" text-anchor="middle" font-size="13" font-weight="bold" fill="#FFFFFF">Ollama Model Storage</text>
-  <text x="510" y="127" text-anchor="middle" font-size="10" fill="#DDD6FE">PVC — 30 GB</text>
-  <text x="510" y="143" text-anchor="middle" font-size="10" fill="#C4B5FD">/models/gemma2:2b</text>
+  <!-- ================================================================ -->
+  <!-- TITLE                                                              -->
+  <!-- ================================================================ -->
+  <rect x="20" y="8" width="1600" height="52" rx="6" fill="#1E293B"/>
+  <text x="820" y="39" text-anchor="middle" font-size="17" font-weight="700" fill="white">
+    AI-Enhanced Data Pipeline — Airflow + Spark + Ollama RCA PoC
+  </text>
+  <text x="820" y="55" text-anchor="middle" font-size="12" fill="#94A3B8">
+    Namespace: clmanalytics-dev1
+  </text>
+  <line x1="20" y1="64" x2="1620" y2="64" stroke="#334155" stroke-width="1.5"/>
 
-  <!-- Arrow 2: Ollama Storage → Ollama Pod (down, handled in column section) -->
-  <!-- drawn later in the LLM namespace section -->
+  <!-- ================================================================ -->
+  <!-- TOP SECTION: MODEL ACQUISITION                                     -->
+  <!-- ================================================================ -->
+  <text x="42" y="82" font-size="12" font-weight="700" fill="#78350F">Model Acquisition (one-time setup)</text>
 
-  <!-- Callout: no external calls -->
-  <rect x="670" y="85" width="300" height="75" fill="#ECFDF5" rx="8" stroke="#10B981" stroke-width="2"/>
-  <text x="820" y="105" text-anchor="middle" font-size="12" font-weight="bold" fill="#065F46">Security Guarantee</text>
-  <text x="820" y="121" text-anchor="middle" font-size="10" fill="#047857">No external API calls from DAGs</text>
-  <text x="820" y="136" text-anchor="middle" font-size="10" fill="#047857">All LLM inference stays inside cluster</text>
-  <text x="820" y="151" text-anchor="middle" font-size="10" fill="#047857">ClusterIP only · NetworkPolicy enforced</text>
+  <!-- HuggingFace box -->
+  <rect x="42" y="88" width="200" height="116" rx="8" fill="#FFF7ED" stroke="#EA580C" stroke-width="2" filter="url(#shadow)"/>
+  <text x="142" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#92400E">HuggingFace</text>
+  <text x="142" y="128" text-anchor="middle" font-size="10" fill="#78350F">Model Registry</text>
+  <text x="142" y="144" text-anchor="middle" font-size="11" font-weight="600" fill="#B45309">gemma2:2b</text>
+  <text x="142" y="160" text-anchor="middle" font-size="10" fill="#92400E">Public registry</text>
+  <text x="142" y="196" text-anchor="middle" font-size="10" fill="#6B7280">( external )</text>
 
-  <!-- SLA + Cost annotations -->
-  <rect x="1010" y="85" width="230" height="75" fill="#FEF3C7" rx="8" stroke="#F59E0B" stroke-width="2"/>
-  <text x="1125" y="105" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400E">Key Metrics</text>
-  <text x="1125" y="121" text-anchor="middle" font-size="10" fill="#78350F">Failure → RCA email: 30–60 seconds</text>
-  <text x="1125" y="136" text-anchor="middle" font-size="10" fill="#78350F">GCP cost: ~$0.22/hr (spot instances)</text>
-  <text x="1125" y="151" text-anchor="middle" font-size="10" fill="#78350F">Time saving: 90 min → 15 min diagnosis</text>
+  <!-- Ollama Storage box -->
+  <rect x="316" y="88" width="214" height="116" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2" filter="url(#shadow)"/>
+  <text x="423" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#4C1D95">Ollama Model Storage</text>
+  <text x="423" y="128" text-anchor="middle" font-size="10" fill="#5B21B6">PVC 20GB</text>
+  <text x="423" y="144" text-anchor="middle" font-size="11" font-weight="600" fill="#6D28D9">gemma2:2b cached</text>
+  <text x="423" y="160" text-anchor="middle" font-size="10" fill="#7C3AED">Persistent Volume Claim</text>
+  <text x="423" y="196" text-anchor="middle" font-size="10" fill="#6B7280">( inside namespace )</text>
 
-  <!-- ============================================================
-       ROW 2 — GKE CLUSTER BOX
-  ============================================================ -->
-  <rect x="20" y="186" width="1360" height="590" fill="#F1F5F9" rx="10" stroke="#94A3B8" stroke-width="2"/>
-  <text x="40" y="208" font-size="13" font-weight="bold" fill="#475569">GKE Cluster — poc-cluster (us-central1-a, Standard mode, Kubernetes 1.29)</text>
+  <!-- Security callout -->
+  <rect x="1300" y="68" width="288" height="118" rx="8" fill="#EFF6FF" stroke="#1D4ED8" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1444" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#1E3A8A">Zero External API Calls</text>
+  <text x="1444" y="104" text-anchor="middle" font-size="10" fill="#1D4ED8">All LLM inference inside cluster</text>
+  <text x="1444" y="118" text-anchor="middle" font-size="10" fill="#1D4ED8">ClusterIP only — no egress</text>
+  <text x="1444" y="132" text-anchor="middle" font-size="10" fill="#1D4ED8">Air-gapped LLM pattern</text>
+  <text x="1444" y="176" text-anchor="middle" font-size="9" fill="#6B7280">( security architecture )</text>
 
-  <!-- ── LLM SERVING NAMESPACE ── -->
-  <rect x="35" y="218" width="270" height="340" fill="#FFFFFF" rx="8" stroke="#7C3AED" stroke-width="2.5"/>
-  <rect x="35" y="218" width="270" height="26" fill="#7C3AED" rx="8"/>
-  <rect x="35" y="235" width="270" height="9" fill="#7C3AED"/>
-  <text x="170" y="236" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">namespace: llm-serving</text>
+  <!-- ================================================================ -->
+  <!-- NAMESPACE BOUNDARY                                                 -->
+  <!-- ================================================================ -->
+  <rect x="20" y="228" width="1270" height="1148" rx="10" fill="#F8FAFC" stroke="#334155" stroke-width="3" filter="url(#shadow)"/>
+  <text x="620" y="252" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">Kubernetes Namespace: clmanalytics-dev1</text>
 
-  <!-- Ollama Pod box -->
-  <rect x="55" y="254" width="230" height="110" fill="#EDE9FE" rx="8" stroke="#7C3AED" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="55" y="254" width="230" height="24" fill="#8B5CF6" rx="8"/>
-  <rect x="55" y="268" width="230" height="10" fill="#8B5CF6"/>
-  <text x="170" y="271" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">Ollama Pod</text>
-  <text x="170" y="291" text-anchor="middle" font-size="10" fill="#5B21B6">ollama/ollama:latest</text>
-  <text x="170" y="306" text-anchor="middle" font-size="10" fill="#5B21B6">CPU only — no GPU required</text>
-  <text x="170" y="321" text-anchor="middle" font-size="10" fill="#5B21B6">Model: gemma2:2b (loaded)</text>
-  <text x="170" y="336" text-anchor="middle" font-size="10" fill="#5B21B6">Temp: 0.1  ·  Max tokens: 512</text>
-  <text x="170" y="351" text-anchor="middle" font-size="10" fill="#5B21B6">Port: 11434</text>
+  <!-- ================================================================ -->
+  <!-- OLLAMA LLM SECTION  x=38,y=268,w=254,h=452                       -->
+  <!-- ================================================================ -->
+  <rect x="38" y="268" width="254" height="452" rx="8" fill="#FAF5FF" stroke="#7C3AED" stroke-width="2.5" filter="url(#shadow)"/>
+  <rect x="38" y="268" width="254" height="32" rx="8" fill="#7C3AED"/>
+  <rect x="38" y="288" width="254" height="12" fill="#7C3AED"/>
+  <text x="165" y="289" text-anchor="middle" font-size="13" font-weight="700" fill="white">Ollama LLM Service</text>
 
-  <!-- Arrow: Ollama Storage → Ollama Pod (from row 1 down) -->
-  <line x1="510" y1="158" x2="510" y2="200" stroke="#7C3AED" stroke-width="2"/>
-  <line x1="510" y1="200" x2="170" y2="200" stroke="#7C3AED" stroke-width="2"/>
-  <line x1="170" y1="200" x2="170" y2="254" stroke="#7C3AED" stroke-width="2" marker-end="url(#arrow-purple)"/>
-  <rect x="280" y="190" width="100" height="16" fill="#F1F5F9" rx="3"/>
-  <text x="330" y="202" text-anchor="middle" font-size="9" fill="#5B21B6">Load model into pod</text>
+  <!-- Ollama Pod  -->
+  <rect x="58" y="310" width="214" height="138" rx="6" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="165" y="332" text-anchor="middle" font-size="12" font-weight="700" fill="#4C1D95">Ollama Pod</text>
+  <text x="165" y="350" text-anchor="middle" font-size="10" fill="#5B21B6">ollama/ollama:latest</text>
+  <text x="165" y="366" text-anchor="middle" font-size="10" fill="#5B21B6">CPU mode (no GPU)</text>
+  <text x="165" y="382" text-anchor="middle" font-size="10" fill="#6D28D9">Model: gemma2:2b</text>
+  <text x="165" y="398" text-anchor="middle" font-size="10" fill="#7C3AED">Temperature: 0.1</text>
+  <text x="165" y="414" text-anchor="middle" font-size="10" fill="#7C3AED">(deterministic JSON output)</text>
 
-  <!-- Ollama Service box -->
-  <rect x="55" y="378" width="230" height="90" fill="#EDE9FE" rx="8" stroke="#7C3AED" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="55" y="378" width="230" height="24" fill="#8B5CF6" rx="8"/>
-  <rect x="55" y="392" width="230" height="10" fill="#8B5CF6"/>
-  <text x="170" y="395" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">Ollama Service</text>
-  <text x="170" y="416" text-anchor="middle" font-size="10" fill="#5B21B6">Type: ClusterIP :11434</text>
-  <text x="170" y="431" text-anchor="middle" font-size="10" fill="#5B21B6">DNS: ollama-service.llm-serving</text>
-  <text x="170" y="446" text-anchor="middle" font-size="10" fill="#5B21B6">      .svc.cluster.local</text>
-  <text x="170" y="461" text-anchor="middle" font-size="10" fill="#5B21B6">NetworkPolicy: airflow ns only</text>
+  <!-- ClusterIP Service -->
+  <rect x="58" y="462" width="214" height="92" rx="6" fill="#DDD6FE" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="165" y="484" text-anchor="middle" font-size="12" font-weight="700" fill="#4C1D95">ClusterIP Service</text>
+  <text x="165" y="500" text-anchor="middle" font-size="10" fill="#5B21B6">Port: 11434</text>
+  <text x="165" y="516" text-anchor="middle" font-size="10" fill="#5B21B6">Internal only — no external</text>
+  <text x="165" y="532" text-anchor="middle" font-size="10" fill="#7C3AED">access from outside cluster</text>
 
-  <!-- Arrow: Ollama Service → Ollama Pod (internal) -->
-  <line x1="170" y1="378" x2="170" y2="364" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <!-- DNS annotation -->
+  <rect x="58" y="566" width="214" height="34" rx="4" fill="#F3E8FF" stroke="#7C3AED" stroke-width="1"/>
+  <text x="165" y="588" text-anchor="middle" font-size="9" fill="#4C1D95">ollama-service.llm-serving:11434</text>
 
-  <!-- PVC annotation -->
-  <rect x="55" y="480" width="230" height="60" fill="#F5F3FF" rx="6" stroke="#A78BFA" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="170" y="499" text-anchor="middle" font-size="10" font-weight="bold" fill="#6D28D9">PersistentVolumeClaim</text>
-  <text x="170" y="514" text-anchor="middle" font-size="10" fill="#7C3AED">30 GB — standard-rwo</text>
-  <text x="170" y="529" text-anchor="middle" font-size="10" fill="#7C3AED">Mounted: /root/.ollama</text>
+  <!-- JSON response note -->
+  <rect x="58" y="610" width="214" height="58" rx="4" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1"/>
+  <text x="165" y="629" text-anchor="middle" font-size="9" fill="#4C1D95">Response: JSON</text>
+  <text x="165" y="643" text-anchor="middle" font-size="9" fill="#5B21B6">{root_cause, confidence,</text>
+  <text x="165" y="657" text-anchor="middle" font-size="9" fill="#5B21B6">fix, severity, category}</text>
 
-  <!-- Network policy label -->
-  <rect x="55" y="548" width="230" height="24" fill="#F5F3FF" rx="4" stroke="#A78BFA" stroke-width="1"/>
-  <text x="170" y="564" text-anchor="middle" font-size="9.5" fill="#5B21B6">NetworkPolicy: ingress from airflow ns</text>
+  <!-- ================================================================ -->
+  <!-- AIRFLOW SECTION  x=308,y=268,w=528,h=1060                        -->
+  <!-- ================================================================ -->
+  <rect x="308" y="268" width="528" height="1060" rx="8" fill="#EFF6FF" stroke="#0EA5E9" stroke-width="2.5" filter="url(#shadow)"/>
+  <rect x="308" y="268" width="528" height="32" rx="8" fill="#0EA5E9"/>
+  <rect x="308" y="288" width="528" height="12" fill="#0EA5E9"/>
+  <text x="572" y="289" text-anchor="middle" font-size="13" font-weight="700" fill="white">Apache Airflow</text>
 
-  <!-- ── AIRFLOW NAMESPACE ── -->
-  <rect x="330" y="218" width="630" height="540" fill="#FFFFFF" rx="8" stroke="#0EA5E9" stroke-width="2.5"/>
-  <rect x="330" y="218" width="630" height="26" fill="#0EA5E9" rx="8"/>
-  <rect x="330" y="235" width="630" height="9" fill="#0EA5E9"/>
-  <text x="645" y="236" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">namespace: airflow  (KubernetesExecutor — mirrors GDC enterprise pattern)</text>
+  <!-- Webserver -->
+  <rect x="326" y="308" width="218" height="82" rx="6" fill="#DBEAFE" stroke="#0EA5E9" stroke-width="1.5"/>
+  <text x="435" y="330" text-anchor="middle" font-size="12" font-weight="700" fill="#1E40AF">Airflow Webserver</text>
+  <text x="435" y="347" text-anchor="middle" font-size="10" fill="#1D4ED8">UI + REST API</text>
+  <text x="435" y="363" text-anchor="middle" font-size="10" fill="#1D4ED8">Port 8080</text>
+  <text x="435" y="379" text-anchor="middle" font-size="10" fill="#3B82F6">version 2.9.2</text>
 
-  <!-- Airflow Scheduler box -->
-  <rect x="348" y="254" width="220" height="90" fill="#E0F2FE" rx="8" stroke="#0EA5E9" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="348" y="254" width="220" height="24" fill="#0284C7" rx="8"/>
-  <rect x="348" y="268" width="220" height="10" fill="#0284C7"/>
-  <text x="458" y="271" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">Airflow Scheduler</text>
-  <text x="458" y="294" text-anchor="middle" font-size="10" fill="#0C4A6E">Monitors DAG file changes</text>
-  <text x="458" y="309" text-anchor="middle" font-size="10" fill="#0C4A6E">Schedules task instances</text>
-  <text x="458" y="324" text-anchor="middle" font-size="10" fill="#0C4A6E">Creates Worker Pods on demand</text>
+  <!-- Scheduler -->
+  <rect x="574" y="308" width="218" height="82" rx="6" fill="#DBEAFE" stroke="#0EA5E9" stroke-width="1.5"/>
+  <text x="683" y="330" text-anchor="middle" font-size="12" font-weight="700" fill="#1E40AF">Airflow Scheduler</text>
+  <text x="683" y="347" text-anchor="middle" font-size="10" fill="#1D4ED8">KubernetesExecutor</text>
+  <text x="683" y="363" text-anchor="middle" font-size="10" fill="#1D4ED8">Triggers tasks as K8s pods</text>
+  <text x="683" y="379" text-anchor="middle" font-size="10" fill="#3B82F6">replicas: 1</text>
 
-  <!-- Airflow Webserver box -->
-  <rect x="590" y="254" width="220" height="90" fill="#E0F2FE" rx="8" stroke="#0EA5E9" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="590" y="254" width="220" height="24" fill="#0284C7" rx="8"/>
-  <rect x="590" y="268" width="220" height="10" fill="#0284C7"/>
-  <text x="700" y="271" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">Airflow Webserver</text>
-  <text x="700" y="294" text-anchor="middle" font-size="10" fill="#0C4A6E">DAG UI · Task logs</text>
-  <text x="700" y="309" text-anchor="middle" font-size="10" fill="#0C4A6E">kubectl port-forward 8080</text>
-  <text x="700" y="324" text-anchor="middle" font-size="10" fill="#0C4A6E">Helm: apache-airflow/airflow 2.9.2</text>
+  <!-- Worker Pod -->
+  <rect x="450" y="414" width="280" height="72" rx="6" fill="#BFDBFE" stroke="#0369A1" stroke-width="1.5"/>
+  <text x="590" y="437" text-anchor="middle" font-size="12" font-weight="700" fill="#1E3A8A">Worker Pod (ephemeral, per-task)</text>
+  <text x="590" y="454" text-anchor="middle" font-size="10" fill="#1D4ED8">KubernetesExecutor</text>
+  <text x="590" y="470" text-anchor="middle" font-size="10" fill="#1D4ED8">Deleted on task completion</text>
 
-  <!-- Arrow: Scheduler → Worker Pod -->
-  <line x1="458" y1="344" x2="458" y2="374" stroke="#0EA5E9" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <text x="475" y="364" font-size="9" fill="#0369A1">creates pod</text>
+  <!-- TASK FAILED -->
+  <rect x="450" y="502" width="280" height="72" rx="6" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+  <text x="590" y="524" text-anchor="middle" font-size="12" font-weight="700" fill="#991B1B">TASK FAILED</text>
+  <text x="590" y="542" text-anchor="middle" font-size="10" fill="#DC2626">on_failure_callback triggered</text>
+  <text x="590" y="558" text-anchor="middle" font-size="10" fill="#EF4444">exception captured + logged</text>
 
-  <!-- Worker Pod box -->
-  <rect x="348" y="374" width="220" height="90" fill="#E0F2FE" rx="8" stroke="#0EA5E9" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="348" y="374" width="220" height="24" fill="#0284C7" rx="8"/>
-  <rect x="348" y="388" width="220" height="10" fill="#0284C7"/>
-  <text x="458" y="391" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">Worker Pod (ephemeral)</text>
-  <text x="458" y="413" text-anchor="middle" font-size="10" fill="#0C4A6E">Task execution container</text>
-  <text x="458" y="428" text-anchor="middle" font-size="10" fill="#0C4A6E">KubernetesExecutor pattern</text>
-  <text x="458" y="443" text-anchor="middle" font-size="10" fill="#0C4A6E">Deleted after task completes</text>
+  <!-- rca_callback box -->
+  <rect x="380" y="592" width="420" height="218" rx="6" fill="#DBEAFE" stroke="#0369A1" stroke-width="2"/>
+  <text x="590" y="614" text-anchor="middle" font-size="13" font-weight="700" fill="#1E3A8A">rca_callback.py</text>
+  <line x1="380" y1="622" x2="800" y2="622" stroke="#0369A1" stroke-width="1"/>
+  <text x="390" y="640" font-size="10" fill="#1D4ED8">1. Collect: dag_id, task_id, error msg, last 100 log lines</text>
+  <text x="390" y="657" font-size="10" fill="#1D4ED8">2. Build structured RCA prompt (template-based)</text>
+  <text x="390" y="674" font-size="10" fill="#1D4ED8">3. POST /api/generate → Ollama ClusterIP :11434</text>
+  <text x="390" y="691" font-size="10" fill="#1D4ED8">4. Parse JSON response from LLM</text>
+  <text x="390" y="708" font-size="10" fill="#1D4ED8">5. Store RCA result → PostgreSQL dag_metrics</text>
+  <text x="390" y="725" font-size="10" fill="#1D4ED8">6. Send HTML email via MEA (internal SMTP)</text>
+  <text x="390" y="742" font-size="10" fill="#1D4ED8">7. Send Teams alert via DBNotifier</text>
+  <text x="390" y="759" font-size="10" fill="#6B7280">on_failure_callback in default_args of every DAG</text>
+  <text x="390" y="776" font-size="10" fill="#6B7280">response time: 30–60 sec end-to-end</text>
 
-  <!-- Arrow: Worker → FAILURE -->
-  <line x1="458" y1="464" x2="458" y2="494" stroke="#EF4444" stroke-width="2" marker-end="url(#arrow-red)"/>
-  <text x="465" y="484" font-size="9" fill="#DC2626">exception raised</text>
+  <!-- DAGs list -->
+  <rect x="326" y="828" width="222" height="138" rx="6" fill="#DBEAFE" stroke="#0EA5E9" stroke-width="1.5"/>
+  <text x="437" y="848" text-anchor="middle" font-size="12" font-weight="700" fill="#1E40AF">Active DAGs</text>
+  <text x="336" y="866" font-size="10" fill="#1D4ED8">• rca_dag.py  (@daily)</text>
+  <text x="336" y="882" font-size="10" fill="#1D4ED8">• wordcount_dag.py  (manual)</text>
+  <text x="336" y="898" font-size="10" fill="#1D4ED8">• test_failure_dag.py  (demo)</text>
+  <text x="336" y="914" font-size="10" fill="#1D4ED8">• anomaly_detection_dag.py</text>
+  <text x="336" y="930" font-size="10" fill="#3B82F6">  (*/30 * * * *)</text>
+  <text x="336" y="946" font-size="10" fill="#6B7280">No examples loaded</text>
 
-  <!-- FAILURE box (red) -->
-  <rect x="348" y="494" width="220" height="70" fill="#FEE2E2" rx="8" stroke="#EF4444" stroke-width="2.5" filter="url(#shadow-light)"/>
-  <rect x="348" y="494" width="220" height="24" fill="#DC2626" rx="8"/>
-  <rect x="348" y="508" width="220" height="10" fill="#DC2626"/>
-  <text x="458" y="511" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">TASK FAILED</text>
-  <text x="458" y="533" text-anchor="middle" font-size="10" fill="#991B1B">on_failure_callback fires</text>
-  <text x="458" y="548" text-anchor="middle" font-size="10" fill="#991B1B">immediately, every task</text>
+  <!-- Anomaly Detection DAG -->
+  <rect x="572" y="828" width="218" height="138" rx="6" fill="#DBEAFE" stroke="#0EA5E9" stroke-width="1.5"/>
+  <text x="681" y="848" text-anchor="middle" font-size="11" font-weight="700" fill="#1E40AF">Anomaly Detection DAG</text>
+  <text x="582" y="866" font-size="10" fill="#1D4ED8">Schedule: */30 * * * *</text>
+  <text x="582" y="882" font-size="10" fill="#1D4ED8">• Baseline ±2σ per DAG</text>
+  <text x="582" y="898" font-size="10" fill="#1D4ED8">• Drift &gt;20% triggers alert</text>
+  <text x="582" y="914" font-size="10" fill="#1D4ED8">• Last 10 runs per DAG</text>
+  <text x="582" y="930" font-size="10" fill="#1D4ED8">• Ollama explains anomaly</text>
+  <text x="582" y="946" font-size="10" fill="#6B7280">dag_baselines VIEW</text>
 
-  <!-- Arrow: FAILURE → rca_callback.py -->
-  <line x1="458" y1="564" x2="458" y2="594" stroke="#EF4444" stroke-width="2" marker-end="url(#arrow-red)"/>
-  <text x="465" y="584" font-size="9" fill="#DC2626">auto-triggered</text>
+  <!-- Airflow Metadata DB note -->
+  <rect x="326" y="984" width="466" height="30" rx="4" fill="#EFF6FF" stroke="#0EA5E9" stroke-width="1"/>
+  <text x="559" y="1004" text-anchor="middle" font-size="10" fill="#1D4ED8">Airflow Metadata DB: PostgreSQL (subchart, shared instance)</text>
 
-  <!-- rca_callback.py box -->
-  <rect x="348" y="594" width="220" height="110" fill="#FEF3C7" rx="8" stroke="#D97706" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="348" y="594" width="220" height="24" fill="#B45309" rx="8"/>
-  <rect x="348" y="608" width="220" height="10" fill="#B45309"/>
-  <text x="458" y="611" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">rca_callback.py</text>
-  <text x="458" y="633" text-anchor="middle" font-size="10" fill="#78350F">Collect: logs, error, context</text>
-  <text x="458" y="648" text-anchor="middle" font-size="10" fill="#78350F">Query: run history from DB</text>
-  <text x="458" y="663" text-anchor="middle" font-size="10" fill="#78350F">Build: structured RCA prompt</text>
-  <text x="458" y="678" text-anchor="middle" font-size="10" fill="#78350F">Dispatch: Ollama + notify</text>
-  <text x="458" y="693" text-anchor="middle" font-size="10" fill="#78350F">Store: results in PostgreSQL</text>
+  <!-- ================================================================ -->
+  <!-- TRINO SECTION  x=856,y=268,w=414,h=232                           -->
+  <!-- ================================================================ -->
+  <rect x="856" y="268" width="414" height="232" rx="8" fill="#F0FDFA" stroke="#0F766E" stroke-width="2.5" filter="url(#shadow)"/>
+  <rect x="856" y="268" width="414" height="32" rx="8" fill="#0F766E"/>
+  <rect x="856" y="288" width="414" height="12" fill="#0F766E"/>
+  <text x="1063" y="289" text-anchor="middle" font-size="13" font-weight="700" fill="white">Trino</text>
 
-  <!-- DAG files section inside airflow ns -->
-  <rect x="590" y="374" width="350" height="150" fill="#F0F9FF" rx="8" stroke="#7DD3FC" stroke-width="1.5"/>
-  <text x="765" y="395" text-anchor="middle" font-size="11" font-weight="bold" fill="#0369A1">DAG Files (PersistentVolume 5Gi)</text>
-  <text x="620" y="415" font-size="10" fill="#0C4A6E">· rca_dag.py            — Spark + RCA on failure</text>
-  <text x="620" y="431" font-size="10" fill="#0C4A6E">· test_failure_dag.py   — Demo: intentional failure</text>
-  <text x="620" y="447" font-size="10" fill="#0C4A6E">· wordcount_dag.py      — Simple Spark WordCount</text>
-  <text x="620" y="463" font-size="10" fill="#0C4A6E">· anomaly_detection_dag — 30-min drift check</text>
-  <text x="620" y="479" font-size="10" fill="#0C4A6E">· utils/ollama_client.py, rca_prompt.py</text>
-  <text x="620" y="495" font-size="10" fill="#0C4A6E">· utils/notifier.py, anomaly_detector.py</text>
+  <!-- Trino Coordinator -->
+  <rect x="876" y="308" width="374" height="160" rx="6" fill="#CCFBF1" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="1063" y="330" text-anchor="middle" font-size="12" font-weight="700" fill="#065F46">Trino Coordinator</text>
+  <text x="1063" y="350" text-anchor="middle" font-size="10" fill="#0F766E">Federated SQL Query Engine</text>
+  <text x="1063" y="368" text-anchor="middle" font-size="11" font-weight="600" fill="#065F46">Port: 8080</text>
+  <text x="1063" y="386" text-anchor="middle" font-size="10" fill="#0F766E">Cross-source queries</text>
+  <text x="1063" y="402" text-anchor="middle" font-size="10" fill="#0F766E">Hive, JDBC, S3, Iceberg</text>
+  <text x="1063" y="418" text-anchor="middle" font-size="10" fill="#0F766E">Workers co-located in namespace</text>
+  <text x="1063" y="440" text-anchor="middle" font-size="10" fill="#6B7280">Airflow workers submit SQL queries via Trino</text>
+  <text x="1063" y="456" text-anchor="middle" font-size="10" fill="#6B7280">to federate across data sources</text>
 
-  <!-- Airflow extras annotation -->
-  <rect x="590" y="538" width="350" height="70" fill="#F0F9FF" rx="6" stroke="#7DD3FC" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="765" y="556" text-anchor="middle" font-size="10" font-weight="bold" fill="#0369A1">Pip extras (workers)</text>
-  <text x="765" y="572" text-anchor="middle" font-size="9.5" fill="#0C4A6E">ollama==0.1.8  ·  requests  ·  psycopg2-binary</text>
-  <text x="765" y="587" text-anchor="middle" font-size="9.5" fill="#0C4A6E">apache-airflow-providers-smtp</text>
-  <text x="765" y="602" text-anchor="middle" font-size="9.5" fill="#0C4A6E">apache-airflow-providers-slack</text>
+  <!-- ================================================================ -->
+  <!-- SPARK SECTION  x=856,y=514,w=414,h=288                           -->
+  <!-- ================================================================ -->
+  <rect x="856" y="514" width="414" height="288" rx="8" fill="#FFFBEB" stroke="#D97706" stroke-width="2.5" filter="url(#shadow)"/>
+  <rect x="856" y="514" width="414" height="32" rx="8" fill="#D97706"/>
+  <rect x="856" y="534" width="414" height="12" fill="#D97706"/>
+  <text x="1063" y="535" text-anchor="middle" font-size="13" font-weight="700" fill="white">Spark Jobs</text>
 
-  <!-- Arrow: rca_callback → Ollama Service (left, crossing namespace boundary) -->
-  <line x1="348" y1="650" x2="295" y2="650" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#arrow-purple)"/>
-  <!-- Label for this arrow -->
-  <rect x="196" y="635" width="150" height="30" fill="#F5F3FF" rx="4" stroke="#A78BFA" stroke-width="1"/>
-  <text x="271" y="649" text-anchor="middle" font-size="9" font-weight="bold" fill="#5B21B6">POST /api/generate</text>
-  <text x="271" y="662" text-anchor="middle" font-size="9" fill="#5B21B6">Internal ClusterIP</text>
+  <!-- SparkApplication CR -->
+  <rect x="876" y="554" width="374" height="72" rx="6" fill="#FDE68A" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1063" y="576" text-anchor="middle" font-size="12" font-weight="700" fill="#78350F">SparkApplication CR</text>
+  <text x="1063" y="594" text-anchor="middle" font-size="10" fill="#92400E">restartPolicy: Never  (ephemeral pattern)</text>
+  <text x="1063" y="610" text-anchor="middle" font-size="10" fill="#92400E">image: apache/spark:3.5.0  |  sparkVersion: 3.5.0</text>
 
-  <!-- Arrow: Ollama Pod → rca_callback (response, dashed) -->
-  <line x1="285" y1="625" x2="345" y2="625" stroke="#7C3AED" stroke-width="2" stroke-dasharray="7,4" marker-end="url(#arrow-purple)"/>
-  <rect x="202" y="608" width="145" height="18" fill="#F5F3FF" rx="3"/>
-  <text x="275" y="620" text-anchor="middle" font-size="9" fill="#5B21B6">JSON: root_cause, fix</text>
+  <!-- Driver Pod -->
+  <rect x="876" y="642" width="118" height="72" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+  <text x="935" y="662" text-anchor="middle" font-size="11" font-weight="700" fill="#78350F">Driver Pod</text>
+  <text x="935" y="678" text-anchor="middle" font-size="9" fill="#92400E">cores: 1</text>
+  <text x="935" y="694" text-anchor="middle" font-size="9" fill="#92400E">mem: 512m</text>
 
-  <!-- ── SPARK NAMESPACE ── -->
-  <rect x="985" y="218" width="375" height="380" fill="#FFFFFF" rx="8" stroke="#F59E0B" stroke-width="2.5"/>
-  <rect x="985" y="218" width="375" height="26" fill="#D97706" rx="8"/>
-  <rect x="985" y="235" width="375" height="9" fill="#D97706"/>
-  <text x="1172" y="236" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">namespace: spark-operator  /  spark-jobs</text>
+  <!-- Executor -->
+  <rect x="1010" y="642" width="118" height="72" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1069" y="662" text-anchor="middle" font-size="11" font-weight="700" fill="#78350F">Executor ×2</text>
+  <text x="1069" y="678" text-anchor="middle" font-size="9" fill="#92400E">cores: 1 each</text>
+  <text x="1069" y="694" text-anchor="middle" font-size="9" fill="#92400E">mem: 512m</text>
 
-  <!-- Spark Operator Controller -->
-  <rect x="1005" y="254" width="335" height="90" fill="#FEF3C7" rx="8" stroke="#F59E0B" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="1005" y="254" width="335" height="24" fill="#D97706" rx="8"/>
-  <rect x="1005" y="268" width="335" height="10" fill="#D97706"/>
-  <text x="1172" y="271" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">Spark Operator Controller</text>
-  <text x="1172" y="294" text-anchor="middle" font-size="10" fill="#78350F">Watches SparkApplication CRs in spark-jobs ns</text>
-  <text x="1172" y="309" text-anchor="middle" font-size="10" fill="#78350F">Manages Driver + Executor pod lifecycle</text>
-  <text x="1172" y="324" text-anchor="middle" font-size="10" fill="#78350F">Helm: spark-operator/spark-operator</text>
+  <!-- Deleted badge -->
+  <rect x="1148" y="642" width="102" height="72" rx="6" fill="#D1FAE5" stroke="#059669" stroke-width="1.5"/>
+  <text x="1199" y="662" text-anchor="middle" font-size="10" font-weight="700" fill="#065F46">Deleted</text>
+  <text x="1199" y="678" text-anchor="middle" font-size="9" fill="#065F46">after completion</text>
+  <text x="1199" y="694" text-anchor="middle" font-size="9" fill="#059669">(ephemeral)</text>
 
-  <!-- Arrow: Spark Operator → SparkApplication -->
-  <line x1="1172" y1="344" x2="1172" y2="374" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow-amber)"/>
-  <text x="1180" y="364" font-size="9" fill="#92400E">manages</text>
+  <!-- ================================================================ -->
+  <!-- POSTGRESQL SECTION  x=856,y=820,w=414,h=280                      -->
+  <!-- ================================================================ -->
+  <rect x="856" y="820" width="414" height="280" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="2.5" filter="url(#shadow)"/>
+  <rect x="856" y="820" width="414" height="32" rx="8" fill="#16A34A"/>
+  <rect x="856" y="840" width="414" height="12" fill="#16A34A"/>
+  <text x="1063" y="841" text-anchor="middle" font-size="13" font-weight="700" fill="white">PostgreSQL</text>
 
-  <!-- SparkApplication CR box -->
-  <rect x="1005" y="374" width="335" height="100" fill="#FEF3C7" rx="8" stroke="#F59E0B" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="1005" y="374" width="335" height="24" fill="#D97706" rx="8"/>
-  <rect x="1005" y="388" width="335" height="10" fill="#D97706"/>
-  <text x="1172" y="391" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">SparkApplication CR (wordcount-[run_id])</text>
-  <text x="1172" y="413" text-anchor="middle" font-size="10" fill="#78350F">Image: apache/spark:3.5.0</text>
-  <text x="1172" y="428" text-anchor="middle" font-size="10" fill="#78350F">restartPolicy: Never (ephemeral)</text>
-  <text x="1172" y="443" text-anchor="middle" font-size="10" fill="#78350F">Driver: 1 core · 512m  |  Executors: 2×512m</text>
-  <text x="1172" y="458" text-anchor="middle" font-size="10" fill="#78350F">Deleted by DAG after completion</text>
+  <!-- PostgreSQL Details -->
+  <rect x="876" y="860" width="374" height="218" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="886" y="880" font-size="11" font-weight="700" fill="#14532D">dag_metrics table</text>
+  <text x="886" y="897" font-size="9" fill="#15803D">dag_id | task_id | run_id | execution_date | duration_seconds</text>
+  <text x="886" y="912" font-size="9" fill="#15803D">state | error_message | error_type</text>
+  <text x="886" y="927" font-size="9" fill="#15803D">rca_root_cause | rca_category | rca_confidence</text>
+  <text x="886" y="942" font-size="9" fill="#15803D">rca_immediate_fix | rca_severity | rca_retry_recommended</text>
+  <line x1="876" y1="950" x2="1250" y2="950" stroke="#16A34A" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="886" y="966" font-size="11" font-weight="700" fill="#14532D">dag_baselines VIEW</text>
+  <text x="886" y="981" font-size="9" fill="#15803D">avg_duration ± 2σ  |  upper_threshold  |  lower_threshold</text>
+  <text x="886" y="996" font-size="9" fill="#15803D">last 30 days, min 5 runs  |  anomaly detection baseline</text>
+  <line x1="876" y1="1004" x2="1250" y2="1004" stroke="#16A34A" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="886" y="1020" font-size="11" font-weight="700" fill="#14532D">Airflow Metadata DB</text>
+  <text x="886" y="1035" font-size="9" fill="#15803D">Shared PostgreSQL instance  |  DAG run history</text>
+  <text x="886" y="1050" font-size="9" fill="#6B7280">Airflow subchart + custom dag_metrics table</text>
+  <text x="886" y="1065" font-size="9" fill="#6B7280">Indexed: dag_id, execution_date, state</text>
 
-  <!-- Arrow: SparkApplication → Driver/Executor pods -->
-  <line x1="1172" y1="474" x2="1172" y2="504" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow-amber)"/>
+  <!-- ================================================================ -->
+  <!-- EXTERNAL: SPARK OPERATOR  x=1300,y=228,w=288,h=210  (dashed)     -->
+  <!-- ================================================================ -->
+  <rect x="1300" y="228" width="288" height="210" rx="8" fill="#FEF9C3" stroke="#CA8A04" stroke-width="2" stroke-dasharray="8,4" filter="url(#shadow)"/>
+  <text x="1444" y="252" text-anchor="middle" font-size="13" font-weight="700" fill="#713F12">SparkOperator Central</text>
+  <text x="1444" y="270" text-anchor="middle" font-size="10" font-style="italic" fill="#92400E">Platform Team Managed</text>
+  <line x1="1310" y1="278" x2="1580" y2="278" stroke="#CA8A04" stroke-width="1"/>
+  <text x="1310" y="298" font-size="10" fill="#78350F">Watches SparkApplication CRs</text>
+  <text x="1310" y="314" font-size="10" fill="#78350F">in clmanalytics-dev1</text>
+  <text x="1310" y="336" font-size="10" fill="#78350F">Cross-namespace RBAC</text>
+  <text x="1310" y="352" font-size="10" fill="#78350F">ServiceAccount: spark</text>
+  <text x="1310" y="374" font-size="10" fill="#78350F">Manages Driver + Executor pods</text>
+  <text x="1310" y="390" font-size="10" fill="#78350F">lifecycle (create, monitor, delete)</text>
+  <text x="1444" y="428" text-anchor="middle" font-size="9" fill="#6B7280">( external — platform team namespace )</text>
 
-  <!-- Driver + Executor pods box -->
-  <rect x="1005" y="504" width="335" height="80" fill="#FFFBEB" rx="8" stroke="#FCD34D" stroke-width="1.5"/>
-  <text x="1172" y="527" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400E">Ephemeral Pods (spark-jobs ns)</text>
-  <text x="1172" y="546" text-anchor="middle" font-size="10" fill="#78350F">Driver Pod (1)  +  Executor Pods (2)</text>
-  <text x="1172" y="561" text-anchor="middle" font-size="10" fill="#78350F">Auto-deleted when SparkApp Completed</text>
+  <!-- ================================================================ -->
+  <!-- EXTERNAL: NOTIFICATIONS LABEL                                      -->
+  <!-- ================================================================ -->
+  <text x="1300" y="458" font-size="12" font-weight="700" fill="#334155">Notifications (External)</text>
 
-  <!-- RBAC note -->
-  <rect x="1005" y="598" width="335" height="50" fill="#FFFBEB" rx="6" stroke="#FCD34D" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="1172" y="618" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400E">RBAC: ServiceAccount spark</text>
-  <text x="1172" y="634" text-anchor="middle" font-size="9.5" fill="#78350F">ClusterRole: SparkApplication R/W · pods create/delete</text>
+  <!-- MEA box -->
+  <rect x="1300" y="468" width="288" height="172" rx="8" fill="#FFF1F2" stroke="#BE123C" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="1300" y="468" width="288" height="32" rx="8" fill="#BE123C"/>
+  <rect x="1300" y="488" width="288" height="12" fill="#BE123C"/>
+  <text x="1444" y="489" text-anchor="middle" font-size="13" font-weight="700" fill="white">MEA</text>
+  <text x="1444" y="512" text-anchor="middle" font-size="11" fill="#881337">Mail Enabled Application</text>
+  <text x="1444" y="528" text-anchor="middle" font-size="10" fill="#9F1239">Internal SMTP relay</text>
+  <text x="1310" y="548" font-size="10" fill="#BE123C">HTML email with RCA details:</text>
+  <text x="1310" y="563" font-size="10" fill="#9F1239">• Root cause + confidence score</text>
+  <text x="1310" y="578" font-size="10" fill="#9F1239">• Immediate fix steps</text>
+  <text x="1310" y="593" font-size="10" fill="#9F1239">• Severity badge + fix time est.</text>
+  <text x="1310" y="608" font-size="10" fill="#9F1239">• Link to Airflow UI</text>
+  <text x="1310" y="625" font-size="9" fill="#6B7280">( internal enterprise SMTP )</text>
 
-  <!-- Arrow: Airflow Scheduler → Spark Operator (SparkKubernetesOperator) -->
-  <line x1="568" y1="299" x2="985" y2="380" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#arrow-amber)"/>
-  <rect x="710" y="298" width="190" height="20" fill="#FFFBEB" rx="4" stroke="#FCD34D" stroke-width="1"/>
-  <text x="805" y="312" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400E">SparkKubernetesOperator</text>
+  <!-- DBNotifier box -->
+  <rect x="1300" y="654" width="288" height="214" rx="8" fill="#EFF6FF" stroke="#1D4ED8" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="1300" y="654" width="288" height="32" rx="8" fill="#1D4ED8"/>
+  <rect x="1300" y="674" width="288" height="12" fill="#1D4ED8"/>
+  <text x="1444" y="675" text-anchor="middle" font-size="12" font-weight="700" fill="white">DBNotifier → MS Teams</text>
+  <text x="1444" y="700" text-anchor="middle" font-size="10" fill="#1E3A8A">Internal notification broker</text>
+  <text x="1310" y="720" font-size="10" fill="#1D4ED8">Teams channel alert:</text>
+  <text x="1310" y="736" font-size="10" fill="#1E40AF">• DAG + task name</text>
+  <text x="1310" y="751" font-size="10" fill="#1E40AF">• Root cause (bold)</text>
+  <text x="1310" y="766" font-size="10" fill="#1E40AF">• Severity + confidence</text>
+  <text x="1310" y="781" font-size="10" fill="#1E40AF">• Estimated fix time</text>
+  <text x="1310" y="796" font-size="10" fill="#1E40AF">• Airflow UI deep link</text>
+  <text x="1310" y="811" font-size="10" fill="#1E40AF">• Block Kit format</text>
+  <text x="1310" y="830" font-size="9" fill="#6B7280">( internal enterprise broker )</text>
+  <text x="1310" y="843" font-size="9" fill="#6B7280">( routes to MS Teams channel )</text>
 
-  <!-- ============================================================
-       ROW 3 — OBSERVABILITY LAYER
-  ============================================================ -->
-  <rect x="20" y="790" width="1000" height="210" fill="#ECFDF5" rx="8" stroke="#10B981" stroke-width="2"/>
-  <text x="36" y="810" font-size="12" font-weight="bold" fill="#065F46">OBSERVABILITY LAYER</text>
+  <!-- SLA callout -->
+  <rect x="1300" y="882" width="288" height="68" rx="8" fill="#ECFDF5" stroke="#059669" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1444" y="906" text-anchor="middle" font-size="14" font-weight="700" fill="#065F46">30–60 seconds</text>
+  <text x="1444" y="924" text-anchor="middle" font-size="11" fill="#059669">from failure to notification</text>
+  <text x="1444" y="940" text-anchor="middle" font-size="10" fill="#15803D">end-to-end SLA target</text>
 
-  <!-- PostgreSQL box -->
-  <rect x="40" y="822" width="250" height="160" fill="#FFFFFF" rx="8" stroke="#10B981" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="40" y="822" width="250" height="26" fill="#059669" rx="8"/>
-  <rect x="40" y="838" width="250" height="10" fill="#059669"/>
-  <text x="165" y="840" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">PostgreSQL (monitoring ns)</text>
-  <text x="165" y="866" text-anchor="middle" font-size="10" fill="#065F46">Table: dag_metrics</text>
-  <text x="165" y="881" text-anchor="middle" font-size="10" fill="#065F46">· dag_id, task_id, run_id</text>
-  <text x="165" y="896" text-anchor="middle" font-size="10" fill="#065F46">· duration_seconds, state</text>
-  <text x="165" y="911" text-anchor="middle" font-size="10" fill="#065F46">· rca_root_cause, rca_confidence</text>
-  <text x="165" y="926" text-anchor="middle" font-size="10" fill="#065F46">· rca_immediate_fix, rca_severity</text>
-  <text x="165" y="941" text-anchor="middle" font-size="10" fill="#065F46">VIEW: dag_baselines (2-sigma thresholds)</text>
-  <text x="165" y="956" text-anchor="middle" font-size="10" fill="#065F46">· avg_duration, upper/lower threshold</text>
-  <text x="165" y="971" text-anchor="middle" font-size="9" fill="#6B7280">anomaly_detection_dag queries every 30 min</text>
+  <!-- ================================================================ -->
+  <!-- ARROWS                                                             -->
+  <!-- ================================================================ -->
 
-  <!-- Prometheus box -->
-  <rect x="320" y="822" width="220" height="160" fill="#FFFFFF" rx="8" stroke="#10B981" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="320" y="822" width="220" height="26" fill="#059669" rx="8"/>
-  <rect x="320" y="838" width="220" height="10" fill="#059669"/>
-  <text x="430" y="840" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">Prometheus</text>
-  <text x="430" y="866" text-anchor="middle" font-size="10" fill="#065F46">Cluster metrics scraping</text>
-  <text x="430" y="881" text-anchor="middle" font-size="10" fill="#065F46">Pod health + restarts</text>
-  <text x="430" y="896" text-anchor="middle" font-size="10" fill="#065F46">Airflow StatsD metrics</text>
-  <text x="430" y="911" text-anchor="middle" font-size="10" fill="#065F46">Spark driver/executor metrics</text>
-  <text x="430" y="926" text-anchor="middle" font-size="10" fill="#065F46">Scrape interval: 15s</text>
-  <text x="430" y="941" text-anchor="middle" font-size="10" fill="#065F46">Helm: prometheus-community</text>
-  <text x="430" y="956" text-anchor="middle" font-size="10" fill="#065F46">/kube-prometheus-stack</text>
+  <!-- Arrow 14: HuggingFace → OllamaStorage  dashed orange -->
+  <path d="M 242,146 L 316,146"
+        stroke="#EA580C" stroke-width="2" stroke-dasharray="6,3" fill="none"
+        marker-end="url(#m-orange)"/>
+  <rect x="244" y="128" width="52" height="16" rx="3" fill="white" opacity="0.85"/>
+  <text x="270" y="140" text-anchor="middle" font-size="9" fill="#92400E">ollama pull</text>
 
-  <!-- Grafana box -->
-  <rect x="570" y="822" width="220" height="160" fill="#FFFFFF" rx="8" stroke="#10B981" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="570" y="822" width="220" height="26" fill="#059669" rx="8"/>
-  <rect x="570" y="838" width="220" height="10" fill="#059669"/>
-  <text x="680" y="840" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">Grafana</text>
-  <text x="680" y="866" text-anchor="middle" font-size="10" fill="#065F46">Pipeline Health Dashboard</text>
-  <text x="680" y="881" text-anchor="middle" font-size="10" fill="#065F46">· DAG success/failure rates</text>
-  <text x="680" y="896" text-anchor="middle" font-size="10" fill="#065F46">· RCA confidence over time</text>
-  <text x="680" y="911" text-anchor="middle" font-size="10" fill="#065F46">· Run duration vs baseline</text>
-  <text x="680" y="926" text-anchor="middle" font-size="10" fill="#065F46">· Anomaly detection alerts</text>
-  <text x="680" y="941" text-anchor="middle" font-size="10" fill="#065F46">· Ollama response times</text>
-  <text x="680" y="956" text-anchor="middle" font-size="10" fill="#065F46">kubectl port-forward 3000</text>
+  <!-- Arrow 24: OllamaStorage → OllamaPod  dashed purple, routes above namespace -->
+  <!-- From center-bottom of OllamaStorage: (423,204) → down to y=224 → left to x=165 → down into OllamaPod top (165,310) -->
+  <path d="M 423,204 L 423,224 L 165,224 L 165,310"
+        stroke="#7C3AED" stroke-width="2" stroke-dasharray="6,3" fill="none"
+        marker-end="url(#m-purple)"/>
+  <rect x="260" y="212" width="88" height="16" rx="3" fill="white" opacity="0.85"/>
+  <text x="304" y="224" text-anchor="middle" font-size="9" fill="#4C1D95">Load model into pod</text>
 
-  <!-- Anomaly detection arrow note -->
-  <rect x="810" y="870" width="195" height="80" fill="#ECFDF5" rx="6" stroke="#34D399" stroke-width="1.5"/>
-  <text x="907" y="892" text-anchor="middle" font-size="11" font-weight="bold" fill="#065F46">Anomaly Detection</text>
-  <text x="907" y="908" text-anchor="middle" font-size="9.5" fill="#047857">anomaly_detection_dag</text>
-  <text x="907" y="922" text-anchor="middle" font-size="9.5" fill="#047857">Schedule: */30 * * * *</text>
-  <text x="907" y="937" text-anchor="middle" font-size="9.5" fill="#047857">Threshold: avg ± 2σ</text>
-  <text x="907" y="951" text-anchor="middle" font-size="9.5" fill="#047857">Alert on &gt;20% drift</text>
+  <!-- Arrow 121: OllamaPod → ClusterIPService  inside Ollama section (purple) -->
+  <!-- OllamaPod bottom center: (165,448) → ClusterIPService top center: (165,462) -->
+  <path d="M 165,448 L 165,462"
+        stroke="#7C3AED" stroke-width="2" fill="none"
+        marker-end="url(#m-purple)"/>
 
-  <!-- Arrows: rca_callback → PostgreSQL -->
-  <line x1="458" y1="704" x2="458" y2="760" stroke="#10B981" stroke-width="2"/>
-  <line x1="458" y1="760" x2="165" y2="760" stroke="#10B981" stroke-width="2"/>
-  <line x1="165" y1="760" x2="165" y2="822" stroke="#10B981" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <rect x="280" y="748" width="100" height="16" fill="#ECFDF5" rx="3"/>
-  <text x="330" y="760" text-anchor="middle" font-size="9" fill="#065F46">Store RCA result</text>
+  <!-- Arrow 231: Scheduler → WorkerPod  blue (creates task pod) -->
+  <!-- Scheduler absolute bottom-center: (683,390) → WorkerPod top center: (590,414) -->
+  <path d="M 683,390 L 683,404 L 590,404 L 590,414"
+        stroke="#0369A1" stroke-width="2" fill="none"
+        marker-end="url(#m-blue)"/>
+  <rect x="600" y="394" width="74" height="14" rx="3" fill="white" opacity="0.85"/>
+  <text x="637" y="405" text-anchor="middle" font-size="9" fill="#1E3A8A">creates task pod</text>
 
-  <!-- Arrows: PostgreSQL → Grafana -->
-  <line x1="290" y1="900" x2="570" y2="900" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrow-green)"/>
-  <rect x="350" y="887" width="80" height="16" fill="#ECFDF5" rx="3"/>
-  <text x="390" y="899" text-anchor="middle" font-size="9" fill="#065F46">Metrics feed</text>
+  <!-- Arrow 241: WorkerPod → TASK FAILED  red -->
+  <!-- WorkerPod bottom center: (590,486) → TASK FAILED top center: (590,502) -->
+  <path d="M 590,486 L 590,502"
+        stroke="#DC2626" stroke-width="2" fill="none"
+        marker-end="url(#m-red)"/>
 
-  <!-- Arrows: Prometheus → Grafana -->
-  <line x1="540" y1="920" x2="570" y2="920" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <!-- Arrow 251: TASK FAILED → rca_callback  red (triggers) -->
+  <!-- TASK FAILED bottom center: (590,574) → rca_callback top center: (590,592) -->
+  <path d="M 590,574 L 590,592"
+        stroke="#DC2626" stroke-width="2" fill="none"
+        marker-end="url(#m-red)"/>
+  <rect x="558" y="576" width="50" height="14" rx="3" fill="white" opacity="0.85"/>
+  <text x="583" y="587" text-anchor="middle" font-size="9" fill="#991B1B">triggers</text>
 
-  <!-- ============================================================
-       EXTERNAL NOTIFICATIONS (right side)
-  ============================================================ -->
-  <rect x="1040" y="628" width="330" height="375" fill="#F9FAFB" rx="8" stroke="#6B7280" stroke-width="2"/>
-  <text x="1205" y="648" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">EXTERNAL NOTIFICATIONS</text>
+  <!-- Arrow 252: rca_callback → ClusterIPService  purple 2.5px (POST /api/generate) -->
+  <!-- rca_callback left side at y*0.25: x=380, y=592+218*0.25=646 → route left to x=308 → up to ClusterIP right at y=462+92*0.6=517 -->
+  <!-- ClusterIP right edge: x=272, y=517 -->
+  <path d="M 380,646 L 308,646 L 308,517 L 272,517"
+        stroke="#7C3AED" stroke-width="2.5" fill="none"
+        marker-end="url(#m-purple)"/>
+  <rect x="275" y="616" width="88" height="28" rx="3" fill="white" opacity="0.90"/>
+  <text x="319" y="628" text-anchor="middle" font-size="8.5" fill="#4C1D95">POST /api/generate</text>
+  <text x="319" y="640" text-anchor="middle" font-size="8.5" fill="#4C1D95">Internal ClusterIP</text>
 
-  <!-- Gmail/SMTP box -->
-  <rect x="1060" y="660" width="290" height="140" fill="#FFFFFF" rx="8" stroke="#6B7280" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="1060" y="660" width="290" height="26" fill="#4B5563" rx="8"/>
-  <rect x="1060" y="676" width="290" height="10" fill="#4B5563"/>
-  <text x="1205" y="678" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">Gmail / SMTP Email</text>
-  <text x="1205" y="704" text-anchor="middle" font-size="10" fill="#374151">Rich HTML email template</text>
-  <text x="1205" y="719" text-anchor="middle" font-size="10" fill="#374151">· Red header banner for failures</text>
-  <text x="1205" y="734" text-anchor="middle" font-size="10" fill="#374151">· Root cause + confidence score</text>
-  <text x="1205" y="749" text-anchor="middle" font-size="10" fill="#374151">· Immediate fix (highlighted box)</text>
-  <text x="1205" y="764" text-anchor="middle" font-size="10" fill="#374151">· Severity badge + DAG link</text>
-  <text x="1205" y="779" text-anchor="middle" font-size="10" fill="#374151">smtp.gmail.com:587 (STARTTLS)</text>
+  <!-- Arrow 253: ClusterIPService → rca_callback  purple dashed (JSON response) -->
+  <!-- ClusterIP right edge at y*0.8: x=272, y=462+92*0.8=536 → route right to x=320 → down to rca_callback left at y*0.4: x=380, y=592+218*0.4=679 -->
+  <path d="M 272,536 L 320,536 L 320,679 L 380,679"
+        stroke="#7C3AED" stroke-width="2" stroke-dasharray="6,3" fill="none"
+        marker-end="url(#m-purple)"/>
+  <rect x="278" y="556" width="90" height="28" rx="3" fill="white" opacity="0.90"/>
+  <text x="323" y="568" text-anchor="middle" font-size="8.5" fill="#4C1D95">JSON: root_cause</text>
+  <text x="323" y="580" text-anchor="middle" font-size="8.5" fill="#4C1D95">confidence, fix, severity</text>
 
-  <!-- Slack box -->
-  <rect x="1060" y="818" width="290" height="140" fill="#FFFFFF" rx="8" stroke="#6B7280" stroke-width="1.5" filter="url(#shadow-light)"/>
-  <rect x="1060" y="818" width="290" height="26" fill="#4B5563" rx="8"/>
-  <rect x="1060" y="834" width="290" height="10" fill="#4B5563"/>
-  <text x="1205" y="836" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">Slack (Block Kit)</text>
-  <text x="1205" y="862" text-anchor="middle" font-size="10" fill="#374151">Block Kit message format</text>
-  <text x="1205" y="877" text-anchor="middle" font-size="10" fill="#374151">· Header: "DAG Failure — RCA Generated"</text>
-  <text x="1205" y="892" text-anchor="middle" font-size="10" fill="#374151">· Section: DAG + task details</text>
-  <text x="1205" y="907" text-anchor="middle" font-size="10" fill="#374151">· Section: Root cause (bold)</text>
-  <text x="1205" y="922" text-anchor="middle" font-size="10" fill="#374151">· Context: severity, confidence</text>
-  <text x="1205" y="937" text-anchor="middle" font-size="10" fill="#374151">· Button: Link to Airflow UI</text>
-  <text x="1205" y="952" text-anchor="middle" font-size="10" fill="#374151">Incoming Webhook URL (optional)</text>
+  <!-- Arrow 350: Scheduler → SparkAppCR  amber (SparkKubernetesOperator) -->
+  <!-- Scheduler right edge center: x=792, y=308+82*0.5=349 → SparkAppCR left edge center: x=876, y=554+72*0.5=590 -->
+  <path d="M 792,349 L 840,349 L 840,590 L 876,590"
+        stroke="#D97706" stroke-width="2" fill="none"
+        marker-end="url(#m-amber)"/>
+  <rect x="812" y="436" width="104" height="28" rx="3" fill="white" opacity="0.90"/>
+  <text x="864" y="448" text-anchor="middle" font-size="9" fill="#78350F">SparkKubernetes</text>
+  <text x="864" y="460" text-anchor="middle" font-size="9" fill="#78350F">Operator</text>
 
-  <!-- Arrows: rca_callback → Gmail and Slack -->
-  <line x1="568" y1="660" x2="800" y2="660" stroke="#6B7280" stroke-width="2" stroke-dasharray="none"/>
-  <line x1="800" y1="660" x2="800" y2="730" stroke="#6B7280" stroke-width="2"/>
-  <line x1="800" y1="730" x2="1060" y2="730" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow-gray)"/>
-  <rect x="610" y="644" width="130" height="18" fill="#F9FAFB" rx="3"/>
-  <text x="675" y="657" text-anchor="middle" font-size="9" fill="#374151">HTML Email (30-60s)</text>
+  <!-- Arrow 411: WorkerPod → TrinoCoordinator  teal dashed (SQL queries) -->
+  <!-- WorkerPod right edge at y*0.3: x=730, y=414+72*0.3=436 → TrinoCoordinator left edge at y*0.7: x=876, y=308+160*0.7=420 -->
+  <path d="M 730,436 L 876,420"
+        stroke="#0F766E" stroke-width="2" stroke-dasharray="6,3" fill="none"
+        marker-end="url(#m-teal)"/>
+  <rect x="756" y="418" width="74" height="14" rx="3" fill="white" opacity="0.85"/>
+  <text x="793" y="429" text-anchor="middle" font-size="9" fill="#065F46">SQL queries</text>
 
-  <line x1="568" y1="685" x2="810" y2="685" stroke="#6B7280" stroke-width="2"/>
-  <line x1="810" y1="685" x2="810" y2="888" stroke="#6B7280" stroke-width="2"/>
-  <line x1="810" y1="888" x2="1060" y2="888" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow-gray)"/>
-  <rect x="612" y="668" width="120" height="18" fill="#F9FAFB" rx="3"/>
-  <text x="672" y="681" text-anchor="middle" font-size="9" fill="#374151">Block Kit alert</text>
+  <!-- Arrow 343: SparkAppCR → DriverPod  amber -->
+  <!-- SparkAppCR bottom at x*0.1: x=876+374*0.1=913, y=626 → DriverPod top center: x=935, y=642 -->
+  <path d="M 913,626 L 913,634 L 935,634 L 935,642"
+        stroke="#D97706" stroke-width="2" fill="none"
+        marker-end="url(#m-amber)"/>
 
-  <!-- ============================================================
-       LEGEND
-  ============================================================ -->
-  <rect x="20" y="1008" width="1360" height="36" fill="#1E293B" rx="4"/>
-  <text x="30" y="1021" font-size="10" font-weight="bold" fill="#94A3B8">LEGEND:</text>
+  <!-- Arrow 344: SparkAppCR → Executor  amber -->
+  <!-- SparkAppCR bottom at x*0.4: x=876+374*0.4=1026, y=626 → Executor top center: x=1069, y=642 -->
+  <path d="M 1026,626 L 1026,634 L 1069,634 L 1069,642"
+        stroke="#D97706" stroke-width="2" fill="none"
+        marker-end="url(#m-amber)"/>
 
-  <!-- Legend items -->
-  <rect x="100" y="1013" width="14" height="14" fill="#FF6B35" rx="2"/>
-  <text x="120" y="1024" font-size="10" fill="#E2E8F0">Model Acquisition</text>
+  <!-- Arrow 451: rca_callback → PostgreSQLDetails  green (Store RCA result) -->
+  <!-- rca_callback bottom at x*0.8: x=380+420*0.8=716, y=810 → route down to y=814 → right to x=1007 → down to PostgreSQL detail top at x*0.3: x=876+374*0.3=988, y=860 -->
+  <path d="M 716,810 L 716,814 L 1007,814 L 1007,860"
+        stroke="#16A34A" stroke-width="2" fill="none"
+        marker-end="url(#m-green)"/>
+  <rect x="820" y="800" width="88" height="14" rx="3" fill="white" opacity="0.85"/>
+  <text x="864" y="811" text-anchor="middle" font-size="9" fill="#14532D">Store RCA result</text>
 
-  <rect x="240" y="1013" width="14" height="14" fill="#7C3AED" rx="2"/>
-  <text x="260" y="1024" font-size="10" fill="#E2E8F0">LLM / Ollama</text>
+  <!-- Arrow 452: PostgreSQLDetails → rca_callback  green dashed (Run history) -->
+  <!-- PostgreSQL detail top at x*0.1: x=876+374*0.1=913, y=860 → route up to y=818 → left to x=651 → up into rca_callback bottom at x*0.7: x=380+420*0.7=674, y=810 -->
+  <path d="M 913,860 L 913,818 L 674,818 L 674,810"
+        stroke="#16A34A" stroke-width="2" stroke-dasharray="6,3" fill="none"
+        marker-end="url(#m-green)"/>
+  <rect x="780" y="818" width="72" height="14" rx="3" fill="white" opacity="0.85"/>
+  <text x="816" y="829" text-anchor="middle" font-size="9" fill="#14532D">Run history</text>
 
-  <rect x="370" y="1013" width="14" height="14" fill="#0EA5E9" rx="2"/>
-  <text x="390" y="1024" font-size="10" fill="#E2E8F0">Airflow / DAGs</text>
+  <!-- Arrow 620: SparkOperator → SparkAppCR  amber dashed (Watches + manages) -->
+  <!-- SparkOperator left edge at y*0.65: x=1300, y=228+210*0.65=365 → SparkAppCR right edge at y*0.3: x=1270, y=554+72*0.3=576 -->
+  <path d="M 1300,365 L 1270,365 L 1270,576 L 1270,576"
+        stroke="#CA8A04" stroke-width="2" stroke-dasharray="6,3" fill="none"
+        marker-end="url(#m-gold)"/>
+  <rect x="1216" y="460" width="90" height="28" rx="3" fill="white" opacity="0.90"/>
+  <text x="1261" y="472" text-anchor="middle" font-size="9" fill="#78350F">Watches +</text>
+  <text x="1261" y="484" text-anchor="middle" font-size="9" fill="#78350F">manages pods</text>
 
-  <rect x="500" y="1013" width="14" height="14" fill="#F59E0B" rx="2"/>
-  <text x="520" y="1024" font-size="10" fill="#E2E8F0">Spark</text>
+  <!-- Arrow 740: rca_callback → MEA  crimson (HTML Email) -->
+  <!-- rca_callback right edge at y*0.35: x=800, y=592+218*0.35=668 → MEA left edge center: x=1300, y=468+172*0.5=554 -->
+  <path d="M 800,668 L 1080,668 L 1080,554 L 1300,554"
+        stroke="#BE123C" stroke-width="2" fill="none"
+        marker-end="url(#m-crimson)"/>
+  <rect x="1098" y="594" width="108" height="14" rx="3" fill="white" opacity="0.85"/>
+  <text x="1152" y="605" text-anchor="middle" font-size="9" fill="#881337">HTML Email via MEA</text>
 
-  <rect x="590" y="1013" width="14" height="14" fill="#10B981" rx="2"/>
-  <text x="610" y="1024" font-size="10" fill="#E2E8F0">Observability</text>
+  <!-- Arrow 741: rca_callback → DBNotifier  dark blue (Teams alert) -->
+  <!-- rca_callback right edge at y*0.65: x=800, y=592+218*0.65=734 → DBNotifier left edge at y*0.3: x=1300, y=654+214*0.3=718 -->
+  <path d="M 800,734 L 1120,734 L 1120,718 L 1300,718"
+        stroke="#1D4ED8" stroke-width="2" fill="none"
+        marker-end="url(#m-darkblue)"/>
+  <rect x="1100" y="718" width="124" height="14" rx="3" fill="white" opacity="0.85"/>
+  <text x="1162" y="729" text-anchor="middle" font-size="9" fill="#1E3A8A">Teams alert via DBNotifier</text>
 
-  <rect x="710" y="1013" width="14" height="14" fill="#EF4444" rx="2"/>
-  <text x="730" y="1024" font-size="10" fill="#E2E8F0">Failure Path</text>
+  <!-- ================================================================ -->
+  <!-- LEGEND  y=1390                                                     -->
+  <!-- ================================================================ -->
+  <line x1="20" y1="1382" x2="1620" y2="1382" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="30" y="1402" font-size="11" font-weight="700" fill="#334155">Legend:</text>
 
-  <rect x="820" y="1013" width="14" height="14" fill="#4B5563" rx="2"/>
-  <text x="840" y="1024" font-size="10" fill="#E2E8F0">External Notifications</text>
+  <!-- Ollama LLM swatch -->
+  <rect x="110" y="1388" width="104" height="26" rx="4" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="162" y="1405" text-anchor="middle" font-size="10" fill="#4C1D95">Ollama LLM</text>
 
-  <!-- Arrow legend -->
-  <line x1="980" y1="1020" x2="1010" y2="1020" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow-gray)"/>
-  <text x="1015" y="1024" font-size="10" fill="#E2E8F0">Data flow</text>
+  <!-- Airflow swatch -->
+  <rect x="224" y="1388" width="88" height="26" rx="4" fill="#DBEAFE" stroke="#0EA5E9" stroke-width="1.5"/>
+  <text x="268" y="1405" text-anchor="middle" font-size="10" fill="#1E40AF">Airflow</text>
 
-  <line x1="1090" y1="1020" x2="1120" y2="1020" stroke="#6B7280" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-gray)"/>
-  <text x="1125" y="1024" font-size="10" fill="#E2E8F0">Setup / Response</text>
+  <!-- Spark swatch -->
+  <rect x="322" y="1388" width="96" height="26" rx="4" fill="#FDE68A" stroke="#D97706" stroke-width="1.5"/>
+  <text x="370" y="1405" text-anchor="middle" font-size="10" fill="#78350F">Spark Jobs</text>
 
-  <text x="1280" y="1024" font-size="9" fill="#64748B">v1.0 — Airflow + Spark + Ollama RCA PoC</text>
+  <!-- Trino swatch -->
+  <rect x="428" y="1388" width="84" height="26" rx="4" fill="#CCFBF1" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="470" y="1405" text-anchor="middle" font-size="10" fill="#065F46">Trino</text>
+
+  <!-- PostgreSQL swatch -->
+  <rect x="522" y="1388" width="100" height="26" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="572" y="1405" text-anchor="middle" font-size="10" fill="#14532D">PostgreSQL</text>
+
+  <!-- External/Platform swatch -->
+  <rect x="632" y="1388" width="126" height="26" rx="4" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="695" y="1405" text-anchor="middle" font-size="10" fill="#78350F">External / Platform</text>
+
+  <!-- MEA swatch -->
+  <rect x="768" y="1388" width="100" height="26" rx="4" fill="#FFF1F2" stroke="#BE123C" stroke-width="1.5"/>
+  <text x="818" y="1405" text-anchor="middle" font-size="10" fill="#881337">MEA (Email)</text>
+
+  <!-- DBNotifier swatch -->
+  <rect x="878" y="1388" width="128" height="26" rx="4" fill="#EFF6FF" stroke="#1D4ED8" stroke-width="1.5"/>
+  <text x="942" y="1405" text-anchor="middle" font-size="10" fill="#1E3A8A">DBNotifier / Teams</text>
+
+  <!-- Arrow legend: solid vs dashed -->
+  <line x1="1020" y1="1401" x2="1060" y2="1401" stroke="#334155" stroke-width="2" marker-end="url(#m-orange)"/>
+  <text x="1066" y="1405" font-size="10" fill="#334155">Data flow</text>
+  <line x1="1130" y1="1401" x2="1170" y2="1401" stroke="#334155" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#m-orange)"/>
+  <text x="1176" y="1405" font-size="10" fill="#334155">Async / optional</text>
+  <line x1="1298" y1="1401" x2="1338" y2="1401" stroke="#CA8A04" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#m-gold)"/>
+  <text x="1344" y="1405" font-size="10" fill="#334155">Cross-namespace</text>
 
 </svg>
