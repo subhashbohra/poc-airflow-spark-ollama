@@ -1,483 +1,314 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="diagrams.net" modified="2026-04-01T00:00:00.000Z" agent="Claude" version="21.0.0" type="device">
-  <diagram id="poc-architecture-v3" name="PoC Architecture">
-    <mxGraphModel dx="1654" dy="1450" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1654" pageHeight="1450" math="0" shadow="0">
+<mxfile host="diagrams.net" modified="2026-04-02T00:00:00.000Z" agent="Claude" version="21.0.0" type="device">
+  <diagram id="poc-architecture-v4" name="PoC Architecture">
+    <mxGraphModel dx="1654" dy="1450" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1680" pageHeight="1460" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
-        <!-- ============================================================ -->
-        <!-- TITLE                                                          -->
-        <!-- ============================================================ -->
-        <mxCell id="2" value="AI-Enhanced Data Pipeline — Airflow + Spark + Ollama RCA PoC  |  Namespace: clmanalytics-dev1"
-          style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;fillColor=none;strokeColor=none;"
-          vertex="1" parent="1">
-          <mxGeometry x="30" y="18" width="1590" height="48" as="geometry" />
+        <!-- TITLE BAR -->
+        <mxCell id="2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1E293B;strokeColor=#1E293B;arcSize=2;" vertex="1" parent="1">
+          <mxGeometry x="20" y="14" width="1636" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="2t" value="&lt;font color='#FFFFFF' style='font-size:17px;font-weight:700;'&gt;AI-Enhanced Data Pipeline — Airflow + Spark + Ollama + Trino RCA PoC&lt;/font&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:11px;'&gt;Namespace: clmanalytics-dev1  |  Internal LLM Inference  |  No External API Calls&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="14" width="1636" height="52" as="geometry" />
         </mxCell>
 
-        <!-- ============================================================ -->
-        <!-- MODEL ACQUISITION LABEL                                        -->
-        <!-- ============================================================ -->
-        <mxCell id="3" value="Model Acquisition (one-time setup)"
-          style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fillColor=none;strokeColor=none;"
-          vertex="1" parent="1">
-          <mxGeometry x="50" y="72" width="330" height="24" as="geometry" />
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- MODEL ACQUISITION LAYER (top)                              -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="ma_label" value="Model Acquisition (one-time setup)" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#78350F;" vertex="1" parent="1">
+          <mxGeometry x="50" y="76" width="280" height="22" as="geometry" />
         </mxCell>
 
-        <!-- HuggingFace box  id=11 -->
-        <mxCell id="11" value="&lt;b&gt;HuggingFace&lt;/b&gt;&lt;br/&gt;Model Registry&lt;br/&gt;&lt;font color='#92400e'&gt;gemma2:2b&lt;/font&gt;&lt;br/&gt;Public registry"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#EA580C;strokeWidth=2;fontSize=11;align=center;"
-          vertex="1" parent="1">
-          <mxGeometry x="42" y="84" width="200" height="116" as="geometry" />
+        <!-- HuggingFace box -->
+        <mxCell id="11" value="&lt;img src='https://huggingface.co/front/assets/huggingface_logo-noborder.svg' width='36' height='36' style='display:block;margin:0 auto 4px auto;'/&gt;&lt;b&gt;HuggingFace&lt;/b&gt;&lt;br/&gt;Model Registry&lt;br/&gt;&lt;font color='#92400E'&gt;gemma2:2b · 1.6 GB&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#EA580C;strokeWidth=2;fontSize=10;align=center;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="42" y="88" width="190" height="116" as="geometry" />
         </mxCell>
 
-        <!-- Ollama Storage box  id=21 -->
-        <mxCell id="21" value="&lt;b&gt;Ollama Model Storage&lt;/b&gt;&lt;br/&gt;PVC 20GB&lt;br/&gt;&lt;font color='#4c1d95'&gt;gemma2:2b cached&lt;/font&gt;&lt;br/&gt;Persistent Volume Claim"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;strokeWidth=2;fontSize=11;align=center;"
-          vertex="1" parent="1">
-          <mxGeometry x="316" y="84" width="214" height="116" as="geometry" />
+        <!-- Ollama Storage box -->
+        <mxCell id="21" value="🗄️&lt;br/&gt;&lt;b&gt;Ollama Model Storage&lt;/b&gt;&lt;br/&gt;PersistentVolumeClaim · 20 GB&lt;br/&gt;&lt;font color='#4C1D95'&gt;/root/.ollama/models&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;strokeWidth=2;fontSize=10;align=center;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="316" y="88" width="220" height="116" as="geometry" />
         </mxCell>
 
-        <!-- Security callout  id=60 -->
-        <mxCell id="60" value="&lt;b&gt;Zero External API Calls&lt;/b&gt;&lt;br/&gt;All LLM inference inside cluster&lt;br/&gt;ClusterIP only — no egress&lt;br/&gt;Air-gapped LLM pattern"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;strokeWidth=2;fontSize=10;align=center;"
-          vertex="1" parent="1">
-          <mxGeometry x="1328" y="76" width="284" height="108" as="geometry" />
-        </mxCell>
-
-        <!-- ============================================================ -->
-        <!-- NAMESPACE BOUNDARY  id=50                                      -->
-        <!-- ============================================================ -->
-        <mxCell id="50" value=""
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#334155;strokeWidth=3;dashed=0;verticalAlign=top;arcSize=2;"
-          vertex="1" parent="1">
-          <mxGeometry x="20" y="228" width="1290" height="1152" as="geometry" />
-        </mxCell>
-        <mxCell id="51" value="Kubernetes Namespace: clmanalytics-dev1"
-          style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fillColor=none;strokeColor=none;"
-          vertex="1" parent="1">
-          <mxGeometry x="220" y="244" width="600" height="24" as="geometry" />
-        </mxCell>
-
-        <!-- ============================================================ -->
-        <!-- OLLAMA SECTION  id=100  x=38,y=268,w=254,h=452               -->
-        <!-- ============================================================ -->
-        <mxCell id="100" value="&lt;b&gt;Ollama LLM Service&lt;/b&gt;"
-          style="swimlane;whiteSpace=wrap;html=1;fillColor=#FAF5FF;strokeColor=#7C3AED;strokeWidth=2;fontSize=12;fontStyle=1;startSize=28;arcSize=4;"
-          vertex="1" parent="1">
-          <mxGeometry x="38" y="268" width="254" height="452" as="geometry" />
-        </mxCell>
-
-        <!-- Ollama Pod  id=110  (relative to parent id=100) -->
-        <mxCell id="110" value="&lt;b&gt;Ollama Pod&lt;/b&gt;&lt;br/&gt;ollama/ollama:latest&lt;br/&gt;CPU mode (no GPU)&lt;br/&gt;Model: gemma2:2b&lt;br/&gt;Temp: 0.1 deterministic"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="100">
-          <mxGeometry x="20" y="38" width="214" height="138" as="geometry" />
-        </mxCell>
-
-        <!-- ClusterIP Service  id=120  (relative to parent id=100) -->
-        <mxCell id="120" value="&lt;b&gt;ClusterIP Service&lt;/b&gt;&lt;br/&gt;Port: 11434&lt;br/&gt;Internal only — no external access"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DDD6FE;strokeColor=#7C3AED;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="100">
-          <mxGeometry x="20" y="190" width="214" height="92" as="geometry" />
-        </mxCell>
-
-        <!-- DNS annotation  id=125  (relative to parent id=100) -->
-        <mxCell id="125" value="ollama-service.llm-serving:11434"
-          style="text;html=1;align=center;verticalAlign=middle;fontSize=9;fillColor=#F3E8FF;strokeColor=#7C3AED;rounded=1;"
-          vertex="1" parent="100">
-          <mxGeometry x="20" y="294" width="214" height="36" as="geometry" />
-        </mxCell>
-
-        <!-- JSON response note  id=126  (relative to parent id=100) -->
-        <mxCell id="126" value="Response: JSON&lt;br/&gt;{root_cause, confidence,&lt;br/&gt;fix, severity, category}"
-          style="text;html=1;align=center;verticalAlign=middle;fontSize=9;fillColor=#EDE9FE;strokeColor=#7C3AED;rounded=1;"
-          vertex="1" parent="100">
-          <mxGeometry x="20" y="342" width="214" height="56" as="geometry" />
-        </mxCell>
-
-        <!-- ============================================================ -->
-        <!-- AIRFLOW SECTION  id=200  x=340,y=268,w=514,h=1064            -->
-        <!-- ============================================================ -->
-        <mxCell id="200" value="&lt;b&gt;Apache Airflow&lt;/b&gt;"
-          style="swimlane;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#0EA5E9;strokeWidth=2;fontSize=12;fontStyle=1;startSize=28;arcSize=4;"
-          vertex="1" parent="1">
-          <mxGeometry x="340" y="268" width="514" height="1064" as="geometry" />
-        </mxCell>
-
-        <!-- Webserver  id=210 -->
-        <mxCell id="210" value="&lt;b&gt;Airflow Webserver&lt;/b&gt;&lt;br/&gt;UI + REST API  |  Port 8080"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="200">
-          <mxGeometry x="18" y="36" width="218" height="82" as="geometry" />
-        </mxCell>
-
-        <!-- Scheduler  id=220 -->
-        <mxCell id="220" value="&lt;b&gt;Airflow Scheduler&lt;/b&gt;&lt;br/&gt;KubernetesExecutor&lt;br/&gt;Triggers tasks as K8s pods"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="200">
-          <mxGeometry x="270" y="36" width="218" height="82" as="geometry" />
-        </mxCell>
-
-        <!-- Worker Pod  id=230 -->
-        <mxCell id="230" value="&lt;b&gt;Worker Pod&lt;/b&gt; (ephemeral, per-task)&lt;br/&gt;KubernetesExecutor | deleted on complete"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BFDBFE;strokeColor=#0369A1;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="200">
-          <mxGeometry x="122" y="142" width="280" height="72" as="geometry" />
-        </mxCell>
-
-        <!-- TASK FAILED  id=240 -->
-        <mxCell id="240" value="&lt;b&gt;TASK FAILED&lt;/b&gt;&lt;br/&gt;on_failure_callback triggered"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=2;fontSize=10;align=center;"
-          vertex="1" parent="200">
-          <mxGeometry x="122" y="232" width="280" height="72" as="geometry" />
-        </mxCell>
-
-        <!-- rca_callback  id=250 -->
-        <mxCell id="250" value="&lt;b&gt;rca_callback.py&lt;/b&gt;&lt;hr/&gt;1. Collect: dag_id, task_id, error msg, logs&lt;br/&gt;2. Build structured prompt (RCA template)&lt;br/&gt;3. POST /api/generate → Ollama&lt;br/&gt;4. Parse JSON response&lt;br/&gt;5. Store RCA → PostgreSQL&lt;br/&gt;6. Send HTML email via MEA&lt;br/&gt;7. Send Teams alert via DBNotifier"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0369A1;strokeWidth=2;fontSize=10;align=left;"
-          vertex="1" parent="200">
-          <mxGeometry x="72" y="322" width="370" height="214" as="geometry" />
-        </mxCell>
-
-        <!-- DAGs list  id=260 -->
-        <mxCell id="260" value="&lt;b&gt;Active DAGs&lt;/b&gt;&lt;br/&gt;• rca_dag.py (@daily)&lt;br/&gt;• wordcount_dag.py (manual)&lt;br/&gt;• test_failure_dag.py (demo)"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;strokeWidth=1.5;fontSize=10;align=left;"
-          vertex="1" parent="200">
-          <mxGeometry x="18" y="562" width="222" height="138" as="geometry" />
-        </mxCell>
-
-        <!-- Anomaly Detection  id=261 -->
-        <mxCell id="261" value="&lt;b&gt;Anomaly Detection DAG&lt;/b&gt;&lt;br/&gt;Schedule: */30 * * * *&lt;br/&gt;• Baseline ±2σ per DAG&lt;br/&gt;• Drift &gt;20% triggers alert&lt;br/&gt;• Ollama explains anomaly"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;strokeWidth=1.5;fontSize=10;align=left;"
-          vertex="1" parent="200">
-          <mxGeometry x="266" y="562" width="218" height="138" as="geometry" />
-        </mxCell>
-
-        <!-- Metadata DB label  id=262 -->
-        <mxCell id="262" value="Airflow Metadata DB: PostgreSQL (subchart)"
-          style="text;html=1;align=center;verticalAlign=middle;fontSize=9;fillColor=#EFF6FF;strokeColor=#0EA5E9;rounded=1;"
-          vertex="1" parent="200">
-          <mxGeometry x="18" y="724" width="466" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- ============================================================ -->
-        <!-- TRINO SECTION  id=400  x=870,y=268,w=422,h=232               -->
-        <!-- ============================================================ -->
-        <mxCell id="400" value="&lt;b&gt;Trino&lt;/b&gt;"
-          style="swimlane;whiteSpace=wrap;html=1;fillColor=#F0FDFA;strokeColor=#0F766E;strokeWidth=2;fontSize=12;fontStyle=1;startSize=28;arcSize=4;"
-          vertex="1" parent="1">
-          <mxGeometry x="870" y="268" width="422" height="232" as="geometry" />
-        </mxCell>
-
-        <!-- Trino Coordinator  id=410 -->
-        <mxCell id="410" value="&lt;b&gt;Trino Coordinator&lt;/b&gt;&lt;br/&gt;Federated SQL Query Engine&lt;br/&gt;Port: 8080&lt;br/&gt;Cross-source queries (Hive, JDBC, S3, etc.)"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFBF1;strokeColor=#0F766E;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="400">
-          <mxGeometry x="20" y="36" width="382" height="160" as="geometry" />
-        </mxCell>
-
-        <!-- ============================================================ -->
-        <!-- SPARK SECTION  id=300  x=870,y=514,w=422,h=288               -->
-        <!-- ============================================================ -->
-        <mxCell id="300" value="&lt;b&gt;Spark Jobs&lt;/b&gt;"
-          style="swimlane;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=2;fontSize=12;fontStyle=1;startSize=28;arcSize=4;"
-          vertex="1" parent="1">
-          <mxGeometry x="870" y="514" width="422" height="288" as="geometry" />
-        </mxCell>
-
-        <!-- SparkApp CR  id=330 -->
-        <mxCell id="330" value="&lt;b&gt;SparkApplication CR&lt;/b&gt;&lt;br/&gt;restartPolicy: Never (ephemeral)&lt;br/&gt;image: apache/spark:3.5.0"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDE68A;strokeColor=#D97706;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="300">
-          <mxGeometry x="20" y="38" width="382" height="72" as="geometry" />
-        </mxCell>
-
-        <!-- Driver Pod  id=340 -->
-        <mxCell id="340" value="&lt;b&gt;Driver Pod&lt;/b&gt;&lt;br/&gt;cores: 1&lt;br/&gt;mem: 512m"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="300">
-          <mxGeometry x="20" y="128" width="118" height="72" as="geometry" />
-        </mxCell>
-
-        <!-- Executor  id=341 -->
-        <mxCell id="341" value="&lt;b&gt;Executor ×2&lt;/b&gt;&lt;br/&gt;cores: 1 each&lt;br/&gt;mem: 512m"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="300">
-          <mxGeometry x="156" y="128" width="118" height="72" as="geometry" />
-        </mxCell>
-
-        <!-- Deleted badge  id=342 -->
-        <mxCell id="342" value="&lt;b&gt;Deleted after&lt;/b&gt;&lt;br/&gt;completion&lt;br/&gt;(ephemeral)"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1FAE5;strokeColor=#059669;strokeWidth=1.5;fontSize=10;align=center;"
-          vertex="1" parent="300">
-          <mxGeometry x="292" y="128" width="110" height="72" as="geometry" />
-        </mxCell>
-
-        <!-- ============================================================ -->
-        <!-- POSTGRESQL SECTION  id=500  x=870,y=820,w=422,h=288          -->
-        <!-- ============================================================ -->
-        <mxCell id="500" value="&lt;b&gt;PostgreSQL&lt;/b&gt;"
-          style="swimlane;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#16A34A;strokeWidth=2;fontSize=12;fontStyle=1;startSize=28;arcSize=4;"
-          vertex="1" parent="1">
-          <mxGeometry x="870" y="820" width="422" height="288" as="geometry" />
-        </mxCell>
-
-        <!-- PostgreSQL Details  id=510 -->
-        <mxCell id="510" value="&lt;b&gt;dag_metrics table&lt;/b&gt;&lt;br/&gt;dag_id | task_id | run_id | execution_date&lt;br/&gt;duration_seconds | state | error_message&lt;br/&gt;rca_root_cause | rca_category | rca_confidence&lt;br/&gt;rca_immediate_fix | rca_severity&lt;br/&gt;&lt;br/&gt;&lt;b&gt;dag_baselines VIEW&lt;/b&gt;  avg_duration ± 2σ&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Airflow Metadata DB&lt;/b&gt; (shared instance)"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#16A34A;strokeWidth=1.5;fontSize=10;align=left;"
-          vertex="1" parent="500">
-          <mxGeometry x="20" y="38" width="382" height="220" as="geometry" />
-        </mxCell>
-
-        <!-- ============================================================ -->
-        <!-- EXTERNAL: SPARK OPERATOR  id=600  x=1328,y=228,w=284,h=212   -->
-        <!-- ============================================================ -->
-        <mxCell id="600" value=""
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=2;dashed=1;dashPattern=8 4;"
-          vertex="1" parent="1">
-          <mxGeometry x="1328" y="228" width="284" height="212" as="geometry" />
-        </mxCell>
-        <mxCell id="610" value="&lt;b&gt;SparkOperator Central&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Platform Team Managed&lt;/i&gt;&lt;br/&gt;&lt;hr/&gt;Watches SparkApplication CRs&lt;br/&gt;in clmanalytics-dev1&lt;br/&gt;&lt;br/&gt;Cross-namespace RBAC&lt;br/&gt;ServiceAccount: spark&lt;br/&gt;&lt;br/&gt;Manages Driver + Executor pods"
-          style="text;html=1;align=center;verticalAlign=top;fontSize=10;fillColor=none;strokeColor=none;"
-          vertex="1" parent="1">
-          <mxGeometry x="1328" y="238" width="284" height="195" as="geometry" />
-        </mxCell>
-
-        <!-- ============================================================ -->
-        <!-- EXTERNAL: NOTIFICATIONS                                        -->
-        <!-- ============================================================ -->
-        <mxCell id="700" value="Notifications (External)"
-          style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fillColor=none;strokeColor=none;"
-          vertex="1" parent="1">
-          <mxGeometry x="1332" y="452" width="276" height="24" as="geometry" />
-        </mxCell>
-
-        <!-- MEA box  id=710 -->
-        <mxCell id="710" value="&lt;b&gt;MEA&lt;/b&gt;&lt;br/&gt;Mail Enabled Application&lt;br/&gt;&lt;hr/&gt;Internal SMTP relay&lt;br/&gt;HTML email with RCA:&lt;br/&gt;• Root cause + confidence&lt;br/&gt;• Immediate fix steps&lt;br/&gt;• Severity badge&lt;br/&gt;• Link to Airflow UI"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF1F2;strokeColor=#BE123C;strokeWidth=2;fontSize=10;align=center;"
-          vertex="1" parent="1">
-          <mxGeometry x="1328" y="484" width="284" height="172" as="geometry" />
-        </mxCell>
-
-        <!-- DBNotifier box  id=720 -->
-        <mxCell id="720" value="&lt;b&gt;DBNotifier → MS Teams&lt;/b&gt;&lt;br/&gt;Internal notification broker&lt;br/&gt;&lt;hr/&gt;Teams channel alert:&lt;br/&gt;• DAG + task name&lt;br/&gt;• Root cause (bold)&lt;br/&gt;• Severity + confidence&lt;br/&gt;• Estimated fix time&lt;br/&gt;• Airflow UI deep link&lt;br/&gt;Block Kit format"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;strokeWidth=2;fontSize=10;align=center;"
-          vertex="1" parent="1">
-          <mxGeometry x="1328" y="670" width="284" height="214" as="geometry" />
-        </mxCell>
-
-        <!-- SLA callout  id=730 -->
-        <mxCell id="730" value="&lt;b&gt;30–60 seconds&lt;/b&gt;&lt;br/&gt;from failure to notification"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontSize=11;align=center;"
-          vertex="1" parent="1">
-          <mxGeometry x="1328" y="900" width="284" height="68" as="geometry" />
-        </mxCell>
-
-        <!-- ============================================================ -->
-        <!-- ARROWS                                                         -->
-        <!-- ============================================================ -->
-
-        <!-- id=14: HuggingFace(11) → OllamaStorage(21)  dashed orange -->
-        <mxCell id="14" value="ollama pull gemma2:2b"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#EA580C;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=9;fontColor=#92400E;"
-          edge="1" source="11" target="21" parent="1">
+        <!-- Arrow: HuggingFace → Ollama Storage -->
+        <mxCell id="14" value="&lt;b&gt;ollama pull gemma2:2b&lt;/b&gt;&lt;br/&gt;one-time · 5-10 min" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#EA580C;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;fontSize=9;fontColor=#92400E;fillColor=#FFF7ED;labelBackgroundColor=#FFF7ED;" edge="1" source="11" target="21" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- id=24: OllamaStorage(21) → OllamaPod(110)  dashed purple, routes above namespace -->
-        <mxCell id="24" value="Load model into pod"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#7C3AED;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;fontColor=#4C1D95;"
-          edge="1" source="21" target="110" parent="1">
+        <!-- Arrow: Ollama Storage → Ollama Pod (routes outside namespace) -->
+        <mxCell id="24" value="load model" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#7C3AED;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=9;fontColor=#4C1D95;" edge="1" source="21" target="110" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="423" y="228" />
-              <mxPoint x="165" y="228" />
+              <mxPoint x="426" y="226" />
+              <mxPoint x="165" y="226" />
             </Array>
           </mxGeometry>
         </mxCell>
 
-        <!-- id=121: OllamaPod(110) → ClusterIPService(120)  purple (inside parent 100) -->
-        <mxCell id="121" value=""
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7C3AED;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"
-          edge="1" source="110" target="120" parent="100">
+        <!-- Security callout (top-right) -->
+        <mxCell id="60" value="🔒 &lt;b&gt;Zero External API Calls&lt;/b&gt;&lt;br/&gt;All LLM inference stays inside cluster&lt;br/&gt;ClusterIP only · no egress traffic&lt;br/&gt;Mirrors GDC air-gapped pattern" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;strokeWidth=2;fontSize=10;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1354" y="76" width="284" height="96" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- NAMESPACE BOUNDARY                                         -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="50" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#334155;strokeWidth=3;arcSize=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="226" width="1300" height="1180" as="geometry" />
+        </mxCell>
+
+        <!-- K8s logo + namespace label -->
+        <mxCell id="k8s_logo" value="" style="shape=image;html=1;image=https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="28" y="232" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="51" value="&lt;b&gt;Namespace: clmanalytics-dev1&lt;/b&gt;  ·  All services co-located" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#1E293B;" vertex="1" parent="1">
+          <mxGeometry x="60" y="232" width="580" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- OLLAMA LLM SERVICE  (purple)  x=38 y=270 w=256 h=450      -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="100" value="&lt;img src='https://avatars.githubusercontent.com/u/151674099' width='20' height='20' style='vertical-align:middle;margin-right:5px;border-radius:4px;'/&gt;&lt;b&gt;Ollama LLM Service&lt;/b&gt;" style="swimlane;whiteSpace=wrap;html=1;fillColor=#FAF5FF;strokeColor=#7C3AED;strokeWidth=2;fontSize=12;fontStyle=1;startSize=32;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="38" y="270" width="256" height="450" as="geometry" />
+        </mxCell>
+
+        <mxCell id="110" value="🦙 &lt;b&gt;Ollama Pod&lt;/b&gt;&lt;br/&gt;Image: ollama/ollama:latest&lt;br/&gt;Mode: CPU (no GPU required)&lt;br/&gt;Model: gemma2:2b loaded&lt;br/&gt;RAM: 4–6 GB · Temp: 0.1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="100">
+          <mxGeometry x="18" y="42" width="220" height="126" as="geometry" />
+        </mxCell>
+
+        <mxCell id="120" value="&lt;b&gt;ClusterIP Service&lt;/b&gt;&lt;br/&gt;ollama-service · Port: 11434&lt;br/&gt;NetworkPolicy: allow from&lt;br/&gt;clmanalytics-dev1 only" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DDD6FE;strokeColor=#7C3AED;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="100">
+          <mxGeometry x="18" y="184" width="220" height="88" as="geometry" />
+        </mxCell>
+
+        <mxCell id="121" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7C3AED;strokeWidth=2;" edge="1" source="110" target="120" parent="100">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- id=231: Scheduler(220) → WorkerPod(230)  blue (inside parent 200) -->
-        <mxCell id="231" value="creates task pod"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0369A1;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;"
-          edge="1" source="220" target="230" parent="200">
+        <mxCell id="125" value="&lt;font color='#6D28D9'&gt;ollama-service.clmanalytics-dev1:11434&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=9;fillColor=#F3E8FF;strokeColor=#A78BFA;rounded=1;" vertex="1" parent="100">
+          <mxGeometry x="18" y="284" width="220" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="126" value="Response format: JSON&lt;br/&gt;{root_cause, confidence,&lt;br/&gt;immediate_fix, severity}" style="text;html=1;align=center;verticalAlign=middle;fontSize=9;fillColor=#EDE9FE;strokeColor=#7C3AED;rounded=1;" vertex="1" parent="100">
+          <mxGeometry x="18" y="326" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- AIRFLOW  (blue)  x=312 y=270 w=530 h=1082                 -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="200" value="&lt;img src='https://upload.wikimedia.org/wikipedia/commons/d/de/AirflowLogo.png' height='22' style='vertical-align:middle;margin-right:6px;'/&gt;&lt;b&gt;Apache Airflow&lt;/b&gt;" style="swimlane;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#0EA5E9;strokeWidth=2;fontSize=12;fontStyle=1;startSize=32;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="312" y="270" width="530" height="1082" as="geometry" />
+        </mxCell>
+
+        <mxCell id="210" value="&lt;b&gt;Airflow Webserver&lt;/b&gt;&lt;br/&gt;UI + REST API · Port 8080&lt;br/&gt;DAG management console" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="200">
+          <mxGeometry x="18" y="42" width="224" height="82" as="geometry" />
+        </mxCell>
+
+        <mxCell id="220" value="&lt;b&gt;Airflow Scheduler&lt;/b&gt;&lt;br/&gt;KubernetesExecutor&lt;br/&gt;Creates task pods dynamically" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="200">
+          <mxGeometry x="268" y="42" width="224" height="82" as="geometry" />
+        </mxCell>
+
+        <mxCell id="230" value="&lt;b&gt;Worker Pod&lt;/b&gt; · Ephemeral (KubernetesExecutor)&lt;br/&gt;One pod per task · deleted on completion" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BFDBFE;strokeColor=#0369A1;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="200">
+          <mxGeometry x="118" y="148" width="294" height="68" as="geometry" />
+        </mxCell>
+
+        <mxCell id="240" value="❌  &lt;b&gt;TASK FAILED&lt;/b&gt;&lt;br/&gt;Exception raised · state = FAILED&lt;br/&gt;on_failure_callback triggered" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=2;fontSize=10;align=center;" vertex="1" parent="200">
+          <mxGeometry x="118" y="234" width="294" height="72" as="geometry" />
+        </mxCell>
+
+        <mxCell id="250" value="&lt;b&gt;rca_callback.py&lt;/b&gt;&lt;hr/&gt;① Collect: dag_id, task_id, error msg, logs&lt;br/&gt;② Query PostgreSQL for run history&lt;br/&gt;③ Build structured RCA prompt&lt;br/&gt;④ POST /api/generate → Ollama:11434&lt;br/&gt;⑤ Parse JSON RCA response&lt;br/&gt;⑥ Store result → dag_metrics table&lt;br/&gt;⑦ Send HTML email via MEA&lt;br/&gt;⑧ Send Teams alert via DBNotifier" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0369A1;strokeWidth=2;fontSize=10;align=left;" vertex="1" parent="200">
+          <mxGeometry x="68" y="324" width="394" height="220" as="geometry" />
+        </mxCell>
+
+        <mxCell id="260" value="&lt;b&gt;Active DAGs&lt;/b&gt;&lt;br/&gt;• rca_dag.py · @daily&lt;br/&gt;• wordcount_dag.py · manual&lt;br/&gt;• test_failure_dag.py · demo&lt;br/&gt;• anomaly_detection_dag.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;strokeWidth=1.5;fontSize=10;align=left;" vertex="1" parent="200">
+          <mxGeometry x="18" y="566" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="261" value="&lt;b&gt;Anomaly Detection DAG&lt;/b&gt;&lt;br/&gt;Schedule: */30 * * * *&lt;br/&gt;• Compute baseline ± 2σ per DAG&lt;br/&gt;• Drift &gt;20% triggers alert&lt;br/&gt;• Ollama explains anomaly" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;strokeWidth=1.5;fontSize=10;align=left;dashed=1;" vertex="1" parent="200">
+          <mxGeometry x="278" y="566" width="234" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="262" value="Airflow Metadata DB: PostgreSQL (shared instance in namespace)" style="text;html=1;align=center;verticalAlign=middle;fontSize=9;fillColor=#EFF6FF;strokeColor=#0EA5E9;rounded=1;" vertex="1" parent="200">
+          <mxGeometry x="18" y="708" width="494" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows inside Airflow -->
+        <mxCell id="231" value="creates task pod" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0369A1;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=9;" edge="1" source="220" target="230" parent="200">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="241" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#DC2626;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="230" target="240" parent="200">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="251" value="triggers" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#DC2626;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=9;" edge="1" source="240" target="250" parent="200">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- id=241: WorkerPod(230) → FAILED(240)  red (inside parent 200) -->
-        <mxCell id="241" value=""
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#DC2626;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"
-          edge="1" source="230" target="240" parent="200">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- id=251: FAILED(240) → rca_callback(250)  red (inside parent 200) -->
-        <mxCell id="251" value="triggers"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#DC2626;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;"
-          edge="1" source="240" target="250" parent="200">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- id=252: rca_callback(250) → ClusterIPService(120)  purple 2.5px -->
-        <!-- rca_callback absolute pos: parent 200 at x=340, child at x=72 → absolute x=412, y=322+268=590 -->
-        <!-- ClusterIP Service absolute pos: parent 100 at x=38, child at x=20,y=190 → absolute x=58, y=458+268=726, right edge x=272 -->
-        <mxCell id="252" value="POST /api/generate&#xa;Internal ClusterIP"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7C3AED;strokeWidth=2.5;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.6;entryDx=0;entryDy=0;fontSize=9;fontColor=#4C1D95;"
-          edge="1" source="250" target="120" parent="1">
+        <!-- rca_callback → Ollama ClusterIP (cross-parent arrow) -->
+        <mxCell id="252" value="POST /api/generate&lt;br/&gt;Internal ClusterIP only" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7C3AED;strokeWidth=2.5;exitX=0;exitY=0.25;entryX=1;entryY=0.55;fontSize=9;fontColor=#4C1D95;fillColor=#F5F3FF;labelBackgroundColor=#F5F3FF;" edge="1" source="250" target="120" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="308" y="644" />
-              <mxPoint x="308" y="504" />
+              <mxPoint x="290" y="638" />
+              <mxPoint x="290" y="502" />
             </Array>
           </mxGeometry>
         </mxCell>
 
-        <!-- id=253: ClusterIPService(120) → rca_callback(250)  purple dashed -->
-        <mxCell id="253" value="JSON: root_cause&#xa;confidence, fix, severity"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#7C3AED;strokeWidth=2;exitX=1;exitY=0.8;exitDx=0;exitDy=0;entryX=0;entryY=0.4;entryDx=0;entryDy=0;fontSize=9;fontColor=#4C1D95;"
-          edge="1" source="120" target="250" parent="1">
+        <!-- Ollama ClusterIP → rca_callback response -->
+        <mxCell id="253" value="JSON: root_cause,&lt;br/&gt;confidence, fix, severity" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#7C3AED;strokeWidth=2;exitX=1;exitY=0.8;entryX=0;entryY=0.4;fontSize=9;fontColor=#4C1D95;fillColor=#F5F3FF;labelBackgroundColor=#F5F3FF;" edge="1" source="120" target="250" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="320" y="525" />
-              <mxPoint x="320" y="676" />
+              <mxPoint x="302" y="516" />
+              <mxPoint x="302" y="660" />
             </Array>
           </mxGeometry>
         </mxCell>
 
-        <!-- id=350: Scheduler(220) → SparkAppCR(330)  amber -->
-        <!-- Scheduler absolute: parent 200 x=340, child x=270,y=36 → abs x=610,y=304 -->
-        <!-- SparkAppCR absolute: parent 300 x=870, child x=20,y=38 → abs x=890,y=552 -->
-        <mxCell id="350" value="SparkKubernetesOperator"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#D97706;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=9;fontColor=#92400E;"
-          edge="1" source="220" target="330" parent="1">
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- TRINO  (teal)  x=862 y=270 w=430 h=230                    -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="400" value="&lt;img src='https://avatars.githubusercontent.com/u/61451348' width='22' height='22' style='vertical-align:middle;margin-right:6px;border-radius:4px;'/&gt;&lt;b&gt;Trino&lt;/b&gt;" style="swimlane;whiteSpace=wrap;html=1;fillColor=#F0FDFA;strokeColor=#0F766E;strokeWidth=2;fontSize=12;fontStyle=1;startSize=32;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="862" y="270" width="430" height="230" as="geometry" />
+        </mxCell>
+
+        <mxCell id="410" value="&lt;b&gt;Trino Coordinator&lt;/b&gt;&lt;br/&gt;Distributed SQL Query Engine&lt;br/&gt;Federated queries across data sources&lt;br/&gt;Internal REST API · Port 8080&lt;br/&gt;Supports: Hive, JDBC, S3, Kafka connectors" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFBF1;strokeColor=#0F766E;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="400">
+          <mxGeometry x="20" y="42" width="390" height="158" as="geometry" />
+        </mxCell>
+
+        <!-- Airflow Scheduler → Trino (SQL queries) -->
+        <mxCell id="411" value="SQL queries (dashed = optional)" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#0F766E;strokeWidth=1.5;exitX=1;exitY=0.3;entryX=0;entryY=0.65;fontSize=9;fontColor=#0F766E;" edge="1" source="230" target="410" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- id=411: WorkerPod(230) → TrinoCoordinator(410)  teal dashed -->
-        <!-- WorkerPod absolute: parent 200 x=340, child x=122,y=142 → abs x=462,y=410 -->
-        <!-- TrinoCoordinator absolute: parent 400 x=870, child x=20,y=36 → abs x=890,y=304 -->
-        <mxCell id="411" value="SQL queries"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#0F766E;strokeWidth=2;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.7;entryDx=0;entryDy=0;fontSize=9;fontColor=#0F766E;"
-          edge="1" source="230" target="410" parent="1">
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SPARK JOBS  (amber)  x=862 y=518 w=430 h=290              -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="300" value="&lt;img src='https://upload.wikimedia.org/wikipedia/commons/f/f3/Apache_Spark_logo.svg' height='22' style='vertical-align:middle;margin-right:6px;'/&gt;&lt;b&gt;Spark Jobs (ephemeral)&lt;/b&gt;" style="swimlane;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=2;fontSize=12;fontStyle=1;startSize=32;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="862" y="518" width="430" height="290" as="geometry" />
+        </mxCell>
+
+        <mxCell id="330" value="&lt;b&gt;SparkApplication CR&lt;/b&gt;&lt;br/&gt;wordcount-{run_id} · image: apache/spark:3.5.0&lt;br/&gt;restartPolicy: Never (ephemeral pattern)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDE68A;strokeColor=#D97706;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="300">
+          <mxGeometry x="20" y="42" width="390" height="76" as="geometry" />
+        </mxCell>
+
+        <mxCell id="340" value="&lt;b&gt;Driver Pod&lt;/b&gt;&lt;br/&gt;cores: 1&lt;br/&gt;memory: 512m&lt;br/&gt;SA: spark" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="300">
+          <mxGeometry x="20" y="136" width="128" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="341" value="&lt;b&gt;Executor × 2&lt;/b&gt;&lt;br/&gt;cores: 1 each&lt;br/&gt;memory: 512m" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="300">
+          <mxGeometry x="166" y="136" width="128" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="342" value="✓ &lt;b&gt;Deleted after&lt;/b&gt;&lt;br/&gt;completion&lt;br/&gt;ephemeral" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1FAE5;strokeColor=#059669;strokeWidth=1.5;fontSize=10;align=center;" vertex="1" parent="300">
+          <mxGeometry x="312" y="136" width="98" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="343" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#D97706;strokeWidth=1.5;exitX=0.15;exitY=1;entryX=0.5;entryY=0;" edge="1" source="330" target="340" parent="300">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="344" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#D97706;strokeWidth=1.5;exitX=0.45;exitY=1;entryX=0.5;entryY=0;" edge="1" source="330" target="341" parent="300">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- id=343: SparkAppCR(330) → DriverPod(340)  amber (inside parent 300) -->
-        <mxCell id="343" value=""
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#D97706;strokeWidth=2;exitX=0.1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"
-          edge="1" source="330" target="340" parent="300">
+        <!-- Scheduler → SparkApplication CR -->
+        <mxCell id="350" value="SparkKubernetesOperator" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#D97706;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;fontSize=9;fontColor=#92400E;fillColor=#FFFBEB;labelBackgroundColor=#FFFBEB;" edge="1" source="220" target="330" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- id=344: SparkAppCR(330) → Executor(341)  amber (inside parent 300) -->
-        <mxCell id="344" value=""
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#D97706;strokeWidth=2;exitX=0.4;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"
-          edge="1" source="330" target="341" parent="300">
-          <mxGeometry relative="1" as="geometry" />
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- POSTGRESQL  (green)  x=862 y=826 w=430 h=300              -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="500" value="&lt;img src='https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg' width='22' height='22' style='vertical-align:middle;margin-right:6px;'/&gt;&lt;b&gt;PostgreSQL&lt;/b&gt;" style="swimlane;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#16A34A;strokeWidth=2;fontSize=12;fontStyle=1;startSize=32;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="862" y="826" width="430" height="300" as="geometry" />
         </mxCell>
 
-        <!-- id=451: rca_callback(250) → PostgreSQLDetails(510)  green -->
-        <!-- rca_callback absolute: parent 200 x=340, child x=72+370=442 right, y=590+214=804 bottom -->
-        <!-- PostgreSQLDetails absolute: parent 500 x=870, child x=20,y=38 → abs x=890,y=858 -->
-        <mxCell id="451" value="Store RCA result"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#16A34A;strokeWidth=2;exitX=0.8;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;fontSize=9;fontColor=#14532D;"
-          edge="1" source="250" target="510" parent="1">
+        <mxCell id="510" value="&lt;b&gt;dag_metrics table&lt;/b&gt;&lt;br/&gt;dag_id · task_id · run_id · execution_date&lt;br/&gt;duration_seconds · state · error_message&lt;br/&gt;rca_root_cause · rca_category · rca_confidence&lt;br/&gt;rca_immediate_fix · rca_severity&lt;br/&gt;&lt;br/&gt;&lt;b&gt;dag_baselines VIEW&lt;/b&gt;  avg_duration ± 2σ threshold&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Airflow Metadata DB&lt;/b&gt; (shared instance)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#16A34A;strokeWidth=1.5;fontSize=10;align=left;" vertex="1" parent="500">
+          <mxGeometry x="20" y="42" width="390" height="230" as="geometry" />
+        </mxCell>
+
+        <!-- rca_callback → PostgreSQL (store) -->
+        <mxCell id="451" value="Store RCA result" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#16A34A;strokeWidth=2;exitX=0.8;exitY=1;entryX=0.25;entryY=0;fontSize=9;fontColor=#14532D;" edge="1" source="250" target="510" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="689" y="812" />
-              <mxPoint x="1007" y="812" />
+              <mxPoint x="690" y="820" />
+              <mxPoint x="970" y="820" />
             </Array>
           </mxGeometry>
         </mxCell>
 
-        <!-- id=452: PostgreSQLDetails(510) → rca_callback(250)  green dashed -->
-        <mxCell id="452" value="Run history"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#16A34A;strokeWidth=2;exitX=0.1;exitY=0;exitDx=0;exitDy=0;entryX=0.7;entryY=1;entryDx=0;entryDy=0;fontSize=9;fontColor=#14532D;"
-          edge="1" source="510" target="250" parent="1">
+        <!-- PostgreSQL → rca_callback (history, dashed) -->
+        <mxCell id="452" value="run history" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#16A34A;strokeWidth=1.5;exitX=0.1;exitY=0;entryX=0.7;entryY=1;fontSize=9;fontColor=#14532D;" edge="1" source="510" target="250" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="928" y="816" />
-              <mxPoint x="651" y="816" />
+              <mxPoint x="924" y="814" />
+              <mxPoint x="660" y="814" />
             </Array>
           </mxGeometry>
         </mxCell>
 
-        <!-- id=620: SparkOperator(600) → SparkAppCR(330)  amber dashed -->
-        <mxCell id="620" value="Watches + manages pods"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#CA8A04;strokeWidth=2;exitX=0;exitY=0.65;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0;fontSize=9;fontColor=#92400E;"
-          edge="1" source="600" target="330" parent="1">
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SPARK OPERATOR  (external / platform team)                 -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="600" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEFCE8;strokeColor=#CA8A04;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1354" y="192" width="282" height="226" as="geometry" />
+        </mxCell>
+        <mxCell id="600_hdr" value="&lt;img src='https://upload.wikimedia.org/wikipedia/commons/f/f3/Apache_Spark_logo.svg' height='20' style='vertical-align:middle;margin-right:4px;'/&gt;&lt;b&gt;SparkOperator Central&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#713F12;" vertex="1" parent="1">
+          <mxGeometry x="1354" y="196" width="282" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="610" value="&lt;i&gt;Platform Team Managed&lt;/i&gt;&lt;br/&gt;&lt;hr/&gt;Watches SparkApplication CRs&lt;br/&gt;in clmanalytics-dev1&lt;br/&gt;&lt;br/&gt;Cross-namespace RBAC&lt;br/&gt;ServiceAccount: spark&lt;br/&gt;&lt;br/&gt;Manages Driver + Executor pods" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1354" y="226" width="282" height="186" as="geometry" />
+        </mxCell>
+
+        <!-- SparkOperator → SparkApplication (dashed arrow into namespace) -->
+        <mxCell id="620" value="Watches + manages pods" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#CA8A04;strokeWidth=2;exitX=0;exitY=0.65;entryX=1;entryY=0.35;fontSize=9;fontColor=#92400E;" edge="1" source="600" target="330" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- id=740: rca_callback(250) → MEA(710)  crimson -->
-        <mxCell id="740" value="HTML Email via MEA"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#BE123C;strokeWidth=2;exitX=1;exitY=0.35;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=9;fontColor=#881337;"
-          edge="1" source="250" target="710" parent="1">
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- NOTIFICATIONS (external)                                    -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="700" value="Notifications" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1358" y="430" width="200" height="24" as="geometry" />
+        </mxCell>
+
+        <!-- MEA box -->
+        <mxCell id="710" value="✉️ &lt;b&gt;MEA&lt;/b&gt; (Mail Enabled Application)&lt;br/&gt;Internal SMTP · no external relay&lt;hr/&gt;HTML Email with RCA:&lt;br/&gt;• Root cause + confidence score&lt;br/&gt;• Immediate fix (highlighted)&lt;br/&gt;• Severity badge&lt;br/&gt;• Airflow UI deep link" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF1F2;strokeColor=#BE123C;strokeWidth=2;fontSize=10;align=center;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="1354" y="460" width="282" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- DBNotifier → Teams box -->
+        <mxCell id="720" value="&lt;img src='https://upload.wikimedia.org/wikipedia/commons/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg' width='28' height='28' style='vertical-align:middle;margin-right:6px;'/&gt;&lt;b&gt;DBNotifier → MS Teams&lt;/b&gt;&lt;hr/&gt;Internal notification broker&lt;br/&gt;&lt;br/&gt;Teams channel alert:&lt;br/&gt;• DAG + task name&lt;br/&gt;• Root cause (bold, AI-generated)&lt;br/&gt;• Severity + confidence score&lt;br/&gt;• Estimated fix time&lt;br/&gt;• Airflow UI deep link" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;strokeWidth=2;fontSize=10;align=center;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="1354" y="656" width="282" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- SLA callout -->
+        <mxCell id="730" value="⏱️  &lt;b&gt;30–60 seconds&lt;/b&gt;&lt;br/&gt;from failure to notification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1354" y="890" width="282" height="64" as="geometry" />
+        </mxCell>
+
+        <!-- rca_callback → MEA -->
+        <mxCell id="740" value="HTML Email via MEA" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#BE123C;strokeWidth=2;exitX=1;exitY=0.35;entryX=0;entryY=0.5;fontSize=9;fontColor=#881337;" edge="1" source="250" target="710" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- id=741: rca_callback(250) → DBNotifier(720)  dark blue -->
-        <mxCell id="741" value="Teams alert via DBNotifier"
-          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1D4ED8;strokeWidth=2;exitX=1;exitY=0.65;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;fontSize=9;fontColor=#1E3A8A;"
-          edge="1" source="250" target="720" parent="1">
+        <!-- rca_callback → DBNotifier -->
+        <mxCell id="741" value="Teams alert" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1D4ED8;strokeWidth=2;exitX=1;exitY=0.65;entryX=0;entryY=0.3;fontSize=9;fontColor=#1E3A8A;" edge="1" source="250" target="720" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- ============================================================ -->
-        <!-- LEGEND  y=1395                                                 -->
-        <!-- ============================================================ -->
-        <mxCell id="800" value="&lt;b&gt;Legend:&lt;/b&gt;"
-          style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fillColor=none;strokeColor=none;"
-          vertex="1" parent="1">
-          <mxGeometry x="30" y="1398" width="80" height="28" as="geometry" />
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- LEGEND                                                      -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="800" value="&lt;b&gt;Legend:&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1418" width="70" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="801" value="Ollama LLM"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;fontSize=10;"
-          vertex="1" parent="1">
-          <mxGeometry x="118" y="1395" width="100" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="802" value="Airflow"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;fontSize=10;"
-          vertex="1" parent="1">
-          <mxGeometry x="228" y="1395" width="100" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="803" value="Spark Jobs"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDE68A;strokeColor=#D97706;fontSize=10;"
-          vertex="1" parent="1">
-          <mxGeometry x="338" y="1395" width="100" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="804" value="Trino"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFBF1;strokeColor=#0F766E;fontSize=10;"
-          vertex="1" parent="1">
-          <mxGeometry x="448" y="1395" width="100" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="805" value="PostgreSQL"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#16A34A;fontSize=10;"
-          vertex="1" parent="1">
-          <mxGeometry x="558" y="1395" width="100" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="806" value="External/Platform"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF9C3;strokeColor=#CA8A04;fontSize=10;dashed=1;"
-          vertex="1" parent="1">
-          <mxGeometry x="668" y="1395" width="120" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="807" value="MEA (Email)"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF1F2;strokeColor=#BE123C;fontSize=10;"
-          vertex="1" parent="1">
-          <mxGeometry x="798" y="1395" width="100" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="808" value="DBNotifier/Teams"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;fontSize=10;"
-          vertex="1" parent="1">
-          <mxGeometry x="908" y="1395" width="120" height="28" as="geometry" />
-        </mxCell>
+        <mxCell id="801" value="Ollama LLM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;fontSize=10;" vertex="1" parent="1"><mxGeometry x="108" y="1416" width="100" height="26" as="geometry" /></mxCell>
+        <mxCell id="802" value="Airflow" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#0EA5E9;fontSize=10;" vertex="1" parent="1"><mxGeometry x="216" y="1416" width="90" height="26" as="geometry" /></mxCell>
+        <mxCell id="803" value="Spark Jobs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDE68A;strokeColor=#D97706;fontSize=10;" vertex="1" parent="1"><mxGeometry x="314" y="1416" width="90" height="26" as="geometry" /></mxCell>
+        <mxCell id="804" value="Trino" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFBF1;strokeColor=#0F766E;fontSize=10;" vertex="1" parent="1"><mxGeometry x="412" y="1416" width="90" height="26" as="geometry" /></mxCell>
+        <mxCell id="805" value="PostgreSQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#16A34A;fontSize=10;" vertex="1" parent="1"><mxGeometry x="510" y="1416" width="100" height="26" as="geometry" /></mxCell>
+        <mxCell id="806" value="Platform / External" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEFCE8;strokeColor=#CA8A04;fontSize=10;dashed=1;" vertex="1" parent="1"><mxGeometry x="618" y="1416" width="120" height="26" as="geometry" /></mxCell>
+        <mxCell id="807" value="MEA (Internal Mail)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF1F2;strokeColor=#BE123C;fontSize=10;" vertex="1" parent="1"><mxGeometry x="746" y="1416" width="130" height="26" as="geometry" /></mxCell>
+        <mxCell id="808" value="DBNotifier / Teams" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;fontSize=10;" vertex="1" parent="1"><mxGeometry x="884" y="1416" width="120" height="26" as="geometry" /></mxCell>
 
       </root>
     </mxGraphModel>
