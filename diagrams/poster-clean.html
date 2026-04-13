@@ -329,32 +329,6 @@
     }
     .ft-tag span { color: var(--muted); font-weight: 400; font-size: 10px; margin-left: 3px; }
 
-    /* Bottom strip */
-    .bottom-strip {
-      flex-shrink: 0;
-      background: linear-gradient(90deg, #0C2340 0%, #1A1040 100%);
-      border: 1px solid #1E3A5F;
-      border-radius: 8px;
-      padding: 8px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .bs-left { display: flex; align-items: center; gap: 10px; }
-    .bs-left .icon { font-size: 20px; }
-    .bs-left .txt strong { font-size: 12.5px; color: var(--text); display: block; }
-    .bs-left .txt p { font-size: 10.5px; color: var(--muted); }
-    .bs-right { display: flex; gap: 6px; flex-wrap: wrap; }
-    .eb {
-      background: rgba(56,189,248,0.08);
-      border: 1px solid rgba(56,189,248,0.2);
-      border-radius: 5px;
-      padding: 4px 9px;
-      font-size: 10.5px;
-      color: var(--cyan);
-      font-weight: 600;
-    }
   </style>
 </head>
 <body>
@@ -365,12 +339,12 @@
     <div class="header-left">
       <div class="header-eyebrow">&#9679; Innovation PoC &nbsp;|&nbsp; Data Engineering Platform</div>
       <h1>AI-Powered Pipeline Intelligence<br><em>Automated Root Cause Analysis</em></h1>
-      <div class="header-sub">Apache Airflow &nbsp;·&nbsp; Apache Spark &nbsp;·&nbsp; Ollama LLM (gemma2:2b) &nbsp;·&nbsp; Google Kubernetes Engine</div>
+      <div class="header-sub">Apache Airflow &nbsp;·&nbsp; Ollama LLM (gemma2:2b) &nbsp;·&nbsp; GKE &nbsp;·&nbsp; Namespace: <strong style="color:#fff">clmanalytics-dev1</strong></div>
     </div>
     <div class="header-right">
       <div class="hbadge">&#128274; <strong>Air-Gapped</strong> — No external API</div>
       <div class="hbadge">&#129504; <strong>LLM</strong> runs inside cluster</div>
-      <div class="hbadge">&#9729; Mirrors <strong>GDC</strong> enterprise pattern</div>
+      <div class="hbadge">&#128231; <strong>Mail Enabled App</strong> notifications</div>
     </div>
   </div>
 
@@ -512,7 +486,7 @@
           <div class="flow-node fn5">
             <div class="fn-num">5</div>
             <div class="fn-title">Notify + Store</div>
-            <div class="fn-desc">Email + Slack sent · saved to PostgreSQL</div>
+            <div class="fn-desc">Mail Enabled App (dist list) · Slack · PostgreSQL</div>
           </div>
         </div>
         <div class="flow-arrows">
@@ -526,41 +500,63 @@
 
       <!-- Architecture -->
       <div class="card" style="border-top:2.5px solid var(--green); flex:1; overflow:hidden;">
-        <div class="card-title ct-green">&#9729; GKE Architecture — Namespace Isolation</div>
-        <div class="arch-ns-grid">
-          <div class="ns ns-af">
-            <div class="ns-name">ns: airflow</div>
-            <ul class="ns-items">
-              <li><span class="ns-dot"></span>Airflow 2.9.2 (Helm)</li>
-              <li><span class="ns-dot"></span>KubernetesExecutor</li>
-              <li><span class="ns-dot"></span>on_failure_callback → Ollama</li>
-            </ul>
+        <div class="card-title ct-green">&#9729; GKE Architecture — Namespace: clmanalytics-dev1</div>
+
+        <!-- Single namespace wrapper -->
+        <div style="border:1.5px solid #334155;border-radius:8px;padding:8px 10px;margin-bottom:8px;">
+          <div style="font-size:9px;font-weight:700;color:#475569;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;text-align:center;">
+            &#9096; clmanalytics-dev1 &nbsp;·&nbsp; GKE Cluster
           </div>
-          <div class="ns ns-sp">
-            <div class="ns-name">ns: spark-operator / spark-jobs</div>
-            <ul class="ns-items">
-              <li><span class="ns-dot"></span>Spark Operator (Helm)</li>
-              <li><span class="ns-dot"></span>Ephemeral SparkApplication</li>
-              <li><span class="ns-dot"></span>restartPolicy: Never</li>
-            </ul>
-          </div>
-          <div class="ns ns-llm">
-            <div class="ns-name">ns: llm-serving</div>
-            <ul class="ns-items">
-              <li><span class="ns-dot"></span>Ollama + gemma2:2b</li>
-              <li><span class="ns-dot"></span>ClusterIP :11434 (no egress)</li>
-              <li><span class="ns-dot"></span>30GB PVC · NetworkPolicy</li>
-            </ul>
-          </div>
-          <div class="ns ns-mo">
-            <div class="ns-name">ns: monitoring</div>
-            <ul class="ns-items">
-              <li><span class="ns-dot"></span>PostgreSQL (dag_metrics)</li>
-              <li><span class="ns-dot"></span>Prometheus + Grafana</li>
-              <li><span class="ns-dot"></span>Anomaly baselines (30-day)</li>
-            </ul>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;">
+
+            <div class="ns ns-af">
+              <div class="ns-name">Airflow</div>
+              <ul class="ns-items">
+                <li><span class="ns-dot"></span>Webserver + Scheduler</li>
+                <li><span class="ns-dot"></span>KubernetesExecutor</li>
+                <li><span class="ns-dot"></span>DAGs + on_failure_callback</li>
+                <li><span class="ns-dot"></span>Anomaly detection DAG</li>
+              </ul>
+            </div>
+
+            <div class="ns ns-llm">
+              <div class="ns-name">Ollama LLM</div>
+              <ul class="ns-items">
+                <li><span class="ns-dot"></span>gemma2:2b (CPU mode)</li>
+                <li><span class="ns-dot"></span>ClusterIP :11434 only</li>
+                <li><span class="ns-dot"></span>Zero internet egress</li>
+                <li><span class="ns-dot"></span>NetworkPolicy enforced</li>
+              </ul>
+            </div>
+
+            <div class="ns ns-mo">
+              <div class="ns-name">PostgreSQL</div>
+              <ul class="ns-items">
+                <li><span class="ns-dot"></span>dag_metrics table</li>
+                <li><span class="ns-dot"></span>RCA history + baselines</li>
+                <li><span class="ns-dot"></span>30-day anomaly view</li>
+                <li><span class="ns-dot"></span>Can integrate: Grafana</li>
+              </ul>
+            </div>
+
           </div>
         </div>
+
+        <!-- Notifications (external) -->
+        <div style="border:1px solid rgba(56,189,248,0.2);border-radius:7px;padding:7px 10px;background:rgba(56,189,248,0.04);margin-bottom:7px;">
+          <div style="font-size:9px;font-weight:700;color:#38BDF8;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">&#128231; Notifications (triggered on failure &amp; anomaly)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:6px 8px;">
+              <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:2px;">&#128231; Mail Enabled Application</div>
+              <div style="font-size:10.5px;color:var(--muted);">AI-generated RCA report emailed to distribution list · HTML template · severity badge · exact fix steps</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:6px 8px;">
+              <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:2px;">&#128172; Slack Alert</div>
+              <div style="font-size:10.5px;color:var(--muted);">Block Kit format · root cause · immediate fix · confidence score · link to Airflow UI</div>
+            </div>
+          </div>
+        </div>
+
         <div class="arch-flow">
           <div class="af-row">
             <span class="af-src">DAG fails</span>
@@ -572,10 +568,10 @@
             <span class="af-dst">Ollama :11434</span>
             <span class="af-arrow">&#9658;</span>
             <span class="af-line"></span>
-            <span class="af-lbl">parse JSON</span>
+            <span class="af-lbl">parse JSON · store</span>
             <span class="af-line"></span>
             <span class="af-arrow">&#9658;</span>
-            <span class="af-dst">Email + Slack + DB</span>
+            <span class="af-dst">Mail App + Slack</span>
           </div>
         </div>
       </div>
@@ -586,29 +582,12 @@
   <div class="footer">
     <span class="ft-label">Stack</span>
     <span class="ft-tag">Airflow 2.9.2 <span>KubernetesExecutor · Helm</span></span>
-    <span class="ft-tag">Spark 3.5 <span>Operator · Ephemeral</span></span>
     <span class="ft-tag">Ollama + gemma2:2b <span>CPU · ClusterIP · 1.6 GB</span></span>
-    <span class="ft-tag">GKE Standard <span>Spot · e2-standard-4</span></span>
-    <span class="ft-tag">PostgreSQL <span>dag_metrics</span></span>
-    <span class="ft-tag">Prometheus + Grafana</span>
+    <span class="ft-tag">GKE Standard <span>clmanalytics-dev1</span></span>
+    <span class="ft-tag">PostgreSQL <span>dag_metrics · RCA history</span></span>
+    <span class="ft-tag">Mail Enabled Application <span>dist list · HTML RCA report</span></span>
+    <span class="ft-tag">Slack <span>Block Kit alerts</span></span>
     <span class="ft-tag">Python 3.11 · Helm 3</span>
-  </div>
-
-  <!-- ── BOTTOM STRIP ───────────────────────── -->
-  <div class="bottom-strip">
-    <div class="bs-left">
-      <div class="icon">&#127959;</div>
-      <div class="txt">
-        <strong>Enterprise-Ready — Architecturally identical to GDC production deployment</strong>
-        <p>Same Helm chart · Same KubernetesExecutor · Same ephemeral Spark pattern · Lift-and-shift to on-prem GDC by updating endpoint URLs only</p>
-      </div>
-    </div>
-    <div class="bs-right">
-      <div class="eb">&#10003; Same Airflow Helm as GDC</div>
-      <div class="eb">&#10003; Air-gapped LLM (zero egress)</div>
-      <div class="eb">&#10003; NetworkPolicy isolation</div>
-      <div class="eb">&#10003; ~0.4 FTE equivalent value / yr</div>
-    </div>
   </div>
 
 </div>
