@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DAG Failure Handling – Current vs AI-Enhanced Future State</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      background: #f6f8fb;
+      color: #1f2937;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+    h1, h2, h3 {
+      margin: 0 0 12px 0;
+    }
+    .subtitle {
+      color: #4b5563;
+      margin-bottom: 24px;
+      font-size: 16px;
+    }
+    .section {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .pill.current { background: #fee2e2; color: #991b1b; }
+    .pill.future { background: #dcfce7; color: #166534; }
+    ul {
+      margin: 8px 0 0 20px;
+      line-height: 1.6;
+    }
+    li { margin-bottom: 6px; }
+    .story-box {
+      border-left: 5px solid #2563eb;
+      padding-left: 16px;
+      line-height: 1.7;
+      color: #374151;
+    }
+    .impact {
+      background: #eef6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+    .diagram-wrap {
+      overflow-x: auto;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .label {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .small {
+      font-size: 12px;
+      fill: #4b5563;
+    }
+    .box-title {
+      font-size: 14px;
+      font-weight: 700;
+      fill: #111827;
+    }
+    .box-text {
+      font-size: 12px;
+      fill: #374151;
+    }
+    .footnote {
+      color: #6b7280;
+      font-size: 13px;
+      margin-top: 14px;
+    }
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #4b5563;
+    }
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 8px;
+      vertical-align: -1px;
+    }
+    .lg1::before { background: #dbeafe; }
+    .lg2::before { background: #fee2e2; }
+    .lg3::before { background: #dcfce7; }
+    .lg4::before { background: #f3f4f6; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>DAG Failure Handling Story</h1>
+    <div class="subtitle">
+      A simple management view of the current production support flow vs the AI-enhanced target state in GDC.
+    </div>
+
+    <div class="section">
+      <h2>1) The Story</h2>
+      <div class="story-box">
+        Today, the existing production workflow depends on scheduled jobs and orchestration across Apache DAGs, Control-M, and Spark submit execution. The process works functionally, but when a production DAG fails, the response is largely reactive. Geneos detects the issue and sends an alert email to the support team. From there, the support and development teams manually inspect logs, trace dependencies, and spend valuable time identifying the actual root cause before they can begin fixing the issue. This creates a delay between failure detection and meaningful resolution, especially when the logs are noisy, the failure is buried deep in execution details, or multiple teams need to collaborate.
+        <br><br>
+        As part of the GDC migration, the workflow is being modernized. Airflow is now orchestrating DAGs, with Trino and Iceberg supporting the data platform flow, and scheduled DAG execution continues without requiring separate Spark application submission in the same way as before. On top of this functional flow, an AI layer has been introduced using Gemma LLM running via Ollama. Now, when a DAG fails, the LLM is triggered automatically, reads the failure logs, analyzes the execution context, and produces a plain-English root cause analysis with probable fixes and additional technical clues. Instead of engineers starting from raw logs, they start with a guided diagnosis. This reduces mean time to identify issues, improves support efficiency, and helps teams move faster from alert to resolution.
+      </div>
+      <div class="impact">
+        <strong>Business impact:</strong> This changes the process from <strong>manual log hunting</strong> to <strong>AI-assisted troubleshooting</strong>, reducing debugging effort, speeding up response time, and making production support more consistent and scalable.
+      </div>
+    </div>
+
+    <div class="section grid-2">
+      <div>
+        <span class="pill current">Current State</span>
+        <h3>Existing workflow</h3>
+        <ul>
+          <li>Apache DAGs and Control-M coordinate production job execution.</li>
+          <li>Control-M performs Spark submit to run the application.</li>
+          <li>Jobs run on schedule and complete successfully in normal cases.</li>
+          <li>When a DAG fails in production, Geneos triggers an alert email.</li>
+          <li>Support team receives the alert and engages the development team.</li>
+          <li>Engineers manually inspect large logs and traces to find the root cause.</li>
+          <li>Fixing starts only after significant analysis effort.</li>
+        </ul>
+      </div>
+      <div>
+        <span class="pill future">Proposed AI-Enhanced State</span>
+        <h3>Your solution in GDC</h3>
+        <ul>
+          <li>Airflow orchestrates DAGs in the new GDC-based data platform.</li>
+          <li>Trino and Iceberg are part of the runtime data ecosystem.</li>
+          <li>DAGs continue running on schedule in the target setup.</li>
+          <li>On DAG failure, Gemma LLM via Ollama is triggered automatically.</li>
+          <li>The model reads logs and execution details from the failed run.</li>
+          <li>It generates RCA in plain English with likely cause and possible fixes.</li>
+          <li>Support and dev teams start from guided insights instead of raw log exploration.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2) Simple Flow Diagram</h2>
+      <div class="diagram-wrap">
+        <svg width="1320" height="830" viewBox="0 0 1320 830" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"></path>
+            </marker>
+          </defs>
+
+          <!-- Titles -->
+          <text x="70" y="40" class="label">A. Existing Production Workflow</text>
+          <text x="70" y="430" class="label">B. GDC Workflow with AI-Assisted RCA</text>
+
+          <!-- Existing section background -->
+          <rect x="40" y="55" width="1240" height="300" rx="18" fill="#fff7f7" stroke="#fecaca" />
+          <!-- Future section background -->
+          <rect x="40" y="445" width="1240" height="330" rx="18" fill="#f4fff7" stroke="#bbf7d0" />
+
+          <!-- Existing boxes -->
+          <rect x="70" y="130" width="150" height="70" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="122" y="157" class="box-title">Apache DAGs</text>
+          <text x="110" y="176" class="box-text">scheduled jobs</text>
+
+          <rect x="280" y="130" width="160" height="70" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="334" y="157" class="box-title">Control-M</text>
+          <text x="310" y="176" class="box-text">orchestration trigger</text>
+
+          <rect x="500" y="130" width="180" height="70" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="542" y="157" class="box-title">Spark Submit</text>
+          <text x="532" y="176" class="box-text">job execution call</text>
+
+          <rect x="740" y="130" width="180" height="70" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="780" y="157" class="box-title">Job Runs</text>
+          <text x="758" y="176" class="box-text">normal scheduled flow</text>
+
+          <rect x="980" y="130" width="190" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5"/>
+          <text x="1037" y="157" class="box-title">DAG Failure</text>
+          <text x="1010" y="176" class="box-text">production incident occurs</text>
+
+          <rect x="980" y="245" width="190" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5"/>
+          <text x="1035" y="272" class="box-title">Geneos Alert</text>
+          <text x="1006" y="291" class="box-text">email sent to support team</text>
+
+          <rect x="740" y="245" width="180" height="70" rx="12" fill="#f3f4f6" stroke="#d1d5db"/>
+          <text x="781" y="272" class="box-title">Support Team</text>
+          <text x="761" y="291" class="box-text">receives incident alert</text>
+
+          <rect x="500" y="245" width="180" height="70" rx="12" fill="#f3f4f6" stroke="#d1d5db"/>
+          <text x="536" y="272" class="box-title">Dev Team</text>
+          <text x="518" y="291" class="box-text">manual investigation</text>
+
+          <rect x="280" y="245" width="160" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5"/>
+          <text x="306" y="266" class="box-title">Read Logs</text>
+          <text x="300" y="284" class="box-text">search traces, stack,</text>
+          <text x="312" y="300" class="box-text">dependencies</text>
+
+          <rect x="70" y="245" width="150" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5"/>
+          <text x="104" y="272" class="box-title">Fix Issue</text>
+          <text x="88" y="291" class="box-text">after time-consuming RCA</text>
+
+          <!-- Existing arrows -->
+          <line x1="220" y1="165" x2="280" y2="165" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="440" y1="165" x2="500" y2="165" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="680" y1="165" x2="740" y2="165" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="920" y1="165" x2="980" y2="165" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="1075" y1="200" x2="1075" y2="245" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="980" y1="280" x2="920" y2="280" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="740" y1="280" x2="680" y2="280" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="500" y1="280" x2="440" y2="280" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="280" y1="280" x2="220" y2="280" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+          <text x="550" y="338" class="small">Pain point: alert comes quickly, but RCA is manual, slow, and dependent on deep log analysis.</text>
+
+          <!-- Future boxes -->
+          <rect x="70" y="530" width="150" height="70" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="113" y="557" class="box-title">Airflow</text>
+          <text x="98" y="576" class="box-text">scheduled DAGs</text>
+
+          <rect x="280" y="530" width="160" height="70" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="330" y="557" class="box-title">Trino</text>
+          <text x="304" y="576" class="box-text">query / processing layer</text>
+
+          <rect x="500" y="530" width="160" height="70" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="549" y="557" class="box-title">Iceberg</text>
+          <text x="521" y="576" class="box-text">table / storage layer</text>
+
+          <rect x="720" y="530" width="180" height="70" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="759" y="557" class="box-title">DAG Runs</text>
+          <text x="744" y="576" class="box-text">normal scheduled flow</text>
+
+          <rect x="960" y="530" width="190" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5"/>
+          <text x="1018" y="557" class="box-title">DAG Failure</text>
+          <text x="992" y="576" class="box-text">production issue detected</text>
+
+          <rect x="960" y="645" width="190" height="80" rx="12" fill="#dcfce7" stroke="#86efac"/>
+          <text x="995" y="672" class="box-title">Ollama + Gemma</text>
+          <text x="979" y="691" class="box-text">triggered automatically</text>
+          <text x="988" y="708" class="box-text">on DAG failure</text>
+
+          <rect x="720" y="650" width="180" height="70" rx="12" fill="#dcfce7" stroke="#86efac"/>
+          <text x="757" y="677" class="box-title">Read Logs</text>
+          <text x="735" y="696" class="box-text">analyze error context</text>
+
+          <rect x="500" y="650" width="160" height="70" rx="12" fill="#dcfce7" stroke="#86efac"/>
+          <text x="533" y="671" class="box-title">Plain-English RCA</text>
+          <text x="525" y="689" class="box-text">cause summary</text>
+          <text x="519" y="706" class="box-text">with pinpoint clues</text>
+
+          <rect x="280" y="650" width="160" height="70" rx="12" fill="#dcfce7" stroke="#86efac"/>
+          <text x="313" y="677" class="box-title">Possible Fixes</text>
+          <text x="297" y="696" class="box-text">likely solution paths</text>
+
+          <rect x="70" y="650" width="150" height="70" rx="12" fill="#f3f4f6" stroke="#d1d5db"/>
+          <text x="92" y="677" class="box-title">Support + Dev</text>
+          <text x="84" y="696" class="box-text">act faster with guidance</text>
+
+          <!-- Future arrows -->
+          <line x1="220" y1="565" x2="280" y2="565" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="440" y1="565" x2="500" y2="565" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="660" y1="565" x2="720" y2="565" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="900" y1="565" x2="960" y2="565" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="1055" y1="600" x2="1055" y2="645" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="960" y1="685" x2="900" y2="685" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="720" y1="685" x2="660" y2="685" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="500" y1="685" x2="440" y2="685" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <line x1="280" y1="685" x2="220" y2="685" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+          <text x="457" y="750" class="small">Outcome: from manual troubleshooting to AI-guided root cause analysis and faster resolution.</text>
+        </svg>
+      </div>
+
+      <div class="legend">
+        <span class="lg1">Core workflow components</span>
+        <span class="lg2">Failure / pain areas</span>
+        <span class="lg3">AI enhancement</span>
+        <span class="lg4">Human response/action</span>
+      </div>
+      <div class="footnote">
+        Suggested presentation message: <strong>“The functional flow remains intact, but the support model changes dramatically. Instead of engineers starting from raw logs after an alert, they start with AI-generated RCA and likely fixes.”</strong>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

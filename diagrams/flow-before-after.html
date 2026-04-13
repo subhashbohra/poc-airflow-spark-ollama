@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pipeline Intelligence — Before vs After</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:     #0B1320;
+      --card:   #162032;
+      --dim:    #334155;
+      --muted:  #94A3B8;
+      --text:   #F1F5F9;
+      --red:    #F87171;
+      --amber:  #FBBF24;
+      --cyan:   #38BDF8;
+      --green:  #34D399;
+      --purple: #A78BFA;
+      --orange: #FB923C;
+    }
+
+    html, body {
+      background: var(--bg);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: var(--text);
+    }
+
+    .diagram {
+      width: 1280px;
+      height: 900px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    /* ── HEADER ─────────────────────────── */
+    .hdr {
+      background: linear-gradient(110deg, #0F172A 0%, #1E1040 100%);
+      border: 1px solid #1E3A5F;
+      border-radius: 10px;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .hdr-left .eyebrow {
+      font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #64748B; margin-bottom: 3px;
+    }
+    .hdr-left h1 { font-size: 20px; font-weight: 900; color: #fff; line-height: 1.1; }
+    .hdr-left h1 em { color: #67E8F9; font-style: normal; }
+    .hdr-left p { font-size: 11px; color: #64748B; margin-top: 3px; }
+    .hdr-right { display: flex; gap: 8px; }
+    .hdr-badge {
+      border-radius: 6px; padding: 5px 12px; font-size: 11px; font-weight: 700;
+    }
+    .hdr-before { background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.3); color: #FB923C; }
+    .hdr-after  { background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.3); color: #34D399; }
+
+    /* ── COLUMNS ─────────────────────────── */
+    .cols {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 164px 1fr;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    /* ── COLUMN WRAPPERS ─────────────────── */
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 0 8px;
+    }
+    .col-hdr {
+      border-radius: 8px 8px 0 0;
+      padding: 8px 14px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .col-before .col-hdr {
+      background: rgba(251,146,60,0.1);
+      border: 1px solid rgba(251,146,60,0.25);
+      color: #FB923C;
+    }
+    .col-after .col-hdr {
+      background: rgba(52,211,153,0.1);
+      border: 1px solid rgba(52,211,153,0.25);
+      color: #34D399;
+    }
+
+    /* ── FLOW NODE ───────────────────────── */
+    .node {
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: var(--card);
+      position: relative;
+    }
+    .node-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; line-height: 1; }
+    .node-body { flex: 1; min-width: 0; }
+    .node-title { font-size: 12.5px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .node-sub   { font-size: 10.5px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+    .node-tag {
+      display: inline-block; margin-top: 4px;
+      border-radius: 4px; padding: 2px 7px;
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px;
+    }
+
+    /* node colours */
+    .node-normal  { background: #162032; border-color: rgba(255,255,255,0.07); }
+    .node-fail    { background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.35); }
+    .node-pain    { background: rgba(251,146,60,0.08); border-color: rgba(251,146,60,0.3); }
+    .node-ai      { background: rgba(167,139,250,0.1); border-color: rgba(167,139,250,0.4); border-width: 1.5px; }
+    .node-good    { background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.3); }
+    .node-notify  { background: rgba(56,189,248,0.07); border-color: rgba(56,189,248,0.25); }
+    .node-stack   { background: rgba(56,189,248,0.05); border-color: rgba(56,189,248,0.2); }
+
+    /* tag colours */
+    .tag-red    { background: rgba(248,113,113,0.15); color: var(--red); }
+    .tag-amber  { background: rgba(251,191,36,0.15);  color: var(--amber); }
+    .tag-orange { background: rgba(251,146,60,0.15);  color: var(--orange); }
+    .tag-green  { background: rgba(52,211,153,0.15);  color: var(--green); }
+    .tag-purple { background: rgba(167,139,250,0.15); color: var(--purple); }
+    .tag-cyan   { background: rgba(56,189,248,0.15);  color: var(--cyan); }
+
+    /* ── ARROW ───────────────────────────── */
+    .arrow {
+      text-align: center;
+      color: #334155;
+      font-size: 16px;
+      padding: 2px 0;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .arrow-fail { color: rgba(248,113,113,0.6); }
+    .arrow-ai   { color: rgba(167,139,250,0.7); }
+    .arrow-good { color: rgba(52,211,153,0.6); }
+
+    /* ── MIDDLE DIVIDER ──────────────────── */
+    .mid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 44px;
+      gap: 0;
+    }
+
+    .vs-pill {
+      background: linear-gradient(135deg, #1E1040, #0C2040);
+      border: 2px solid #334155;
+      border-radius: 50%;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 900; color: #64748B;
+      margin-bottom: 12px;
+    }
+
+    .mid-line {
+      width: 1px;
+      background: #1E2D40;
+      flex: 1;
+      margin: 0 auto;
+    }
+
+    .diff-block {
+      background: linear-gradient(135deg, #0F0820, #081828);
+      border: 1px solid #1E3A5F;
+      border-radius: 8px;
+      padding: 10px 10px;
+      width: 148px;
+      text-align: center;
+      margin: 10px 0;
+    }
+    .diff-block .db-title {
+      font-size: 9px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: #475569; margin-bottom: 6px;
+    }
+    .diff-row {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 10px; margin-bottom: 4px;
+    }
+    .diff-row:last-child { margin-bottom: 0; }
+    .diff-before { color: #F87171; font-weight: 600; flex: 1; text-align: right; font-size: 10px; }
+    .diff-arrow  { color: #334155; flex-shrink: 0; }
+    .diff-after  { color: #34D399; font-weight: 700; flex: 1; text-align: left; font-size: 10px; }
+
+    /* ── SECTION LABELS ──────────────────── */
+    .section-lbl {
+      font-size: 9px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+      text-align: center; margin: 4px 0;
+    }
+    .sl-orch { background: rgba(56,189,248,0.07);  color: #38BDF8;  border: 1px solid rgba(56,189,248,0.15); }
+    .sl-fail { background: rgba(239,68,68,0.07);   color: #F87171;  border: 1px solid rgba(239,68,68,0.2); }
+    .sl-resp { background: rgba(251,146,60,0.07);  color: #FB923C;  border: 1px solid rgba(251,146,60,0.2); }
+    .sl-ai   { background: rgba(167,139,250,0.07); color: #A78BFA;  border: 1px solid rgba(167,139,250,0.2); }
+    .sl-res  { background: rgba(52,211,153,0.07);  color: #34D399;  border: 1px solid rgba(52,211,153,0.2); }
+
+    /* ── FOOTER ──────────────────────────── */
+    .footer {
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .footer-box {
+      border-radius: 7px; padding: 8px 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .fb-before {
+      background: rgba(251,146,60,0.06);
+      border: 1px solid rgba(251,146,60,0.2);
+    }
+    .fb-after {
+      background: rgba(52,211,153,0.06);
+      border: 1px solid rgba(52,211,153,0.2);
+    }
+    .fb-icon { font-size: 20px; flex-shrink: 0; }
+    .fb-text strong { font-size: 12px; display: block; margin-bottom: 1px; }
+    .fb-before .fb-text strong { color: #FB923C; }
+    .fb-after  .fb-text strong { color: #34D399; }
+    .fb-text span { font-size: 10.5px; color: var(--muted); }
+  </style>
+</head>
+<body>
+<div class="diagram">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="eyebrow">Data Engineering Platform &nbsp;·&nbsp; GDC Migration</div>
+      <h1>Pipeline Failure Response — <em>Before &amp; After AI</em></h1>
+      <p>How we moved from manual 60–90 min debugging to AI-generated RCA in 30 seconds</p>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-badge hdr-before">&#9711; Current State (On-Prem)</div>
+      <div class="hdr-badge hdr-after">&#10003; GDC Migration + AI Intelligence</div>
+    </div>
+  </div>
+
+  <!-- MAIN COLUMNS -->
+  <div class="cols">
+
+    <!-- ════════════════════════════════ -->
+    <!-- LEFT: CURRENT STATE             -->
+    <!-- ════════════════════════════════ -->
+    <div class="col col-before">
+      <div class="col-hdr">&#9711; Current State — On-Prem</div>
+
+      <!-- Orchestration -->
+      <div class="section-lbl sl-orch">Orchestration &amp; Execution</div>
+      <div class="node node-stack">
+        <div class="node-icon">📅</div>
+        <div class="node-body">
+          <div class="node-title">Control-M Scheduler</div>
+          <div class="node-sub">Schedules and triggers all pipeline jobs · manages dependencies</div>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+
+      <div class="node node-stack">
+        <div class="node-icon">🔁</div>
+        <div class="node-body">
+          <div class="node-title">Apache DAGs &nbsp;+&nbsp; Spark Operator</div>
+          <div class="node-sub">DAGs orchestrate workflow steps · Control-M triggers <code style="color:#67E8F9;font-size:10px">spark-submit</code> for heavy compute jobs</div>
+          <span class="node-tag tag-cyan">Apache Airflow</span>
+          <span class="node-tag tag-orange" style="margin-left:4px">Spark Operator</span>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+
+      <div class="node node-normal">
+        <div class="node-icon">✅</div>
+        <div class="node-body">
+          <div class="node-title">Pipeline Running in Production</div>
+          <div class="node-sub">Data processing, transformations, loads — all running normally</div>
+        </div>
+      </div>
+
+      <!-- Failure -->
+      <div class="section-lbl sl-fail" style="margin-top:6px">DAG Failure</div>
+      <div class="node node-fail">
+        <div class="node-icon">❌</div>
+        <div class="node-body">
+          <div class="node-title">DAG Task Fails in Production</div>
+          <div class="node-sub">Exception raised — could be data issue, resource, connectivity, config</div>
+          <span class="node-tag tag-red">Unplanned Outage</span>
+        </div>
+      </div>
+      <div class="arrow arrow-fail">↓</div>
+
+      <!-- Response -->
+      <div class="section-lbl sl-resp">Failure Response</div>
+      <div class="node node-pain">
+        <div class="node-icon">🔔</div>
+        <div class="node-body">
+          <div class="node-title">Geneos Triggered</div>
+          <div class="node-sub">Monitoring alert fires · generic failure notification sent</div>
+          <span class="node-tag tag-amber">Generic Alert</span>
+        </div>
+      </div>
+      <div class="arrow arrow-fail">↓</div>
+
+      <div class="node node-pain">
+        <div class="node-icon">📧</div>
+        <div class="node-body">
+          <div class="node-title">Email to Support Team</div>
+          <div class="node-sub">Raw error message only · no context · no suggested fix</div>
+          <span class="node-tag tag-amber">No Root Cause</span>
+        </div>
+      </div>
+      <div class="arrow arrow-fail">↓</div>
+
+      <div class="node node-fail">
+        <div class="node-icon">🔍</div>
+        <div class="node-body">
+          <div class="node-title">Dev Team: Manual Investigation</div>
+          <div class="node-sub">grep logs · kubectl · check metrics · cross-reference Spark logs · identify source · formulate fix</div>
+          <span class="node-tag tag-red">60 – 90 minutes</span>
+          <span class="node-tag tag-red" style="margin-left:4px">Skilled Eng. Required</span>
+        </div>
+      </div>
+      <div class="arrow arrow-fail">↓</div>
+
+      <div class="node node-pain">
+        <div class="node-icon">🛠️</div>
+        <div class="node-body">
+          <div class="node-title">Root Cause Found &amp; Fixed</div>
+          <div class="node-sub">Eventually resolved — but depends on engineer availability and expertise</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- MIDDLE DIVIDER                  -->
+    <!-- ════════════════════════════════ -->
+    <div class="mid">
+      <div class="vs-pill">VS</div>
+
+      <div class="diff-block">
+        <div class="db-title">Key Differences</div>
+        <div class="diff-row">
+          <span class="diff-before">Control-M</span>
+          <span class="diff-arrow">→</span>
+          <span class="diff-after">Airflow</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-before">Spark Jobs</span>
+          <span class="diff-arrow">→</span>
+          <span class="diff-after">Trino + Iceberg</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-before">Geneos</span>
+          <span class="diff-arrow">→</span>
+          <span class="diff-after">Ollama LLM</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-before">Manual debug</span>
+          <span class="diff-arrow">→</span>
+          <span class="diff-after">AI RCA auto</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-before">60–90 min</span>
+          <span class="diff-arrow">→</span>
+          <span class="diff-after">30 sec</span>
+        </div>
+      </div>
+
+      <div class="mid-line"></div>
+
+      <div class="diff-block" style="margin-top:8px;">
+        <div class="db-title">What stays the same</div>
+        <div style="font-size:10px;color:#64748B;line-height:1.6;text-align:left;">
+          ✓ DAGs still orchestrate<br>
+          ✓ Same pipeline logic<br>
+          ✓ Email notifications<br>
+          ✓ Support team flow<br>
+          ✓ Scheduled triggers
+        </div>
+      </div>
+
+      <div class="mid-line"></div>
+
+      <div class="diff-block" style="margin-top:8px;border-color:rgba(167,139,250,0.3);">
+        <div class="db-title" style="color:#A78BFA;">AI Addition</div>
+        <div style="font-size:10px;color:#94A3B8;line-height:1.6;text-align:left;">
+          + Gemma LLM (Ollama)<br>
+          + Auto log analysis<br>
+          + Plain English RCA<br>
+          + Possible solutions<br>
+          + Confidence score
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- RIGHT: GDC + AI                 -->
+    <!-- ════════════════════════════════ -->
+    <div class="col col-after">
+      <div class="col-hdr">&#10003; GDC Migration + AI Intelligence</div>
+
+      <!-- Orchestration -->
+      <div class="section-lbl sl-orch">Orchestration &amp; Execution</div>
+      <div class="node node-stack" style="border-color:rgba(52,211,153,0.2);">
+        <div class="node-icon">⚙️</div>
+        <div class="node-body">
+          <div class="node-title">Apache Airflow — DAGs on Schedule</div>
+          <div class="node-sub">Airflow natively orchestrates all pipelines · no external scheduler needed</div>
+          <span class="node-tag tag-green">Replaces Control-M</span>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+
+      <div class="node node-stack" style="border-color:rgba(56,189,248,0.2);">
+        <div class="node-icon">🗂️</div>
+        <div class="node-body">
+          <div class="node-title">Trino &nbsp;+&nbsp; Apache Iceberg</div>
+          <div class="node-sub">Distributed SQL via Trino · Iceberg for ACID table format · no Spark cluster needed</div>
+          <span class="node-tag tag-cyan">Replaces Spark Jobs</span>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+
+      <div class="node node-normal">
+        <div class="node-icon">✅</div>
+        <div class="node-body">
+          <div class="node-title">Pipeline Running in Production</div>
+          <div class="node-sub">DAGs running on GDC · same business logic, modern stack</div>
+        </div>
+      </div>
+
+      <!-- Failure -->
+      <div class="section-lbl sl-fail" style="margin-top:6px">DAG Failure</div>
+      <div class="node node-fail">
+        <div class="node-icon">❌</div>
+        <div class="node-body">
+          <div class="node-title">DAG Task Fails in Production</div>
+          <div class="node-sub">Exception raised — <code style="color:#67E8F9;font-size:10px">on_failure_callback</code> fires automatically</div>
+          <span class="node-tag tag-red">Auto-Detected</span>
+        </div>
+      </div>
+      <div class="arrow arrow-ai">↓</div>
+
+      <!-- AI Response -->
+      <div class="section-lbl sl-ai">AI-Powered Response</div>
+      <div class="node node-ai">
+        <div class="node-icon">🧠</div>
+        <div class="node-body">
+          <div class="node-title">Ollama — Gemma LLM Triggered</div>
+          <div class="node-sub">Automatically reads last 100 log lines · error type · run history · baseline duration — all passed as structured prompt</div>
+          <span class="node-tag tag-purple">gemma2:2b · Inside Cluster · No External API</span>
+        </div>
+      </div>
+      <div class="arrow arrow-ai">↓</div>
+
+      <div class="node node-ai">
+        <div class="node-icon">💡</div>
+        <div class="node-body">
+          <div class="node-title">AI Generates RCA — Plain English</div>
+          <div class="node-sub">Root cause in one sentence · exact fix steps · severity · confidence score · retry recommendation · estimated fix time</div>
+          <span class="node-tag tag-purple">Structured JSON → Human-Readable</span>
+          <span class="node-tag tag-green" style="margin-left:4px">~30 Seconds</span>
+        </div>
+      </div>
+      <div class="arrow arrow-good">↓</div>
+
+      <!-- Resolution -->
+      <div class="section-lbl sl-res">Notification &amp; Resolution</div>
+      <div class="node node-notify">
+        <div class="node-icon">📧</div>
+        <div class="node-body">
+          <div class="node-title">Mail Enabled Application — Distribution List</div>
+          <div class="node-sub">Full AI RCA report emailed to team · root cause · fix steps · severity badge · Airflow UI link — all in one structured email</div>
+          <span class="node-tag tag-cyan">With Root Cause</span>
+          <span class="node-tag tag-cyan" style="margin-left:4px">With Fix Steps</span>
+        </div>
+      </div>
+      <div class="arrow arrow-good">↓</div>
+
+      <div class="node node-good">
+        <div class="node-icon">🛠️</div>
+        <div class="node-body">
+          <div class="node-title">Engineer Applies Fix — Already Knows What to Do</div>
+          <div class="node-sub">No log hunting · AI has already pinpointed the issue · engineer validates and applies the suggested fix</div>
+          <span class="node-tag tag-green">~15 min total</span>
+          <span class="node-tag tag-green" style="margin-left:4px">Any Eng. Can Handle It</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cols -->
+
+  <!-- FOOTER COMPARISON -->
+  <div class="footer">
+    <div class="footer-box fb-before">
+      <div class="fb-icon">⏱️</div>
+      <div class="fb-text">
+        <strong>Current State — 60 to 90 minutes</strong>
+        <span>Engineer manually greps logs · no context · dependent on expert knowledge · often a 3AM war room</span>
+      </div>
+    </div>
+    <div class="footer-box fb-after">
+      <div class="fb-icon">✅</div>
+      <div class="fb-text">
+        <strong>GDC + AI — Root cause in 30 seconds, resolved in ~15 minutes</strong>
+        <span>Gemma LLM reads logs · plain English RCA · exact fix · any engineer can action it immediately</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
