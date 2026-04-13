@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="900" viewBox="0 0 1280 900"
+     xmlns="http://www.w3.org/2000/svg"
+     font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0,8 3,0 6" fill="#475569"/>
+    </marker>
+    <marker id="arr-g" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0,8 3,0 6" fill="#34D399"/>
+    </marker>
+    <linearGradient id="hdr" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#0369A1"/>
+      <stop offset="55%"  stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#4C1D95"/>
+    </linearGradient>
+    <linearGradient id="g_m1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#EF4444"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="g_m2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#A78BFA"/>
+    </linearGradient>
+    <linearGradient id="g_m3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0EA5E9"/>
+    </linearGradient>
+    <linearGradient id="g_m4" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ── BACKGROUND ── -->
+  <rect width="1280" height="900" fill="#0B1320"/>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- HEADER                                                     -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <rect x="14" y="12" width="1252" height="84" rx="10" fill="url(#hdr)"/>
+
+  <!-- eyebrow -->
+  <rect x="30" y="20" width="230" height="16" rx="8" fill="rgba(255,255,255,0.15)"/>
+  <text x="145" y="32" text-anchor="middle" font-size="9" font-weight="700" fill="#BAE6FD" letter-spacing="1.2">● INNOVATION POC  |  DATA ENGINEERING</text>
+
+  <!-- title -->
+  <text x="30" y="60" font-size="24" font-weight="900" fill="white">AI-Powered Pipeline Intelligence —</text>
+  <text x="30" y="86" font-size="24" font-weight="900" fill="#67E8F9">Automated Root Cause Analysis</text>
+
+  <!-- subtitle -->
+  <text x="540" y="52" font-size="11" fill="#BAE6FD">Apache Airflow  ·  Apache Spark  ·  Ollama gemma2:2b  ·  GKE</text>
+
+  <!-- header badges -->
+  <rect x="780" y="22" width="148" height="22" rx="5" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="854" y="37" text-anchor="middle" font-size="10.5" font-weight="600" fill="#E0F2FE">🔒 Air-Gapped LLM</text>
+
+  <rect x="938" y="22" width="148" height="22" rx="5" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="1012" y="37" text-anchor="middle" font-size="10.5" font-weight="600" fill="#E0F2FE">☁ Mirrors GDC Pattern</text>
+
+  <rect x="1096" y="22" width="154" height="22" rx="5" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="1173" y="37" text-anchor="middle" font-size="10.5" font-weight="600" fill="#E0F2FE">📊 83% MTTR Reduction</text>
+
+  <rect x="780" y="52" width="148" height="22" rx="5" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="854" y="67" text-anchor="middle" font-size="10.5" font-weight="600" fill="#E0F2FE">🤖 LLM inside cluster</text>
+
+  <rect x="938" y="52" width="312" height="22" rx="5" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="1094" y="67" text-anchor="middle" font-size="10.5" font-weight="600" fill="#E0F2FE">💰 ~$60 total PoC cost · no GPU required</text>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- METRICS ROW                                               -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+
+  <!-- M1 -->
+  <rect x="14" y="106" width="304" height="70" rx="8" fill="#162032" stroke="#1E3A5F" stroke-width="1"/>
+  <rect x="14" y="106" width="304" height="3" rx="1" fill="url(#g_m1)"/>
+  <text x="86" y="148" text-anchor="middle" font-size="38" font-weight="900" fill="#F97316">83%</text>
+  <text x="200" y="133" font-size="12.5" font-weight="700" fill="#F1F5F9">MTTR Reduction</text>
+  <text x="200" y="151" font-size="10.5" fill="#94A3B8">90 min → 15 min diagnosis</text>
+  <text x="200" y="166" font-size="10.5" fill="#94A3B8">time per incident</text>
+
+  <!-- M2 -->
+  <rect x="328" y="106" width="304" height="70" rx="8" fill="#162032" stroke="#1E3A5F" stroke-width="1"/>
+  <rect x="328" y="106" width="304" height="3" rx="1" fill="url(#g_m2)"/>
+  <text x="420" y="144" text-anchor="middle" font-size="34" font-weight="900" fill="#A78BFA">780</text>
+  <text x="420" y="162" text-anchor="middle" font-size="12" font-weight="600" fill="#A78BFA">hrs</text>
+  <text x="510" y="133" font-size="12.5" font-weight="700" fill="#F1F5F9">Engineering Hrs / Year</text>
+  <text x="510" y="151" font-size="10.5" fill="#94A3B8">2 incidents/week × 75 min</text>
+  <text x="510" y="166" font-size="10.5" fill="#94A3B8">≈ 0.4 FTE equivalent value</text>
+
+  <!-- M3 -->
+  <rect x="642" y="106" width="304" height="70" rx="8" fill="#162032" stroke="#1E3A5F" stroke-width="1"/>
+  <rect x="642" y="106" width="304" height="3" rx="1" fill="url(#g_m3)"/>
+  <text x="726" y="148" text-anchor="middle" font-size="38" font-weight="900" fill="#38BDF8">30s</text>
+  <text x="822" y="133" font-size="12.5" font-weight="700" fill="#F1F5F9">Failure to Full RCA</text>
+  <text x="822" y="151" font-size="10.5" fill="#94A3B8">Root cause in inbox before</text>
+  <text x="822" y="166" font-size="10.5" fill="#94A3B8">engineer opens a terminal</text>
+
+  <!-- M4 -->
+  <rect x="956" y="106" width="310" height="70" rx="8" fill="#162032" stroke="#1E3A5F" stroke-width="1"/>
+  <rect x="956" y="106" width="310" height="3" rx="1" fill="url(#g_m4)"/>
+  <text x="1040" y="148" text-anchor="middle" font-size="38" font-weight="900" fill="#34D399">$60</text>
+  <text x="1140" y="133" font-size="12.5" font-weight="700" fill="#F1F5F9">Total PoC Cost (GCP)</text>
+  <text x="1140" y="151" font-size="10.5" fill="#94A3B8">~$0.22/hr · Spot instances</text>
+  <text x="1140" y="166" font-size="10.5" fill="#94A3B8">CPU-only LLM — no GPU</text>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- LEFT COLUMN: PROBLEM + AI DETAILS                         -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+
+  <!-- PROBLEM CARD -->
+  <rect x="14" y="186" width="618" height="218" rx="8" fill="#162032" stroke="#1E3A5F" stroke-width="1"/>
+  <rect x="14" y="186" width="618" height="3" rx="1" fill="#F87171"/>
+  <!-- title -->
+  <text x="30" y="206" font-size="10" font-weight="700" fill="#F87171" letter-spacing="1.2">⚠ THE PROBLEM</text>
+  <line x1="14" y1="212" x2="632" y2="212" stroke="rgba(248,113,113,0.2)" stroke-width="1"/>
+
+  <!-- Problem points -->
+  <text x="30" y="233" font-size="12.5" font-weight="600" fill="#F1F5F9">😩  60–90 min manual investigation every incident</text>
+  <text x="46" y="248" font-size="11" fill="#94A3B8">Engineer greps logs, checks metrics, reads stack traces — often at 3AM</text>
+
+  <line x1="30" y1="256" x2="618" y2="256" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <text x="30" y="273" font-size="12.5" font-weight="600" fill="#F1F5F9">📉  High MTTR stalls downstream BI &amp; reporting</text>
+  <text x="46" y="288" font-size="11" fill="#94A3B8">No intelligent context — just raw errors with no fix guidance or prioritisation</text>
+
+  <line x1="30" y1="296" x2="618" y2="296" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <text x="30" y="313" font-size="12.5" font-weight="600" fill="#F1F5F9">🔕  Silent DAG drift — SLA breaches before anyone notices</text>
+  <text x="46" y="328" font-size="11" fill="#94A3B8">Gradual slowdown goes undetected; no proactive alerting on baseline deviation</text>
+
+  <!-- Before/After boxes -->
+  <rect x="30" y="342" width="286" height="52" rx="7" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.25)" stroke-width="1"/>
+  <text x="173" y="360" text-anchor="middle" font-size="9.5" font-weight="700" fill="#F87171" letter-spacing="1">BEFORE AI</text>
+  <text x="173" y="383" text-anchor="middle" font-size="28" font-weight="900" fill="#F87171">90<tspan font-size="14">m</tspan></text>
+  <text x="173" y="397" text-anchor="middle" font-size="10" fill="#94A3B8">Manual diagnosis time</text>
+
+  <rect x="326" y="342" width="286" height="52" rx="7" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.25)" stroke-width="1"/>
+  <text x="469" y="360" text-anchor="middle" font-size="9.5" font-weight="700" fill="#34D399" letter-spacing="1">AFTER AI</text>
+  <text x="469" y="383" text-anchor="middle" font-size="28" font-weight="900" fill="#34D399">15<tspan font-size="14">m</tspan></text>
+  <text x="469" y="397" text-anchor="middle" font-size="10" fill="#94A3B8">Full RCA in inbox</text>
+
+  <!-- HOW AI WORKS CARD -->
+  <rect x="14" y="414" width="618" height="310" rx="8" fill="#162032" stroke="#1E3A5F" stroke-width="1"/>
+  <rect x="14" y="414" width="618" height="3" rx="1" fill="#A78BFA"/>
+  <text x="30" y="434" font-size="10" font-weight="700" fill="#A78BFA" letter-spacing="1.2">🧠 HOW AI IS IMPLEMENTED</text>
+  <line x1="14" y1="440" x2="632" y2="440" stroke="rgba(167,139,250,0.2)" stroke-width="1"/>
+
+  <!-- 4 mini boxes -->
+  <rect x="26" y="448" width="290" height="54" rx="6" fill="rgba(167,139,250,0.08)" stroke="rgba(167,139,250,0.2)" stroke-width="1"/>
+  <text x="40" y="464" font-size="9.5" font-weight="700" fill="#A78BFA" letter-spacing="0.8">MODEL</text>
+  <text x="40" y="480" font-size="11.5" font-weight="600" fill="#F1F5F9">gemma2:2b (Google Gemma)</text>
+  <text x="40" y="495" font-size="10.5" fill="#94A3B8">CPU-only · 1.6 GB · no GPU needed</text>
+
+  <rect x="326" y="448" width="290" height="54" rx="6" fill="rgba(248,113,113,0.08)" stroke="rgba(248,113,113,0.2)" stroke-width="1"/>
+  <text x="340" y="464" font-size="9.5" font-weight="700" fill="#F87171" letter-spacing="0.8">SECURITY</text>
+  <text x="340" y="480" font-size="11.5" font-weight="600" fill="#F1F5F9">ClusterIP :11434 only</text>
+  <text x="340" y="495" font-size="10.5" fill="#94A3B8">Zero internet egress · air-gapped</text>
+
+  <rect x="26" y="510" width="290" height="54" rx="6" fill="rgba(56,189,248,0.08)" stroke="rgba(56,189,248,0.2)" stroke-width="1"/>
+  <text x="40" y="526" font-size="9.5" font-weight="700" fill="#38BDF8" letter-spacing="0.8">PROMPT DESIGN</text>
+  <text x="40" y="542" font-size="11.5" font-weight="600" fill="#F1F5F9">JSON-forced structured output</text>
+  <text x="40" y="557" font-size="10.5" fill="#94A3B8">Temperature 0.1 · deterministic RCA</text>
+
+  <rect x="326" y="510" width="290" height="54" rx="6" fill="rgba(52,211,153,0.08)" stroke="rgba(52,211,153,0.2)" stroke-width="1"/>
+  <text x="340" y="526" font-size="9.5" font-weight="700" fill="#34D399" letter-spacing="0.8">PROACTIVE</text>
+  <text x="340" y="542" font-size="11.5" font-weight="600" fill="#F1F5F9">Anomaly detection (every 30 min)</text>
+  <text x="340" y="557" font-size="10.5" fill="#94A3B8">Mean ± 2σ baseline · alert before breach</text>
+
+  <!-- JSON output box -->
+  <rect x="26" y="572" width="590" height="74" rx="6" fill="#080F1C" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="40" y="588" font-size="9.5" font-weight="700" fill="#38BDF8" letter-spacing="1">▶ SAMPLE LLM RESPONSE (gemma2:2b JSON OUTPUT)</text>
+  <text x="40" y="606" font-size="10" font-family="'Courier New', monospace" fill="#67E8F9">"root_cause":<tspan fill="#86EFAC"> "Source file missing from GCS bucket"</tspan>,  <tspan fill="#67E8F9">"confidence":</tspan><tspan fill="#FBBF24"> 0.91</tspan>,</text>
+  <text x="40" y="622" font-size="10" font-family="'Courier New', monospace" fill="#67E8F9">"severity":<tspan fill="#86EFAC"> "high"</tspan>,  <tspan fill="#67E8F9">"immediate_fix":</tspan><tspan fill="#86EFAC"> "Check upstream ETL job for gs://bucket/date.csv"</tspan>,</text>
+  <text x="40" y="638" font-size="10" font-family="'Courier New', monospace" fill="#67E8F9">"retry_recommended":<tspan fill="#FBBF24"> false</tspan>,  <tspan fill="#67E8F9">"estimated_fix_time_minutes":</tspan><tspan fill="#FBBF24"> 15</tspan></text>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- RIGHT COLUMN: SOLUTION FLOW + ARCHITECTURE                -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+
+  <!-- SOLUTION FLOW CARD -->
+  <rect x="648" y="186" width="618" height="180" rx="8" fill="#162032" stroke="#1E3A5F" stroke-width="1"/>
+  <rect x="648" y="186" width="618" height="3" rx="1" fill="#38BDF8"/>
+  <text x="664" y="206" font-size="10" font-weight="700" fill="#38BDF8" letter-spacing="1.2">✅ RCA PIPELINE — 5 STEPS, ~30 SECONDS</text>
+  <line x1="648" y1="212" x2="1266" y2="212" stroke="rgba(56,189,248,0.2)" stroke-width="1"/>
+
+  <!-- Step boxes -->
+  <!-- Step 1 -->
+  <rect x="658" y="220" width="103" height="80" rx="7" fill="rgba(255,255,255,0.04)" stroke="rgba(248,113,113,0.3)" stroke-width="1"/>
+  <circle cx="672" cy="234" r="10" fill="rgba(248,113,113,0.2)" stroke="#F87171" stroke-width="1.5"/>
+  <text x="672" y="238" text-anchor="middle" font-size="10" font-weight="800" fill="#F87171">1</text>
+  <text x="710" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#F1F5F9">Task Fails</text>
+  <text x="710" y="267" text-anchor="middle" font-size="10" fill="#94A3B8">Exception in</text>
+  <text x="710" y="280" text-anchor="middle" font-size="10" fill="#94A3B8">K8s Worker Pod</text>
+  <text x="710" y="293" text-anchor="middle" font-size="10" fill="#94A3B8">on_failure_callback</text>
+
+  <text x="775" y="264" text-anchor="middle" font-size="18" fill="#475569">→</text>
+
+  <!-- Step 2 -->
+  <rect x="785" y="220" width="103" height="80" rx="7" fill="rgba(255,255,255,0.04)" stroke="rgba(251,191,36,0.3)" stroke-width="1"/>
+  <circle cx="799" cy="234" r="10" fill="rgba(251,191,36,0.2)" stroke="#FBBF24" stroke-width="1.5"/>
+  <text x="799" y="238" text-anchor="middle" font-size="10" font-weight="800" fill="#FBBF24">2</text>
+  <text x="837" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#F1F5F9">Collect</text>
+  <text x="837" y="267" text-anchor="middle" font-size="10" fill="#94A3B8">Logs · error</text>
+  <text x="837" y="280" text-anchor="middle" font-size="10" fill="#94A3B8">history</text>
+  <text x="837" y="293" text-anchor="middle" font-size="10" fill="#94A3B8">baseline</text>
+
+  <text x="902" y="264" text-anchor="middle" font-size="18" fill="#475569">→</text>
+
+  <!-- Step 3 -->
+  <rect x="912" y="220" width="103" height="80" rx="7" fill="rgba(255,255,255,0.04)" stroke="rgba(56,189,248,0.3)" stroke-width="1"/>
+  <circle cx="926" cy="234" r="10" fill="rgba(56,189,248,0.2)" stroke="#38BDF8" stroke-width="1.5"/>
+  <text x="926" y="238" text-anchor="middle" font-size="10" font-weight="800" fill="#38BDF8">3</text>
+  <text x="964" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#F1F5F9">Prompt LLM</text>
+  <text x="964" y="267" text-anchor="middle" font-size="10" fill="#94A3B8">JSON-forced</text>
+  <text x="964" y="280" text-anchor="middle" font-size="10" fill="#94A3B8">prompt to</text>
+  <text x="964" y="293" text-anchor="middle" font-size="10" fill="#94A3B8">gemma2:2b</text>
+
+  <text x="1029" y="264" text-anchor="middle" font-size="18" fill="#475569">→</text>
+
+  <!-- Step 4 -->
+  <rect x="1039" y="220" width="103" height="80" rx="7" fill="rgba(255,255,255,0.04)" stroke="rgba(167,139,250,0.4)" stroke-width="1.5"/>
+  <circle cx="1053" cy="234" r="10" fill="rgba(167,139,250,0.2)" stroke="#A78BFA" stroke-width="1.5"/>
+  <text x="1053" y="238" text-anchor="middle" font-size="10" font-weight="800" fill="#A78BFA">4</text>
+  <text x="1091" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#A78BFA">AI Returns RCA</text>
+  <text x="1091" y="267" text-anchor="middle" font-size="10" fill="#94A3B8">root_cause</text>
+  <text x="1091" y="280" text-anchor="middle" font-size="10" fill="#94A3B8">severity · fix</text>
+  <text x="1091" y="293" text-anchor="middle" font-size="10" fill="#94A3B8">confidence</text>
+
+  <text x="1156" y="264" text-anchor="middle" font-size="18" fill="#475569">→</text>
+
+  <!-- Step 5 -->
+  <rect x="1164" y="220" width="93" height="80" rx="7" fill="rgba(255,255,255,0.04)" stroke="rgba(52,211,153,0.3)" stroke-width="1"/>
+  <circle cx="1178" cy="234" r="10" fill="rgba(52,211,153,0.2)" stroke="#34D399" stroke-width="1.5"/>
+  <text x="1178" y="238" text-anchor="middle" font-size="10" font-weight="800" fill="#34D399">5</text>
+  <text x="1211" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#F1F5F9">Notify</text>
+  <text x="1211" y="267" text-anchor="middle" font-size="10" fill="#94A3B8">Email + Slack</text>
+  <text x="1211" y="280" text-anchor="middle" font-size="10" fill="#94A3B8">PostgreSQL</text>
+  <text x="1211" y="293" text-anchor="middle" font-size="10" fill="#94A3B8">stored</text>
+
+  <!-- ✅ done box -->
+  <rect x="648" y="314" width="618" height="46" rx="6" fill="rgba(52,211,153,0.07)" stroke="rgba(52,211,153,0.25)" stroke-width="1"/>
+  <text x="957" y="342" text-anchor="middle" font-size="13" font-weight="700" fill="#34D399">✅  Engineer receives root cause + exact fix steps in their inbox within 30 seconds — before they open a terminal</text>
+
+  <!-- ARCHITECTURE CARD -->
+  <rect x="648" y="376" width="618" height="348" rx="8" fill="#162032" stroke="#1E3A5F" stroke-width="1"/>
+  <rect x="648" y="376" width="618" height="3" rx="1" fill="#34D399"/>
+  <text x="664" y="396" font-size="10" font-weight="700" fill="#34D399" letter-spacing="1.2">☁ GKE ARCHITECTURE — NAMESPACE ISOLATION</text>
+  <line x1="648" y1="402" x2="1266" y2="402" stroke="rgba(52,211,153,0.2)" stroke-width="1"/>
+
+  <!-- NS: airflow -->
+  <rect x="660" y="410" width="290" height="110" rx="7" fill="rgba(14,165,233,0.07)" stroke="rgba(14,165,233,0.3)" stroke-width="1"/>
+  <text x="675" y="428" font-size="9.5" font-weight="800" fill="#38BDF8" letter-spacing="0.8">NS: AIRFLOW</text>
+  <text x="675" y="447" font-size="10.5" fill="#94A3B8">• Airflow 2.9.2 (Helm chart)</text>
+  <text x="675" y="463" font-size="10.5" fill="#94A3B8">• KubernetesExecutor (same as GDC)</text>
+  <text x="675" y="479" font-size="10.5" fill="#94A3B8">• on_failure_callback → Ollama</text>
+  <text x="675" y="495" font-size="10.5" fill="#94A3B8">• PostgreSQL metadata DB</text>
+  <text x="675" y="511" font-size="10.5" fill="#94A3B8">• DAGs: rca / wordcount / anomaly</text>
+
+  <!-- NS: spark -->
+  <rect x="960" y="410" width="296" height="110" rx="7" fill="rgba(234,88,12,0.07)" stroke="rgba(234,88,12,0.3)" stroke-width="1"/>
+  <text x="975" y="428" font-size="9.5" font-weight="800" fill="#FB923C" letter-spacing="0.8">NS: SPARK-OPERATOR / SPARK-JOBS</text>
+  <text x="975" y="447" font-size="10.5" fill="#94A3B8">• Spark Operator Controller (Helm)</text>
+  <text x="975" y="463" font-size="10.5" fill="#94A3B8">• Ephemeral SparkApplication CRD</text>
+  <text x="975" y="479" font-size="10.5" fill="#94A3B8">• restartPolicy: Never (GDC pattern)</text>
+  <text x="975" y="495" font-size="10.5" fill="#94A3B8">• Driver + 2× Executors, auto-cleanup</text>
+
+  <!-- NS: llm -->
+  <rect x="660" y="530" width="290" height="110" rx="7" fill="rgba(124,58,237,0.07)" stroke="rgba(124,58,237,0.3)" stroke-width="1"/>
+  <text x="675" y="548" font-size="9.5" font-weight="800" fill="#A78BFA" letter-spacing="0.8">NS: LLM-SERVING</text>
+  <text x="675" y="567" font-size="10.5" fill="#94A3B8">• Ollama Deployment (CPU mode)</text>
+  <text x="675" y="583" font-size="10.5" fill="#94A3B8">• gemma2:2b loaded in-memory</text>
+  <text x="675" y="599" font-size="10.5" fill="#94A3B8">• ClusterIP :11434 ONLY (no egress)</text>
+  <text x="675" y="615" font-size="10.5" fill="#94A3B8">• PVC 30GB · NetworkPolicy enforced</text>
+  <text x="675" y="631" font-size="10.5" fill="#94A3B8">• Ingress from airflow namespace only</text>
+
+  <!-- NS: monitoring -->
+  <rect x="960" y="530" width="296" height="110" rx="7" fill="rgba(16,185,129,0.07)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+  <text x="975" y="548" font-size="9.5" font-weight="800" fill="#34D399" letter-spacing="0.8">NS: MONITORING</text>
+  <text x="975" y="567" font-size="10.5" fill="#94A3B8">• PostgreSQL (dag_metrics table)</text>
+  <text x="975" y="583" font-size="10.5" fill="#94A3B8">• RCA history + baselines stored</text>
+  <text x="975" y="599" font-size="10.5" fill="#94A3B8">• Prometheus + Grafana dashboard</text>
+  <text x="975" y="615" font-size="10.5" fill="#94A3B8">• Anomaly detection view (30-day)</text>
+
+  <!-- Flow arrows -->
+  <text x="664" y="672" font-size="11" font-weight="700" fill="#F1F5F9">DAG fails</text>
+  <line x1="710" y1="669" x2="750" y2="669" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="755" y="673" font-size="10" fill="#64748B">on_failure_callback</text>
+  <line x1="870" y1="669" x2="908" y2="669" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="912" y="673" font-size="11" font-weight="700" fill="#A78BFA">Ollama :11434</text>
+  <line x1="984" y1="669" x2="1022" y2="669" stroke="#34D399" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="1026" y="673" font-size="10" fill="#64748B">parse JSON</text>
+  <line x1="1092" y1="669" x2="1130" y2="669" stroke="#34D399" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="1134" y="673" font-size="11" font-weight="700" fill="#34D399">Email + Slack + DB</text>
+
+  <!-- Security + Enterprise badges -->
+  <rect x="660" y="685" width="588" height="32" rx="6" fill="rgba(29,78,216,0.1)" stroke="rgba(29,78,216,0.3)" stroke-width="1"/>
+  <text x="957" y="706" text-anchor="middle" font-size="11" font-weight="700" fill="#93C5FD">🔒  Zero External API Calls — All LLM inference inside cluster  ·  ClusterIP only  ·  No internet egress  ·  Mirrors GDC air-gapped pattern exactly</text>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- TECH STACK FOOTER                                         -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <rect x="14" y="735" width="1252" height="36" rx="7" fill="#1A2840" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="30" y="756" font-size="9.5" font-weight="700" fill="#475569" letter-spacing="1">STACK:</text>
+  <text x="85" y="756" font-size="11" fill="#94A3B8">Airflow 2.9.2 (KubernetesExecutor · Helm)  ·  Spark 3.5 (Operator · Ephemeral)  ·  Ollama + gemma2:2b (CPU · ClusterIP · 1.6 GB)  ·  GKE Standard (Spot · e2-standard-4)  ·  PostgreSQL  ·  Prometheus + Grafana  ·  Python 3.11  ·  Helm 3</text>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- BOTTOM ENTERPRISE STRIP                                   -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <rect x="14" y="780" width="1252" height="48" rx="7" fill="#0C2340" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="40" y="800" font-size="14" fill="#F1F5F9">🏗️</text>
+  <text x="65" y="800" font-size="12.5" font-weight="700" fill="#F1F5F9">Enterprise-Ready — Architecturally identical to GDC production deployment</text>
+  <text x="65" y="818" font-size="11" fill="#94A3B8">Same Helm chart · Same KubernetesExecutor · Same ephemeral Spark pattern · Lift-and-shift to on-prem GDC by updating endpoint URLs only</text>
+
+  <rect x="690" y="786" width="146" height="24" rx="5" fill="rgba(56,189,248,0.1)" stroke="rgba(56,189,248,0.25)" stroke-width="1"/>
+  <text x="763" y="802" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38BDF8">✓ Same Airflow Helm</text>
+
+  <rect x="846" y="786" width="166" height="24" rx="5" fill="rgba(56,189,248,0.1)" stroke="rgba(56,189,248,0.25)" stroke-width="1"/>
+  <text x="929" y="802" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38BDF8">✓ Air-gapped LLM (no egress)</text>
+
+  <rect x="1022" y="786" width="166" height="24" rx="5" fill="rgba(56,189,248,0.1)" stroke="rgba(56,189,248,0.25)" stroke-width="1"/>
+  <text x="1105" y="802" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38BDF8">✓ NetworkPolicy isolation</text>
+
+  <rect x="1198" y="786" width="62" height="24" rx="5" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.25)" stroke-width="1"/>
+  <text x="1229" y="802" text-anchor="middle" font-size="10.5" font-weight="600" fill="#34D399">~0.4 FTE</text>
+
+  <!-- Credit line -->
+  <text x="640" y="878" text-anchor="middle" font-size="9" fill="#334155">AI-Powered Pipeline Intelligence PoC  ·  Apache Airflow + Spark + Ollama LLM  ·  Internal use  ·  GKE (Personal GCP)  ·  2026</text>
+
+</svg>

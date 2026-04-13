@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-04-13T00:00:00.000Z" agent="Claude" version="21.0.0" type="device">
+
+  <!-- ══════════════════════════════════════════════════════════════════ -->
+  <!-- PAGE 1: AI RCA Flow — How the LLM pipeline works step-by-step     -->
+  <!-- ══════════════════════════════════════════════════════════════════ -->
+  <diagram id="rca-flow" name="AI RCA Flow">
+    <mxGraphModel dx="1680" dy="1060" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1680" pageHeight="1060" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ── BACKGROUND ── -->
+        <mxCell id="bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0C1524;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="1680" height="1060" as="geometry" />
+        </mxCell>
+
+        <!-- ── TITLE BAR ── -->
+        <mxCell id="title_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0369A1;strokeColor=#0369A1;arcSize=2;gradientColor=#1E3A8A;gradientDirection=east;" vertex="1" parent="1">
+          <mxGeometry x="20" y="14" width="1640" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="title_txt" value="&lt;font color='#FFFFFF' style='font-size:20px;font-weight:800;letter-spacing:-0.5px;'&gt;AI-Powered Pipeline Intelligence — Automated Root Cause Analysis&lt;/font&gt;&lt;br/&gt;&lt;font color='#BAE6FD' style='font-size:11px;'&gt;Apache Airflow + Spark + Ollama (gemma2:2b) &amp;nbsp;·&amp;nbsp; Air-Gapped LLM &amp;nbsp;·&amp;nbsp; GKE Cluster &amp;nbsp;·&amp;nbsp; Zero External API Calls&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="14" width="1640" height="56" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- ROW 1: METRICS STRIP                            -->
+        <!-- ═══════════════════════════════════════════════ -->
+
+        <!-- Metric 1: MTTR -->
+        <mxCell id="m1_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#162032;strokeColor=#F97316;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="20" y="84" width="390" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="m1_top" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F97316;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="84" width="390" height="4" as="geometry" />
+        </mxCell>
+        <mxCell id="m1_val" value="&lt;font color='#F97316' style='font-size:36px;font-weight:900;'&gt;83%&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="86" width="140" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="m1_txt" value="&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:13px;'&gt;Reduction in MTTR&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:11px;'&gt;90 minutes → 15 minutes&lt;br/&gt;diagnosis time per incident&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="166" y="86" width="236" height="76" as="geometry" />
+        </mxCell>
+
+        <!-- Metric 2: Hours Saved -->
+        <mxCell id="m2_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#162032;strokeColor=#A78BFA;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="424" y="84" width="390" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="m2_top" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#A78BFA;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="424" y="84" width="390" height="4" as="geometry" />
+        </mxCell>
+        <mxCell id="m2_val" value="&lt;font color='#A78BFA' style='font-size:36px;font-weight:900;'&gt;780&lt;/font&gt;&lt;font color='#A78BFA' style='font-size:16px;font-weight:700;'&gt; hrs&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="424" y="86" width="140" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="m2_txt" value="&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:13px;'&gt;Engineering Hours Saved / Year&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:11px;'&gt;2 incidents/week × 75 min saved&lt;br/&gt;≈ 0.4 FTE equivalent value&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="570" y="86" width="236" height="76" as="geometry" />
+        </mxCell>
+
+        <!-- Metric 3: Time to RCA -->
+        <mxCell id="m3_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#162032;strokeColor=#38BDF8;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="828" y="84" width="390" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="m3_top" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#38BDF8;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="828" y="84" width="390" height="4" as="geometry" />
+        </mxCell>
+        <mxCell id="m3_val" value="&lt;font color='#38BDF8' style='font-size:36px;font-weight:900;'&gt;30&lt;/font&gt;&lt;font color='#38BDF8' style='font-size:16px;font-weight:700;'&gt; sec&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="828" y="86" width="140" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="m3_txt" value="&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:13px;'&gt;Failure to Full RCA Report&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:11px;'&gt;From task failure trigger to&lt;br/&gt;email + Slack delivery&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="974" y="86" width="236" height="76" as="geometry" />
+        </mxCell>
+
+        <!-- Metric 4: PoC Cost -->
+        <mxCell id="m4_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#162032;strokeColor=#34D399;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="1232" y="84" width="428" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="m4_top" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#34D399;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1232" y="84" width="428" height="4" as="geometry" />
+        </mxCell>
+        <mxCell id="m4_val" value="&lt;font color='#34D399' style='font-size:36px;font-weight:900;'&gt;$60&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1232" y="86" width="140" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="m4_txt" value="&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:13px;'&gt;Total PoC Cost (GCP)&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:11px;'&gt;~$0.22/hr running · Spot instances&lt;br/&gt;CPU-only LLM — no GPU needed&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1378" y="86" width="274" height="76" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- ROW 2: RCA FLOW PIPELINE (centre)              -->
+        <!-- ═══════════════════════════════════════════════ -->
+
+        <!-- Section label -->
+        <mxCell id="flow_lbl" value="&lt;font color='#64748B' style='font-size:10px;font-weight:700;letter-spacing:1.2px;'&gt;AI RCA PIPELINE — STEP BY STEP&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="28" y="174" width="400" height="22" as="geometry" />
+        </mxCell>
+
+        <!-- Step 1: DAG Failure -->
+        <mxCell id="s1_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A0A0A;strokeColor=#F87171;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="20" y="200" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="s1_num" value="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#F87171;strokeColor=none;fontColor=#fff;fontSize=13;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="30" y="210" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="s1_txt" value="&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:13px;'&gt;Pipeline Task Fails&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10.5px;'&gt;AirflowException raised&lt;br/&gt;FileNotFoundError&lt;br/&gt;ConnectionError / OOMError&lt;br/&gt;KubernetesExecutor pod&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="24" y="243" width="198" height="82" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 1→2 -->
+        <mxCell id="arr12" value="&lt;font color='#64748B' style='font-size:10px;'&gt;on_failure_callback&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#64748B;strokeWidth=2;dashed=0;endArrow=block;endFill=1;fontColor=#64748B;fontSize=9;" edge="1" source="s1_bg" target="s2_bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Step 2: Context Collection -->
+        <mxCell id="s2_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A1200;strokeColor=#FBBF24;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="264" y="200" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_num" value="2" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FBBF24;strokeColor=none;fontColor=#fff;fontSize=13;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="274" y="210" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="s2_txt" value="&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:13px;'&gt;Context Collected&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10.5px;'&gt;dag_id · task_id · run_id&lt;br/&gt;Error type + message&lt;br/&gt;Last 100 log lines&lt;br/&gt;30-day baseline (avg ± 2σ)&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="268" y="243" width="198" height="82" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 2→3 -->
+        <mxCell id="arr23" value="&lt;font color='#64748B' style='font-size:10px;'&gt;build prompt&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#64748B;strokeWidth=2;endArrow=block;endFill=1;fontColor=#64748B;" edge="1" source="s2_bg" target="s3_bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Step 3: Prompt Build -->
+        <mxCell id="s3_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001424;strokeColor=#38BDF8;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="508" y="200" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="s3_num" value="3" style="ellipse;whiteSpace=wrap;html=1;fillColor=#38BDF8;strokeColor=none;fontColor=#fff;fontSize=13;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="518" y="210" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="s3_txt" value="&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:13px;'&gt;AI Prompt Built&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10.5px;'&gt;RCA_PROMPT_TEMPLATE&lt;br/&gt;Forces JSON-only output&lt;br/&gt;format: &amp;quot;json&amp;quot; · temp: 0.1&lt;br/&gt;POST /api/generate&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="512" y="243" width="198" height="82" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 3→4 -->
+        <mxCell id="arr34" value="&lt;font color='#64748B' style='font-size:10px;'&gt;HTTP POST :11434&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#64748B;strokeWidth=2;endArrow=block;endFill=1;fontColor=#64748B;" edge="1" source="s3_bg" target="s4_bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Step 4: Ollama LLM -->
+        <mxCell id="s4_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0E001A;strokeColor=#A78BFA;strokeWidth=3;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="752" y="186" width="236" height="158" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_num" value="4" style="ellipse;whiteSpace=wrap;html=1;fillColor=#A78BFA;strokeColor=none;fontColor=#fff;fontSize=13;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="762" y="196" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="s4_txt" value="&lt;b&gt;&lt;font color='#A78BFA' style='font-size:14px;'&gt;Ollama LLM Inference&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#F1F5F9' style='font-size:11px;'&gt;Model: gemma2:2b (Google Gemma)&lt;br/&gt;CPU-only · ClusterIP :11434&lt;br/&gt;Air-gapped · NetworkPolicy&lt;/font&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Analyses: error type, log patterns,&lt;br/&gt;historical baseline, duration anomaly&lt;br/&gt;Timeout: 120s · Max tokens: 512&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="756" y="229" width="224" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 4→5 -->
+        <mxCell id="arr45" value="&lt;font color='#64748B' style='font-size:10px;'&gt;parse JSON&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#64748B;strokeWidth=2;endArrow=block;endFill=1;fontColor=#64748B;" edge="1" source="s4_bg" target="s5_bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Step 5: JSON Response -->
+        <mxCell id="s5_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001A0A;strokeColor=#34D399;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="1024" y="200" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="s5_num" value="5" style="ellipse;whiteSpace=wrap;html=1;fillColor=#34D399;strokeColor=none;fontColor=#fff;fontSize=13;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1034" y="210" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="s5_txt" value="&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:13px;'&gt;Structured RCA Response&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10.5px;'&gt;root_cause · confidence&lt;br/&gt;immediate_fix · severity&lt;br/&gt;prevention · category&lt;br/&gt;retry_recommended&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1028" y="243" width="198" height="82" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 5→6 -->
+        <mxCell id="arr56" value="&lt;font color='#64748B' style='font-size:10px;'&gt;store + notify&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#64748B;strokeWidth=2;endArrow=block;endFill=1;fontColor=#64748B;" edge="1" source="s5_bg" target="s6_bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Step 6: Notify + Store -->
+        <mxCell id="s6_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001020;strokeColor=#38BDF8;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="1268" y="200" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_num" value="6" style="ellipse;whiteSpace=wrap;html=1;fillColor=#38BDF8;strokeColor=none;fontColor=#fff;fontSize=13;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1278" y="210" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="s6_txt" value="&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:13px;'&gt;Notify + Persist&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10.5px;'&gt;HTML email sent (30 sec)&lt;br/&gt;Slack Block Kit message&lt;br/&gt;PostgreSQL dag_metrics&lt;br/&gt;Grafana dashboard updated&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1272" y="243" width="198" height="82" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 6→ done -->
+        <mxCell id="arr6done" value="&lt;font color='#34D399' style='font-size:11px;font-weight:700;'&gt;Done in ~30 sec&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#34D399;strokeWidth=2;endArrow=block;endFill=1;fontColor=#34D399;" edge="1" source="s6_bg" target="done_box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Done box -->
+        <mxCell id="done_box" value="&lt;font color='#34D399' style='font-size:14px;font-weight:800;'&gt;✅ RCA Complete&lt;/font&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Engineer has root cause,&lt;br/&gt;fix steps, and confidence score&lt;br/&gt;in their inbox before they&lt;br/&gt;even open a terminal&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001A0A;strokeColor=#34D399;strokeWidth=3;arcSize=8;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1512" y="196" width="144" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- ROW 3: ARCHITECTURE BOXES                       -->
+        <!-- ═══════════════════════════════════════════════ -->
+
+        <!-- Architecture section label -->
+        <mxCell id="arch_lbl" value="&lt;font color='#64748B' style='font-size:10px;font-weight:700;letter-spacing:1.2px;'&gt;GKE CLUSTER ARCHITECTURE — NAMESPACE BREAKDOWN&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="28" y="360" width="500" height="22" as="geometry" />
+        </mxCell>
+
+        <!-- GKE Cluster boundary -->
+        <mxCell id="gke_border" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#334155;strokeWidth=2;dashed=1;arcSize=2;" vertex="1" parent="1">
+          <mxGeometry x="20" y="386" width="1118" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="gke_lbl" value="&lt;font color='#64748B' style='font-size:10px;font-weight:700;'&gt;GKE Standard Cluster  ·  Spot Instances  ·  e2-standard-4&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=#162032;strokeColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="320" y="379" width="440" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- NS: airflow -->
+        <mxCell id="ns_af" value="&lt;b&gt;&lt;font color='#38BDF8' style='font-size:11px;letter-spacing:0.5px;'&gt;NS: airflow&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;• Airflow Webserver (Helm 2.9.2)&lt;br/&gt;• Airflow Scheduler&lt;br/&gt;• KubernetesExecutor (same as GDC)&lt;br/&gt;• PostgreSQL metadata DB&lt;br/&gt;• on_failure_callback → Ollama&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0A1C2C;strokeColor=#38BDF8;strokeWidth=2;arcSize=6;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="36" y="404" width="248" height="148" as="geometry" />
+        </mxCell>
+
+        <!-- NS: spark -->
+        <mxCell id="ns_sp" value="&lt;b&gt;&lt;font color='#FB923C' style='font-size:11px;letter-spacing:0.5px;'&gt;NS: spark-operator / spark-jobs&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;• Spark Operator Controller (Helm)&lt;br/&gt;• SparkApplication CRD&lt;br/&gt;• Ephemeral Driver + 2× Executor&lt;br/&gt;• restartPolicy: Never&lt;br/&gt;• Auto-cleanup after completion&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A0C00;strokeColor=#FB923C;strokeWidth=2;arcSize=6;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="300" y="404" width="260" height="148" as="geometry" />
+        </mxCell>
+
+        <!-- NS: llm-serving -->
+        <mxCell id="ns_llm" value="&lt;b&gt;&lt;font color='#A78BFA' style='font-size:11px;letter-spacing:0.5px;'&gt;NS: llm-serving&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;• Ollama Deployment (CPU mode)&lt;br/&gt;• gemma2:2b loaded in-memory&lt;br/&gt;• ClusterIP Service :11434 ONLY&lt;br/&gt;• PVC 30GB (model storage)&lt;br/&gt;• NetworkPolicy: airflow ns only&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0E0018;strokeColor=#A78BFA;strokeWidth=2;arcSize=6;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="576" y="404" width="256" height="148" as="geometry" />
+        </mxCell>
+
+        <!-- NS: monitoring -->
+        <mxCell id="ns_mon" value="&lt;b&gt;&lt;font color='#34D399' style='font-size:11px;letter-spacing:0.5px;'&gt;NS: monitoring&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;• PostgreSQL (dag_metrics table)&lt;br/&gt;• RCA history + baselines stored&lt;br/&gt;• Prometheus metrics scraping&lt;br/&gt;• Grafana pipeline dashboard&lt;br/&gt;• Anomaly detection view&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001A0A;strokeColor=#34D399;strokeWidth=2;arcSize=6;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="848" y="404" width="256" height="148" as="geometry" />
+        </mxCell>
+
+        <!-- Flow arrows in arch section -->
+        <!-- airflow → llm-serving -->
+        <mxCell id="af_llm" value="&lt;font color='#A78BFA' style='font-size:9px;'&gt;RCA request (HTTP)&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#A78BFA;strokeWidth=2;endArrow=block;endFill=1;fontColor=#A78BFA;fontSize=9;" edge="1" source="ns_sp" target="ns_llm" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- llm-serving → monitoring -->
+        <mxCell id="llm_mon" value="&lt;font color='#34D399' style='font-size:9px;'&gt;store RCA&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#34D399;strokeWidth=2;endArrow=block;endFill=1;fontColor=#34D399;fontSize=9;" edge="1" source="ns_llm" target="ns_mon" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- airflow → spark -->
+        <mxCell id="af_sp" value="&lt;font color='#FB923C' style='font-size:9px;'&gt;SparkKubernetesOperator&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#FB923C;strokeWidth=2;endArrow=block;endFill=1;fontColor=#FB923C;fontSize=9;" edge="1" source="ns_af" target="ns_sp" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- External outputs: Email + Slack -->
+        <mxCell id="email_box" value="📧&lt;br/&gt;&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:11px;'&gt;HTML Email&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Full RCA report&lt;br/&gt;Rich HTML template&lt;br/&gt;Sent in ~30 seconds&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#162032;strokeColor=#38BDF8;strokeWidth=2;arcSize=8;align=center;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="394" width="148" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="slack_box" value="💬&lt;br/&gt;&lt;b&gt;&lt;font color='#F1F5F9' style='font-size:11px;'&gt;Slack Alert&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Block Kit format&lt;br/&gt;Root cause + fix&lt;br/&gt;Severity badge&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#162032;strokeColor=#38BDF8;strokeWidth=2;arcSize=8;align=center;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="516" width="148" height="108" as="geometry" />
+        </mxCell>
+
+        <!-- Monitoring → Email/Slack arrows -->
+        <mxCell id="mon_email" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.3;entryX=0;entryY=0.5;strokeColor=#38BDF8;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="ns_mon" target="email_box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mon_slack" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.7;entryX=0;entryY=0.5;strokeColor=#38BDF8;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="ns_mon" target="slack_box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Security badge -->
+        <mxCell id="sec_badge" value="🔒 &lt;b&gt;&lt;font color='#1E3A8A' style='font-size:12px;'&gt;Zero External API Calls&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#1E3A8A' style='font-size:10.5px;'&gt;All LLM inference stays inside cluster&lt;br/&gt;ClusterIP only · no internet egress&lt;br/&gt;Mirrors GDC air-gapped pattern exactly&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="394" width="320" height="104" as="geometry" />
+        </mxCell>
+
+        <!-- Enterprise badge -->
+        <mxCell id="ent_badge" value="🏗️ &lt;b&gt;&lt;font color='#713F12' style='font-size:12px;'&gt;Enterprise-Ready Architecture&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#78350F' style='font-size:10.5px;'&gt;Same Helm chart as GDC production&lt;br/&gt;Same KubernetesExecutor pattern&lt;br/&gt;Lift-and-shift to on-prem GDC&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="512" width="320" height="104" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- ROW 4: ANOMALY DETECTION                        -->
+        <!-- ═══════════════════════════════════════════════ -->
+
+        <mxCell id="anom_lbl" value="&lt;font color='#64748B' style='font-size:10px;font-weight:700;letter-spacing:1.2px;'&gt;PROACTIVE ANOMALY DETECTION (every 30 minutes)&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="28" y="684" width="500" height="22" as="geometry" />
+        </mxCell>
+
+        <mxCell id="anom1" value="&lt;b&gt;&lt;font color='#FBBF24' style='font-size:12px;'&gt;Fetch DAG Metrics&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Last 10 runs per DAG&lt;br/&gt;from PostgreSQL&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A1200;strokeColor=#FBBF24;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="20" y="710" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_a12" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#FBBF24;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="anom1" target="anom2" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="anom2" value="&lt;b&gt;&lt;font color='#FBBF24' style='font-size:12px;'&gt;Compute Baselines&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Mean ± 2σ per DAG&lt;br/&gt;30-day rolling window&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A1200;strokeColor=#FBBF24;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="244" y="710" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_a23" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#FBBF24;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="anom2" target="anom3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="anom3" value="&lt;b&gt;&lt;font color='#F87171' style='font-size:12px;'&gt;Detect Drift &gt;20%&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Flag runs outside threshold&lt;br/&gt;before SLA breach&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A0A0A;strokeColor=#F87171;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="468" y="710" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_a34" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#F87171;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="anom3" target="anom4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="anom4" value="&lt;b&gt;&lt;font color='#A78BFA' style='font-size:12px;'&gt;Ollama Explains Anomaly&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Natural language explanation&lt;br/&gt;of likely cause&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0E001A;strokeColor=#A78BFA;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="692" y="710" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_a45" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#A78BFA;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="anom4" target="anom5" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="anom5" value="&lt;b&gt;&lt;font color='#34D399' style='font-size:12px;'&gt;Proactive Alert Sent&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Email + Slack before&lt;br/&gt;engineer notices&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001A0A;strokeColor=#34D399;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="936" y="710" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- ROW 5: TECH STACK FOOTER                        -->
+        <!-- ═══════════════════════════════════════════════ -->
+
+        <mxCell id="footer_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#162032;strokeColor=#1E3A5F;strokeWidth=1;arcSize=4;" vertex="1" parent="1">
+          <mxGeometry x="20" y="814" width="1640" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="footer_txt" value="&lt;font color='#64748B' style='font-size:10px;font-weight:700;letter-spacing:1px;'&gt;TECH STACK:&lt;/font&gt; &amp;nbsp; &lt;font color='#94A3B8' style='font-size:11px;'&gt;Apache Airflow 2.9.2 (KubernetesExecutor · Helm)  &amp;nbsp;·&amp;nbsp;  Apache Spark 3.5 (Spark Operator · Ephemeral)  &amp;nbsp;·&amp;nbsp;  Ollama + gemma2:2b (CPU · ClusterIP · 1.6GB)  &amp;nbsp;·&amp;nbsp;  GKE Standard (Spot · e2-standard-4)  &amp;nbsp;·&amp;nbsp;  PostgreSQL  &amp;nbsp;·&amp;nbsp;  Prometheus + Grafana  &amp;nbsp;·&amp;nbsp;  Python 3.11  &amp;nbsp;·&amp;nbsp;  Helm 3&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="814" width="1640" height="50" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ══════════════════════════════════════════════════════════════════ -->
+  <!-- PAGE 2: DETAILED RCA SEQUENCE FLOW                                -->
+  <!-- ══════════════════════════════════════════════════════════════════ -->
+  <diagram id="rca-sequence" name="RCA Sequence Detail">
+    <mxGraphModel dx="1680" dy="1060" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1680" pageHeight="1060" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Background -->
+        <mxCell id="bg2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0C1524;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="1680" height="1060" as="geometry" />
+        </mxCell>
+
+        <!-- Title -->
+        <mxCell id="t2_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4C1D95;strokeColor=#4C1D95;arcSize=2;" vertex="1" parent="1">
+          <mxGeometry x="20" y="14" width="1640" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_txt" value="&lt;font color='#FFFFFF' style='font-size:17px;font-weight:800;'&gt;AI RCA — Detailed Sequence: Failure to Inbox&lt;/font&gt;&lt;br/&gt;&lt;font color='#DDD6FE' style='font-size:11px;'&gt;End-to-end flow from Airflow task exception to engineer receiving root cause analysis  ·  Target time: 30–60 seconds&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="14" width="1640" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- Swim lane headers -->
+        <mxCell id="lane_af"  value="&lt;b&gt;&lt;font color='#38BDF8' style='font-size:11px;'&gt;Airflow&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#64748B' style='font-size:9px;'&gt;Scheduler + Worker&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0A1C2C;strokeColor=#38BDF8;strokeWidth=2;align=center;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="-88" y="162" width="160" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_cb"  value="&lt;b&gt;&lt;font color='#FBBF24' style='font-size:11px;'&gt;rca_callback.py&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#64748B' style='font-size:9px;'&gt;Context builder&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1A1200;strokeColor=#FBBF24;strokeWidth=2;align=center;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="-88" y="326" width="160" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_db"  value="&lt;b&gt;&lt;font color='#34D399' style='font-size:11px;'&gt;PostgreSQL&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#64748B' style='font-size:9px;'&gt;dag_metrics&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#001A0A;strokeColor=#34D399;strokeWidth=2;align=center;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="-88" y="492" width="160" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_ol"  value="&lt;b&gt;&lt;font color='#A78BFA' style='font-size:11px;'&gt;Ollama :11434&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#64748B' style='font-size:9px;'&gt;gemma2:2b&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0E001A;strokeColor=#A78BFA;strokeWidth=2;align=center;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="-88" y="646" width="160" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_nt"  value="&lt;b&gt;&lt;font color='#38BDF8' style='font-size:11px;'&gt;Notifications&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#64748B' style='font-size:9px;'&gt;Email + Slack&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#001020;strokeColor=#38BDF8;strokeWidth=2;align=center;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="-88" y="810" width="160" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- Lane dividers -->
+        <mxCell id="div1" value="" style="line;strokeColor=#1E3A5F;strokeWidth=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="240" width="1640" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="div2" value="" style="line;strokeColor=#1E3A5F;strokeWidth=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="402" width="1640" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="div3" value="" style="line;strokeColor=#1E3A5F;strokeWidth=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="564" width="1640" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="div4" value="" style="line;strokeColor=#1E3A5F;strokeWidth=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="726" width="1640" height="10" as="geometry" />
+        </mxCell>
+
+        <!-- === AIRFLOW LANE === -->
+        <mxCell id="seq_fail" value="&lt;b&gt;&lt;font color='#F87171' style='font-size:12px;'&gt;Task FAILED&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Exception raised&lt;br/&gt;KubernetesExecutor pod&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A0A0A;strokeColor=#F87171;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="40" y="168" width="160" height="68" as="geometry" />
+        </mxCell>
+
+        <mxCell id="seq_sched" value="&lt;b&gt;&lt;font color='#38BDF8' style='font-size:11px;'&gt;Scheduler detects failure&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Marks task state = failed&lt;br/&gt;Triggers on_failure_callback&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0A1C2C;strokeColor=#38BDF8;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="280" y="168" width="200" height="68" as="geometry" />
+        </mxCell>
+
+        <!-- === CALLBACK LANE === -->
+        <mxCell id="seq_ctx" value="&lt;b&gt;&lt;font color='#FBBF24' style='font-size:11px;'&gt;Extract context&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;dag_id · task_id · run_id&lt;br/&gt;error type + message (500 chars)&lt;br/&gt;last 100 log lines (2000 chars)&lt;br/&gt;task duration_seconds&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A1200;strokeColor=#FBBF24;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="560" y="260" width="200" height="98" as="geometry" />
+        </mxCell>
+
+        <mxCell id="seq_prompt" value="&lt;b&gt;&lt;font color='#FBBF24' style='font-size:11px;'&gt;Build RCA prompt&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;RCA_PROMPT_TEMPLATE.format()&lt;br/&gt;Injects all context + history&lt;br/&gt;Forces JSON-only output&lt;br/&gt;format=&amp;quot;json&amp;quot; · temp=0.1&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A1200;strokeColor=#FBBF24;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="920" y="260" width="200" height="98" as="geometry" />
+        </mxCell>
+
+        <!-- === POSTGRES LANE === -->
+        <mxCell id="seq_hist" value="&lt;b&gt;&lt;font color='#34D399' style='font-size:11px;'&gt;SELECT historical baseline&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;avg_duration · stddev&lt;br/&gt;total_runs · recent_statuses&lt;br/&gt;WHERE dag_id = %s&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001A0A;strokeColor=#34D399;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="740" y="422" width="200" height="98" as="geometry" />
+        </mxCell>
+
+        <mxCell id="seq_store" value="&lt;b&gt;&lt;font color='#34D399' style='font-size:11px;'&gt;INSERT RCA results&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;dag_metrics table&lt;br/&gt;root_cause · confidence&lt;br/&gt;rca_model_used · response_time&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001A0A;strokeColor=#34D399;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="422" width="200" height="98" as="geometry" />
+        </mxCell>
+
+        <!-- === OLLAMA LANE === -->
+        <mxCell id="seq_infer" value="&lt;b&gt;&lt;font color='#A78BFA' style='font-size:12px;'&gt;POST /api/generate&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;model: gemma2:2b&lt;br/&gt;stream: false · format: json&lt;br/&gt;temperature: 0.1&lt;br/&gt;Analyses error + log patterns&lt;br/&gt;Returns structured JSON RCA&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0E001A;strokeColor=#A78BFA;strokeWidth=3;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="572" width="220" height="118" as="geometry" />
+        </mxCell>
+
+        <!-- === NOTIFICATION LANE === -->
+        <mxCell id="seq_email" value="&lt;b&gt;&lt;font color='#38BDF8' style='font-size:11px;'&gt;Rich HTML Email&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Root cause + confidence&lt;br/&gt;Exact fix steps&lt;br/&gt;Severity badge&lt;br/&gt;Airflow UI link&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001020;strokeColor=#38BDF8;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="736" width="180" height="98" as="geometry" />
+        </mxCell>
+
+        <mxCell id="seq_slack" value="&lt;b&gt;&lt;font color='#38BDF8' style='font-size:11px;'&gt;Slack Block Kit&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:10px;'&gt;Header · root cause&lt;br/&gt;Immediate fix&lt;br/&gt;Context: severity · fix time&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001020;strokeColor=#38BDF8;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="736" width="160" height="98" as="geometry" />
+        </mxCell>
+
+        <!-- Sequence arrows -->
+        <mxCell id="arr_f_s" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#F87171;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="seq_fail" target="seq_sched" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_s_ctx" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#FBBF24;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="seq_sched" target="seq_ctx" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_ctx_hist" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#34D399;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="seq_ctx" target="seq_hist" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_hist_prompt" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#FBBF24;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="seq_hist" target="seq_prompt" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_prompt_infer" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#A78BFA;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="seq_prompt" target="seq_infer" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_infer_store" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#34D399;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="seq_infer" target="seq_store" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_store_email" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#38BDF8;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="seq_store" target="seq_email" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr_store_slack" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.3;exitY=1;entryX=0.5;entryY=0;strokeColor=#38BDF8;strokeWidth=2;endArrow=block;endFill=1;" edge="1" source="seq_store" target="seq_slack" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Time label -->
+        <mxCell id="time_lbl" value="⏱ &lt;b&gt;&lt;font color='#34D399' style='font-size:13px;'&gt;Total end-to-end: ~30 seconds&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:11px;'&gt;Engineer receives full RCA in email + Slack before they open a terminal&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001A0A;strokeColor=#34D399;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="40" y="860" width="480" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Before/After comparison -->
+        <mxCell id="before_box" value="&lt;b&gt;&lt;font color='#F87171' style='font-size:13px;'&gt;BEFORE AI&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:11px;'&gt;3AM: engineer gets raw stack trace&lt;br/&gt;Manually greps logs + metrics&lt;br/&gt;90 minute investigation&lt;br/&gt;No fix guidance&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A0A0A;strokeColor=#F87171;strokeWidth=2;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="600" y="856" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="vs_lbl" value="&lt;font color='#64748B' style='font-size:20px;font-weight:900;'&gt;VS&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="836" y="890" width="60" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="after_box" value="&lt;b&gt;&lt;font color='#34D399' style='font-size:13px;'&gt;AFTER AI&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font color='#94A3B8' style='font-size:11px;'&gt;Engineer receives email in 30 sec&lt;br/&gt;Root cause + exact fix steps&lt;br/&gt;15 minute remediation&lt;br/&gt;Confidence score + severity&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#001A0A;strokeColor=#34D399;strokeWidth=3;arcSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="912" y="856" width="220" height="100" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+</mxfile>

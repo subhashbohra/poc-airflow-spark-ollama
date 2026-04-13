@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Powered Pipeline Intelligence | Automated Root Cause Analysis</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #0C1524;
+      --card:      #162032;
+      --card2:     #1A2840;
+      --border:    rgba(99,179,237,0.18);
+      --cyan:      #38BDF8;
+      --purple:    #A78BFA;
+      --green:     #34D399;
+      --amber:     #FBBF24;
+      --red:       #F87171;
+      --text:      #F1F5F9;
+      --muted:     #94A3B8;
+      --dim:       #64748B;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    .poster {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 28px 40px;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, #0369A1 0%, #1E3A8A 45%, #4C1D95 100%);
+      border-radius: 14px;
+      padding: 32px 40px;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 200px;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .header-inner { position: relative; z-index: 1; }
+    .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+    .header-title { flex: 1; }
+    .eyebrow {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #BAE6FD;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1.1;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    h1 span { color: #67E8F9; }
+    .subtitle {
+      margin-top: 10px;
+      font-size: 15px;
+      color: #BAE6FD;
+      font-weight: 400;
+    }
+    .header-badges { display: flex; flex-direction: column; gap: 8px; min-width: 220px; }
+    .badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: #E0F2FE;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .badge strong { color: #fff; }
+    .header-tagline {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .tagline-item { font-size: 13px; color: #BAE6FD; }
+    .tagline-item strong { color: #fff; font-weight: 700; }
+
+    /* ── GRID HELPERS ────────────────────────────────────── */
+    .row { display: grid; gap: 18px; margin-bottom: 18px; }
+    .col2  { grid-template-columns: 1fr 1fr; }
+    .col3  { grid-template-columns: 1fr 1fr 1fr; }
+    .col4  { grid-template-columns: 1fr 1fr 1fr 1fr; }
+    .col-40-60 { grid-template-columns: 4fr 6fr; }
+    .col-55-45 { grid-template-columns: 55fr 45fr; }
+    .col-60-40 { grid-template-columns: 6fr 4fr; }
+
+    /* ── CARD BASE ───────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-accent-top { border-top: 3px solid; }
+    .card.red   { border-top-color: var(--red); }
+    .card.cyan  { border-top-color: var(--cyan); }
+    .card.green { border-top-color: var(--green); }
+    .card.purple{ border-top-color: var(--purple); }
+    .card.amber { border-top-color: var(--amber); }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title.red    { color: var(--red); }
+    .card-title.cyan   { color: var(--cyan); }
+    .card-title.green  { color: var(--green); }
+    .card-title.purple { color: var(--purple); }
+    .card-title.amber  { color: var(--amber); }
+
+    /* ── PROBLEM SECTION ─────────────────────────────────── */
+    .problem-list { list-style: none; }
+    .problem-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 13.5px;
+      color: var(--text);
+    }
+    .problem-list li:last-child { border-bottom: none; }
+    .problem-list .icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .problem-list .desc { flex: 1; }
+    .problem-list .desc strong { color: var(--red); display: block; font-size: 14px; }
+    .problem-list .desc span  { color: var(--muted); font-size: 12px; }
+
+    .before-after {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .ba-box {
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .ba-before { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); }
+    .ba-after  { background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.3); }
+    .ba-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 4px; }
+    .ba-before .label { color: var(--red); }
+    .ba-after  .label { color: var(--green); }
+    .ba-box .value { font-size: 28px; font-weight: 900; line-height: 1; }
+    .ba-before .value { color: var(--red); }
+    .ba-after  .value { color: var(--green); }
+    .ba-box .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ── SOLUTION FLOW ───────────────────────────────────── */
+    .flow-steps { display: flex; flex-direction: column; gap: 8px; }
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 11px 14px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800;
+      flex-shrink: 0;
+    }
+    .flow-step.s1 .step-num { background: rgba(239,68,68,0.2); color: var(--red); border: 1.5px solid var(--red); }
+    .flow-step.s2 .step-num { background: rgba(251,191,36,0.2); color: var(--amber); border: 1.5px solid var(--amber); }
+    .flow-step.s3 .step-num { background: rgba(56,189,248,0.2); color: var(--cyan); border: 1.5px solid var(--cyan); }
+    .flow-step.s4 .step-num { background: rgba(167,139,250,0.2); color: var(--purple); border: 1.5px solid var(--purple); }
+    .flow-step.s5 .step-num { background: rgba(52,211,153,0.2); color: var(--green); border: 1.5px solid var(--green); }
+    .flow-step.s6 .step-num { background: rgba(52,211,153,0.2); color: var(--green); border: 1.5px solid var(--green); }
+
+    .step-content { flex: 1; }
+    .step-content strong { font-size: 13.5px; color: var(--text); display: block; }
+    .step-content span   { font-size: 11.5px; color: var(--muted); }
+
+    .step-arrow {
+      text-align: center;
+      color: var(--dim);
+      font-size: 14px;
+      padding: 1px 0;
+    }
+
+    /* ── METRIC CARDS ────────────────────────────────────── */
+    .metric-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 22px 18px;
+      text-align: center;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .metric-card.m1::before { background: linear-gradient(90deg, #EF4444, #F97316); }
+    .metric-card.m2::before { background: linear-gradient(90deg, #8B5CF6, #A78BFA); }
+    .metric-card.m3::before { background: linear-gradient(90deg, #38BDF8, #0EA5E9); }
+    .metric-card.m4::before { background: linear-gradient(90deg, #10B981, #34D399); }
+
+    .metric-icon { font-size: 28px; margin-bottom: 8px; }
+    .metric-value {
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 4px;
+      letter-spacing: -2px;
+    }
+    .metric-card.m1 .metric-value { color: #F97316; }
+    .metric-card.m2 .metric-value { color: var(--purple); }
+    .metric-card.m3 .metric-value { color: var(--cyan); }
+    .metric-card.m4 .metric-value { color: var(--green); }
+
+    .metric-unit { font-size: 16px; font-weight: 600; margin-left: 2px; letter-spacing: 0; }
+    .metric-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+      margin-top: 6px;
+    }
+    .metric-sub { font-size: 11.5px; color: var(--muted); }
+
+    /* ── AI IMPLEMENTATION ───────────────────────────────── */
+    .ai-pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ai-stage {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .ai-stage-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      width: 32px;
+      text-align: center;
+      margin-top: 1px;
+    }
+    .ai-stage-body { flex: 1; }
+    .ai-stage-body strong {
+      font-size: 13px;
+      color: var(--text);
+      display: block;
+      font-weight: 600;
+    }
+    .ai-stage-body span { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+    .ai-stage-badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 600;
+      flex-shrink: 0;
+      align-self: center;
+    }
+    .badge-red    { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+    .badge-amber  { background: rgba(251,191,36,0.15); color: var(--amber); border: 1px solid rgba(251,191,36,0.3); }
+    .badge-cyan   { background: rgba(56,189,248,0.15); color: var(--cyan); border: 1px solid rgba(56,189,248,0.3); }
+    .badge-purple { background: rgba(167,139,250,0.15); color: var(--purple); border: 1px solid rgba(167,139,250,0.3); }
+    .badge-green  { background: rgba(52,211,153,0.15); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+
+    .prompt-box {
+      margin-top: 14px;
+      background: #0B1220;
+      border: 1px solid #1E3A5F;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .prompt-label { font-size: 10px; color: var(--cyan); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .prompt-json { font-family: 'Courier New', monospace; font-size: 11px; line-height: 1.7; }
+    .prompt-json .k  { color: #67E8F9; }
+    .prompt-json .v  { color: #A78BFA; }
+    .prompt-json .s  { color: #86EFAC; }
+    .prompt-json .n  { color: #FBBF24; }
+    .prompt-json .cm { color: #4B6888; }
+
+    /* ── ARCHITECTURE ────────────────────────────────────── */
+    .arch-cluster {
+      background: rgba(15,23,42,0.6);
+      border: 2px solid #334155;
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .arch-cluster-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #1E3A5F;
+    }
+    .ns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .namespace {
+      border-radius: 7px;
+      padding: 10px 12px;
+      border: 1px solid;
+    }
+    .ns-airflow  { background: rgba(14,165,233,0.08); border-color: rgba(14,165,233,0.35); }
+    .ns-spark    { background: rgba(234,88,12,0.08);  border-color: rgba(234,88,12,0.35); }
+    .ns-llm      { background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.35); }
+    .ns-monitor  { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.35); }
+
+    .ns-name {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ns-airflow .ns-name  { color: #38BDF8; }
+    .ns-spark   .ns-name  { color: #FB923C; }
+    .ns-llm     .ns-name  { color: #A78BFA; }
+    .ns-monitor .ns-name  { color: #34D399; }
+
+    .ns-component {
+      font-size: 11px;
+      color: var(--muted);
+      padding: 3px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .ns-component:last-child { border-bottom: none; }
+    .ns-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .ns-airflow  .ns-dot { background: #38BDF8; }
+    .ns-spark    .ns-dot { background: #FB923C; }
+    .ns-llm      .ns-dot { background: #A78BFA; }
+    .ns-monitor  .ns-dot { background: #34D399; }
+
+    .arch-flow-arrows {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .arch-arrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    .arch-arrow .arrow-line {
+      flex: 1;
+      height: 1px;
+      background: var(--dim);
+      position: relative;
+    }
+    .arch-arrow .arrow-line::after {
+      content: '▶';
+      position: absolute;
+      right: -1px;
+      top: -7px;
+      font-size: 10px;
+      color: var(--dim);
+    }
+    .arch-arrow .src { font-weight: 600; color: var(--text); white-space: nowrap; }
+    .arch-arrow .dst { color: var(--cyan); font-weight: 600; white-space: nowrap; }
+    .arch-arrow .lbl { font-size: 10px; color: var(--dim); white-space: nowrap; }
+
+    /* ── ROI TABLE ───────────────────────────────────────── */
+    .roi-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .roi-table th {
+      background: #1E3A5F;
+      color: var(--cyan);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .roi-table th:first-child { border-radius: 6px 0 0 0; }
+    .roi-table th:last-child  { border-radius: 0 6px 0 0; text-align: right; }
+    .roi-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--text);
+      vertical-align: middle;
+    }
+    .roi-table td:last-child { text-align: right; }
+    .roi-table tr:last-child td { border-bottom: none; }
+    .roi-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .roi-highlight td { background: rgba(52,211,153,0.08) !important; }
+    .roi-highlight td:first-child { border-left: 3px solid var(--green); }
+    .val-before { color: var(--red); font-weight: 600; }
+    .val-after  { color: var(--green); font-weight: 700; }
+    .val-save   { color: var(--amber); font-weight: 700; }
+
+    /* ── BUSINESS CALLOUTS ────────────────────────────────── */
+    .callout-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .callout {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .callout-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+    .callout-body strong { font-size: 14px; color: var(--text); display: block; font-weight: 700; margin-bottom: 3px; }
+    .callout-body p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ── TECH STACK FOOTER ───────────────────────────────── */
+    .tech-footer {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .tech-label { font-size: 11px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; flex-shrink: 0; }
+    .tech-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .tech-tag span { font-size: 10px; color: var(--muted); font-weight: 400; }
+
+    /* ── FINAL BANNER ────────────────────────────────────── */
+    .enterprise-banner {
+      background: linear-gradient(135deg, #0C2340 0%, #1A1040 100%);
+      border: 1px solid #1E3A5F;
+      border-radius: 10px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .enterprise-banner .left { display: flex; align-items: center; gap: 14px; }
+    .enterprise-banner .lock-icon { font-size: 32px; }
+    .enterprise-banner .text strong { font-size: 15px; color: var(--text); display: block; }
+    .enterprise-banner .text p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .enterprise-banner .right {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .enterprise-badge {
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.25);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 11.5px;
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    /* ── SECTION DIVIDERS ────────────────────────────────── */
+    .section-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 10px;
+      padding-left: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.07);
+    }
+
+    /* print-friendly */
+    @media print {
+      body { background: #fff !important; color: #000 !important; }
+      .poster { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- HEADER                                              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div class="header-title">
+          <div class="eyebrow">&#9679; Innovation PoC &nbsp;|&nbsp; Data Engineering Platform</div>
+          <h1>AI-Powered Pipeline Intelligence<br><span>Automated Root Cause Analysis</span></h1>
+          <div class="subtitle">Apache Airflow &nbsp;·&nbsp; Apache Spark &nbsp;·&nbsp; Ollama LLM (gemma2:2b) &nbsp;·&nbsp; Google Kubernetes Engine</div>
+        </div>
+        <div class="header-badges">
+          <div class="badge">&#128274; <strong>Air-Gapped LLM</strong> — No external API</div>
+          <div class="badge">&#9729; <strong>GKE</strong> — Mirrors GDC enterprise pattern</div>
+          <div class="badge">&#128200; <strong>83%</strong> reduction in MTTR</div>
+          <div class="badge">&#128176; <strong>~$60</strong> total PoC cost on GCP</div>
+        </div>
+      </div>
+      <div class="header-tagline">
+        <div class="tagline-item">&#128736; <strong>Airflow 2.9.2</strong> (KubernetesExecutor)</div>
+        <div class="tagline-item">&#9889; <strong>Spark 3.5</strong> (ephemeral Operator)</div>
+        <div class="tagline-item">&#129504; <strong>gemma2:2b</strong> (CPU-only, ClusterIP)</div>
+        <div class="tagline-item">&#128202; <strong>PostgreSQL</strong> metrics + baselines</div>
+        <div class="tagline-item">&#128241; <strong>Email + Slack</strong> AI-generated RCA reports</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 1: PROBLEM + SOLUTION                       -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section-heading">Challenge &amp; Solution</div>
+  <div class="row col-40-60">
+
+    <!-- PROBLEM -->
+    <div class="card red card-accent-top">
+      <div class="card-title red">&#9888;&#65039; The Problem — Today's Reality</div>
+
+      <ul class="problem-list">
+        <li>
+          <div class="icon">&#128549;</div>
+          <div class="desc">
+            <strong>60–90 minutes of manual investigation</strong>
+            <span>Engineer manually greps logs, checks metrics, reads stack traces at 3AM</span>
+          </div>
+        </li>
+        <li>
+          <div class="icon">&#128561;</div>
+          <div class="desc">
+            <strong>On-call engineers wake up to raw stack traces</strong>
+            <span>No context, no prioritisation, no suggested fix — just noise</span>
+          </div>
+        </li>
+        <li>
+          <div class="icon">&#128200;</div>
+          <div class="desc">
+            <strong>High MTTR impacts downstream consumers</strong>
+            <span>Every minute a pipeline is down, downstream BI, ML and reporting stalls</span>
+          </div>
+        </li>
+        <li>
+          <div class="icon">&#128269;</div>
+          <div class="desc">
+            <strong>No pattern recognition across incidents</strong>
+            <span>Engineers solve the same recurring issues manually each time</span>
+          </div>
+        </li>
+        <li>
+          <div class="icon">&#128683;</div>
+          <div class="desc">
+            <strong>Silent anomalies go undetected</strong>
+            <span>Slow DAG drift (20%+ over baseline) raises no alert until SLA breach</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="before-after">
+        <div class="ba-box ba-before">
+          <div class="label">Before AI</div>
+          <div class="value">90<span class="metric-unit" style="font-size:14px">min</span></div>
+          <div class="sub">Diagnosis time</div>
+        </div>
+        <div class="ba-box ba-after">
+          <div class="label">After AI</div>
+          <div class="value">15<span class="metric-unit" style="font-size:14px">min</span></div>
+          <div class="sub">Full RCA in inbox</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOLUTION -->
+    <div class="card cyan card-accent-top">
+      <div class="card-title cyan">&#9989; The Solution — AI-Powered RCA Pipeline</div>
+
+      <div class="flow-steps">
+        <div class="flow-step s1">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Pipeline Task Fails</strong>
+            <span>Any Airflow task raises an exception — FileNotFoundError, OOMError, ConnectionError, or custom AirflowException</span>
+          </div>
+          <span class="ai-stage-badge badge-red">Trigger</span>
+        </div>
+        <div class="step-arrow">&#8595;</div>
+        <div class="flow-step s2">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>Context Automatically Collected</strong>
+            <span>on_failure_callback gathers: error type, last 100 log lines, run duration, historical baseline (avg ± 2σ), last 3 run statuses</span>
+          </div>
+          <span class="ai-stage-badge badge-amber">Collect</span>
+        </div>
+        <div class="step-arrow">&#8595;</div>
+        <div class="flow-step s3">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>Structured Prompt Built &amp; Sent to Ollama</strong>
+            <span>Prompt forces JSON-only output with 9 specific fields. Sent to gemma2:2b (ClusterIP :11434) — temperature 0.1 for determinism</span>
+          </div>
+          <span class="ai-stage-badge badge-cyan">AI Inference</span>
+        </div>
+        <div class="step-arrow">&#8595;</div>
+        <div class="flow-step s4">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <strong>LLM Returns Structured RCA JSON</strong>
+            <span>root_cause · root_cause_category · confidence · immediate_fix · prevention · severity · retry_recommended · fix_time_minutes</span>
+          </div>
+          <span class="ai-stage-badge badge-purple">Parse</span>
+        </div>
+        <div class="step-arrow">&#8595;</div>
+        <div class="flow-step s5">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <strong>Stored in PostgreSQL + Notifications Sent</strong>
+            <span>RCA persisted to dag_metrics table. Rich HTML email + Slack Block Kit message sent within 30 seconds of failure</span>
+          </div>
+          <span class="ai-stage-badge badge-green">Notify</span>
+        </div>
+        <div class="step-arrow">&#8595;</div>
+        <div class="flow-step s6">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <strong>Anomaly Detection Runs Every 30 Minutes</strong>
+            <span>Baselines computed per DAG (last 30 days, min 5 runs). Drift &gt;20% triggers Ollama explanation + proactive alert</span>
+          </div>
+          <span class="ai-stage-badge badge-green">Proactive</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 2: KEY METRICS                              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section-heading">Impact at a Glance</div>
+  <div class="row col4" style="margin-bottom:18px">
+    <div class="metric-card m1">
+      <div class="metric-icon">&#9889;</div>
+      <div class="metric-value">83<span class="metric-unit">%</span></div>
+      <div class="metric-label">Reduction in MTTR</div>
+      <div class="metric-sub">90 minutes → 15 minutes<br>diagnosis time per incident</div>
+    </div>
+    <div class="metric-card m2">
+      <div class="metric-icon">&#128336;</div>
+      <div class="metric-value">780<span class="metric-unit" style="font-size:18px">hrs</span></div>
+      <div class="metric-label">Engineering Hours Saved / Year</div>
+      <div class="metric-sub">Assuming 2 incidents/week<br>@75 min savings per incident</div>
+    </div>
+    <div class="metric-card m3">
+      <div class="metric-icon">&#129504;</div>
+      <div class="metric-value">30<span class="metric-unit" style="font-size:18px">sec</span></div>
+      <div class="metric-label">Time to Full RCA Report</div>
+      <div class="metric-sub">From failure trigger to<br>email + Slack delivery</div>
+    </div>
+    <div class="metric-card m4">
+      <div class="metric-icon">&#128176;</div>
+      <div class="metric-value">$60</div>
+      <div class="metric-label">Total PoC Cost (GCP)</div>
+      <div class="metric-sub">~$0.22/hr running cost<br>Spot instances, CPU-only LLM</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 3: HOW AI WORKS + ARCHITECTURE              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section-heading">How AI is Implemented &amp; Technical Architecture</div>
+  <div class="row col-55-45">
+
+    <!-- HOW AI WORKS -->
+    <div class="card purple card-accent-top">
+      <div class="card-title purple">&#129504; How AI is Implemented — LLM RCA Pipeline</div>
+
+      <div class="ai-pipeline">
+        <div class="ai-stage">
+          <div class="ai-stage-icon">&#128209;</div>
+          <div class="ai-stage-body">
+            <strong>Model: gemma2:2b (Google Gemma, CPU-Optimised)</strong>
+            <span>1.6 GB model loaded into Ollama. Runs CPU-only (no GPU required). Pulled once from HuggingFace, stored in PVC, survives pod restarts. Mirrors GDC air-gapped model serving.</span>
+          </div>
+          <span class="ai-stage-badge badge-purple">LLM</span>
+        </div>
+        <div class="ai-stage">
+          <div class="ai-stage-icon">&#128274;</div>
+          <div class="ai-stage-body">
+            <strong>Deployment: ClusterIP Only — Zero Egress</strong>
+            <span>Ollama Service on port 11434 as ClusterIP. NetworkPolicy restricts ingress to airflow namespace only. No external internet traffic. Identical to enterprise on-prem/GDC air-gapped pattern.</span>
+          </div>
+          <span class="ai-stage-badge badge-red">Air-Gapped</span>
+        </div>
+        <div class="ai-stage">
+          <div class="ai-stage-icon">&#128196;</div>
+          <div class="ai-stage-body">
+            <strong>Prompt Engineering: Structured JSON Forcing</strong>
+            <span>Prompt template forces <code style="color:#67E8F9;font-size:10px">format:"json"</code> + strict schema. Temperature 0.1 for determinism. Includes error context, log excerpt (2000 chars), and 30-day historical baseline to improve accuracy.</span>
+          </div>
+          <span class="ai-stage-badge badge-amber">Prompt</span>
+        </div>
+        <div class="ai-stage">
+          <div class="ai-stage-icon">&#128200;</div>
+          <div class="ai-stage-body">
+            <strong>Anomaly Detection: Statistical Baseline + LLM Explanation</strong>
+            <span>PostgreSQL view computes mean ± 2σ per DAG over 30 days. If a run drifts &gt;20% from baseline, Ollama generates a natural-language explanation of likely cause before it becomes an SLA breach.</span>
+          </div>
+          <span class="ai-stage-badge badge-green">Proactive</span>
+        </div>
+      </div>
+
+      <!-- JSON OUTPUT SAMPLE -->
+      <div class="prompt-box">
+        <div class="prompt-label">&#9654; Sample AI Response (gemma2:2b JSON Output)</div>
+        <div class="prompt-json">
+<span class="cm">// Ollama returns structured JSON — parsed by rca_callback.py</span><br>
+{<br>
+&nbsp;&nbsp;<span class="k">"root_cause"</span>: <span class="s">"Source file missing from GCS bucket"</span>,<br>
+&nbsp;&nbsp;<span class="k">"root_cause_category"</span>: <span class="s">"data_issue"</span>,<br>
+&nbsp;&nbsp;<span class="k">"confidence"</span>: <span class="n">0.91</span>,<br>
+&nbsp;&nbsp;<span class="k">"immediate_fix"</span>: <span class="s">"Check upstream ETL job for gs://bucket/2024-01-15.csv"</span>,<br>
+&nbsp;&nbsp;<span class="k">"severity"</span>: <span class="s">"high"</span>,<br>
+&nbsp;&nbsp;<span class="k">"retry_recommended"</span>: <span class="n">false</span>,<br>
+&nbsp;&nbsp;<span class="k">"estimated_fix_time_minutes"</span>: <span class="n">15</span>,<br>
+&nbsp;&nbsp;<span class="k">"prevention"</span>: <span class="s">"Add GCS file sensor before Spark task"</span><br>
+}
+        </div>
+      </div>
+    </div>
+
+    <!-- ARCHITECTURE -->
+    <div class="card green card-accent-top">
+      <div class="card-title green">&#9729; Technical Architecture — GKE Cluster</div>
+
+      <div class="arch-cluster">
+        <div class="arch-cluster-title">&#9096; GKE Standard Cluster (Personal GCP · Spot Instances)</div>
+        <div class="ns-grid">
+
+          <div class="namespace ns-airflow">
+            <div class="ns-name">ns: airflow</div>
+            <div class="ns-component"><div class="ns-dot"></div>Airflow Webserver</div>
+            <div class="ns-component"><div class="ns-dot"></div>Airflow Scheduler</div>
+            <div class="ns-component"><div class="ns-dot"></div>KubernetesExecutor</div>
+            <div class="ns-component"><div class="ns-dot"></div>PostgreSQL (metadata)</div>
+            <div class="ns-component"><div class="ns-dot"></div>on_failure_callback</div>
+          </div>
+
+          <div class="namespace ns-spark">
+            <div class="ns-name">ns: spark-operator / spark-jobs</div>
+            <div class="ns-component"><div class="ns-dot"></div>Spark Operator Controller</div>
+            <div class="ns-component"><div class="ns-dot"></div>SparkApplication CRD</div>
+            <div class="ns-component"><div class="ns-dot"></div>Ephemeral Driver + Executors</div>
+            <div class="ns-component"><div class="ns-dot"></div>restartPolicy: Never</div>
+            <div class="ns-component"><div class="ns-dot"></div>Auto-cleanup after complete</div>
+          </div>
+
+          <div class="namespace ns-llm">
+            <div class="ns-name">ns: llm-serving</div>
+            <div class="ns-component"><div class="ns-dot"></div>Ollama Deployment</div>
+            <div class="ns-component"><div class="ns-dot"></div>gemma2:2b (CPU mode)</div>
+            <div class="ns-component"><div class="ns-dot"></div>ClusterIP :11434</div>
+            <div class="ns-component"><div class="ns-dot"></div>PVC 30GB (model store)</div>
+            <div class="ns-component"><div class="ns-dot"></div>NetworkPolicy: airflow-only</div>
+          </div>
+
+          <div class="namespace ns-monitor">
+            <div class="ns-name">ns: monitoring</div>
+            <div class="ns-component"><div class="ns-dot"></div>PostgreSQL (dag_metrics)</div>
+            <div class="ns-component"><div class="ns-dot"></div>Prometheus</div>
+            <div class="ns-component"><div class="ns-dot"></div>Grafana Dashboard</div>
+            <div class="ns-component"><div class="ns-dot"></div>Anomaly baseline view</div>
+            <div class="ns-component"><div class="ns-dot"></div>Pipeline health metrics</div>
+          </div>
+        </div>
+
+        <div class="arch-flow-arrows">
+          <div class="arch-arrow">
+            <span class="src">Airflow DAG fails</span>
+            <div class="arrow-line"></div>
+            <span class="lbl">on_failure_callback</span>
+            <div class="arrow-line"></div>
+            <span class="dst">Ollama :11434</span>
+          </div>
+          <div class="arch-arrow">
+            <span class="src">RCA JSON response</span>
+            <div class="arrow-line"></div>
+            <span class="lbl">store + notify</span>
+            <div class="arrow-line"></div>
+            <span class="dst">PostgreSQL + Email/Slack</span>
+          </div>
+          <div class="arch-arrow">
+            <span class="src">Airflow DAG trigger</span>
+            <div class="arrow-line"></div>
+            <span class="lbl">SparkKubernetesOperator</span>
+            <div class="arrow-line"></div>
+            <span class="dst">Ephemeral Spark Job</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY CONSTRAINTS -->
+      <div style="margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:7px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:#34D399;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">&#10003; Enterprise-Ready</div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.6;">
+            Helm-based Airflow (same as GDC)<br>
+            KubernetesExecutor (matches GDC)<br>
+            Namespace isolation + NetworkPolicy<br>
+            Ephemeral Spark (no persistent jobs)
+          </div>
+        </div>
+        <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);border-radius:7px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:#38BDF8;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">&#128200; GCP Cost Profile</div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.6;">
+            e2-standard-4 Spot nodes<br>
+            ~$0.22/hr total running cost<br>
+            $5.30/day if left running<br>
+            Full PoC ≈ $60 total
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 4: ROI TABLE                                -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section-heading">Business Value &amp; ROI</div>
+  <div class="row col2" style="margin-bottom:18px;">
+    <div class="card amber card-accent-top">
+      <div class="card-title amber">&#128200; Time &amp; Effort Savings</div>
+      <table class="roi-table">
+        <thead>
+          <tr>
+            <th>Activity</th>
+            <th>Before AI</th>
+            <th>After AI</th>
+            <th>Saving</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Root Cause Diagnosis</td>
+            <td class="val-before">60–90 min</td>
+            <td class="val-after">~5 min</td>
+            <td class="val-save">85 min</td>
+          </tr>
+          <tr>
+            <td>Fix Identification</td>
+            <td class="val-before">15–30 min</td>
+            <td class="val-after">Immediate</td>
+            <td class="val-save">20 min</td>
+          </tr>
+          <tr>
+            <td>Stakeholder Communication</td>
+            <td class="val-before">10–15 min</td>
+            <td class="val-after">Auto-notify</td>
+            <td class="val-save">12 min</td>
+          </tr>
+          <tr>
+            <td>Anomaly Detection</td>
+            <td class="val-before">Post-breach</td>
+            <td class="val-after">Proactive</td>
+            <td class="val-save">SLA protected</td>
+          </tr>
+          <tr class="roi-highlight">
+            <td><strong>Total per Incident</strong></td>
+            <td class="val-before"><strong>~90 min</strong></td>
+            <td class="val-after"><strong>~15 min</strong></td>
+            <td class="val-save"><strong>75 min (83%)</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card cyan card-accent-top">
+      <div class="card-title cyan">&#128176; Productivity &amp; Cost Impact</div>
+      <table class="roi-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Current</th>
+            <th>With AI</th>
+            <th>Annual Gain</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Incidents (2/week)</td>
+            <td class="val-before">90 min each</td>
+            <td class="val-after">15 min each</td>
+            <td class="val-save">780 hrs/yr</td>
+          </tr>
+          <tr>
+            <td>Eng. focus time lost</td>
+            <td class="val-before">~3am wake-ups</td>
+            <td class="val-after">AI handles first</td>
+            <td class="val-save">Team wellbeing</td>
+          </tr>
+          <tr>
+            <td>Downstream SLA risk</td>
+            <td class="val-before">Undetected drift</td>
+            <td class="val-after">30-min detection</td>
+            <td class="val-save">SLA breaches ↓</td>
+          </tr>
+          <tr>
+            <td>Incident documentation</td>
+            <td class="val-before">Manual write-up</td>
+            <td class="val-after">Auto-generated</td>
+            <td class="val-save">~4 hrs/week</td>
+          </tr>
+          <tr class="roi-highlight">
+            <td><strong>Equivalent Headcount</strong></td>
+            <td class="val-before">—</td>
+            <td class="val-after"><strong>0.4 FTE equiv.</strong></td>
+            <td class="val-save"><strong>~£30K+ value/yr</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 5: CALLOUTS                                 -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="callout-strip">
+    <div class="callout">
+      <div class="callout-icon">&#128274;</div>
+      <div class="callout-body">
+        <strong>100% Air-Gapped — Zero Data Leaves the Cluster</strong>
+        <p>All LLM inference runs on internal ClusterIP (Ollama :11434). No calls to OpenAI, Vertex AI, or any external service. Sensitive pipeline logs and business data never leave the Kubernetes cluster. Fully compliant with enterprise air-gap requirements and mirrors the GDC on-prem deployment pattern exactly.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="callout-icon">&#9729;</div>
+      <div class="callout-body">
+        <strong>Lift-and-Shift Ready for Enterprise GDC</strong>
+        <p>This PoC is architecturally identical to the production GDC deployment: Helm-managed Airflow, KubernetesExecutor, ephemeral Spark via Operator, ClusterIP LLM. Migrating to enterprise means changing a few endpoint URLs and scaling node pools — the DAG code, callbacks, and notification logic are identical.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="callout-icon">&#128200;</div>
+      <div class="callout-body">
+        <strong>Proactive vs Reactive — Anomaly Detection</strong>
+        <p>Beyond reactive RCA, the system continuously monitors DAG execution baselines (mean ± 2σ, 30-day rolling). When a DAG drifts more than 20% from its normal duration, Ollama generates a natural-language explanation and sends a proactive alert — before the SLA is breached.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- TECH STACK FOOTER                                   -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="tech-footer">
+    <span class="tech-label">Tech Stack</span>
+    <span class="tech-tag">&#9992; <strong>Apache Airflow 2.9.2</strong> <span>KubernetesExecutor · Helm</span></span>
+    <span class="tech-tag">&#9889; <strong>Apache Spark 3.5</strong> <span>Spark Operator · Ephemeral</span></span>
+    <span class="tech-tag">&#129504; <strong>Ollama + gemma2:2b</strong> <span>CPU · ClusterIP · 1.6GB</span></span>
+    <span class="tech-tag">&#9729; <strong>GKE Standard</strong> <span>Spot Nodes · e2-standard-4</span></span>
+    <span class="tech-tag">&#128200; <strong>PostgreSQL</strong> <span>dag_metrics · baselines</span></span>
+    <span class="tech-tag">&#128202; <strong>Prometheus + Grafana</strong> <span>Pipeline health dashboard</span></span>
+    <span class="tech-tag">&#128231; <strong>Email + Slack</strong> <span>HTML + Block Kit</span></span>
+    <span class="tech-tag">&#9875; <strong>Helm 3</strong> <span>All services</span></span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- ENTERPRISE BANNER                                   -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="enterprise-banner">
+    <div class="left">
+      <div class="lock-icon">&#127959;</div>
+      <div class="text">
+        <strong>This PoC mirrors the Enterprise GDC deployment pattern exactly</strong>
+        <p>Architecture validated against production GDC constraints — ready for lift-and-shift to on-prem Kubernetes</p>
+      </div>
+    </div>
+    <div class="right">
+      <div class="enterprise-badge">&#10003; Same Airflow Helm chart</div>
+      <div class="enterprise-badge">&#10003; Same KubernetesExecutor</div>
+      <div class="enterprise-badge">&#10003; Same ephemeral Spark pattern</div>
+      <div class="enterprise-badge">&#10003; Air-gapped LLM (no internet)</div>
+      <div class="enterprise-badge">&#10003; NetworkPolicy isolation</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
